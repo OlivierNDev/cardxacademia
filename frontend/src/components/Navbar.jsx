@@ -11,22 +11,12 @@ const Navbar = () => {
     <nav className="bg-white py-4 px-4 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <a href="/" className="flex items-center">
-          <div className="relative w-20 h-16">
-            {/* CardX Logo */}
-            <svg viewBox="0 0 100 70" className="w-full h-full">
-              {/* Blue circles */}
-              <circle cx="25" cy="25" r="20" fill="none" stroke="#1E88E5" strokeWidth="4"/>
-              <circle cx="35" cy="25" r="15" fill="none" stroke="#1E88E5" strokeWidth="3"/>
-              <circle cx="42" cy="25" r="10" fill="none" stroke="#1E88E5" strokeWidth="2"/>
-              {/* Yellow dots */}
-              <circle cx="55" cy="15" r="5" fill="#F5A623"/>
-              <circle cx="65" cy="25" r="3" fill="#F5A623"/>
-              {/* Text */}
-              <text x="15" y="60" fontFamily="Georgia, serif" fontSize="20" fontStyle="italic" fill="#1E88E5">Card</text>
-              <text x="58" y="60" fontFamily="Arial, sans-serif" fontSize="22" fontWeight="bold" fill="#F5A623">X</text>
-            </svg>
-          </div>
+        <a href="/" className="flex items-center flex-shrink-0">
+          <img 
+            src="/logo.png" 
+            alt="CardX Academia Logo" 
+            className="h-10 w-auto sm:h-12 md:h-14 lg:h-16 xl:h-20 max-w-[120px] sm:max-w-[140px] md:max-w-[160px] lg:max-w-[180px] xl:max-w-[200px] object-contain"
+          />
         </a>
 
         {/* Desktop Navigation */}

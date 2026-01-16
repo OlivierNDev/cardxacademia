@@ -10,15 +10,11 @@ const Footer = () => {
           <div>
             {/* Logo */}
             <div className="mb-6">
-              <svg viewBox="0 0 100 70" className="w-24 h-16">
-                <circle cx="25" cy="25" r="20" fill="none" stroke="#1E88E5" strokeWidth="4"/>
-                <circle cx="35" cy="25" r="15" fill="none" stroke="#1E88E5" strokeWidth="3"/>
-                <circle cx="42" cy="25" r="10" fill="none" stroke="#1E88E5" strokeWidth="2"/>
-                <circle cx="55" cy="15" r="5" fill="#F5A623"/>
-                <circle cx="65" cy="25" r="3" fill="#F5A623"/>
-                <text x="15" y="60" fontFamily="Georgia, serif" fontSize="20" fontStyle="italic" fill="#1E88E5">Card</text>
-                <text x="58" y="60" fontFamily="Arial, sans-serif" fontSize="22" fontWeight="bold" fill="#F5A623">X</text>
-              </svg>
+              <img 
+                src="/logo.png" 
+                alt="CardX Academia Logo" 
+                className="h-10 w-auto sm:h-12 md:h-16 lg:h-20 xl:h-24 max-w-[120px] sm:max-w-[140px] md:max-w-[180px] lg:max-w-[200px] xl:max-w-[240px] object-contain"
+              />
             </div>
             <p className="text-gray-400 mb-4 leading-relaxed">
               1st Floor, Door F1B-013D,<br />

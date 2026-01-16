@@ -1,0 +1,20 @@
+{
+  "short_name": "CardX Academia",
+  "name": "CardX Academia - Education Consulting & Visa Services",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#14B8A6",
+  "background_color": "#ffffff"
+}
