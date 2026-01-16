@@ -47,16 +47,16 @@ const TestimonialsSection = () => {
 
           {/* Slider Container */}
           <div className="bg-white rounded-2xl shadow-xl p-8 lg:p-12 overflow-hidden">
-            <div 
-              className="transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              <div className="flex">
-                {testimonials.map((testimonial) => (
-                  <div 
-                    key={testimonial.id}
-                    className="w-full flex-shrink-0 px-4"
-                  >
+            <div className="relative">
+              {testimonials.map((testimonial, index) => (
+                <div 
+                  key={testimonial.id}
+                  className={`transition-all duration-500 ${
+                    index === currentIndex 
+                      ? 'opacity-100 relative' 
+                      : 'opacity-0 absolute inset-0'
+                  }`}
+                >
                     <div className="text-center">
                       <h3 className="text-2xl font-bold text-teal-500 mb-6">
                         {testimonial.country}
