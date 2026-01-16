@@ -27,6 +27,45 @@
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
+        <script>
+            // Remove Emergent badge if it exists
+            (function() {
+                function removeEmergentBadge() {
+                    const badge = document.getElementById('emergent-badge');
+                    if (badge) {
+                        badge.remove();
+                    }
+                    // Also check for any element with 'emergent' in class or id
+                    const allElements = document.querySelectorAll('[id*="emergent"], [class*="emergent"]');
+                    allElements.forEach(el => {
+                        if (el.textContent && el.textContent.includes('Emergent')) {
+                            el.remove();
+                        }
+                    });
+                }
+                // Remove immediately
+                removeEmergentBadge();
+                // Remove after DOM loads
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', removeEmergentBadge);
+                }
+                // Remove after page loads
+                window.addEventListener('load', removeEmergentBadge);
+                // Keep checking periodically in case it's injected later
+                setInterval(removeEmergentBadge, 1000);
+            })();
+        </script>
+        <style>
+            /* Hide Emergent badge with CSS as backup */
+            #emergent-badge,
+            [id*="emergent"],
+            [class*="emergent-badge"] {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+        </style>
         <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
