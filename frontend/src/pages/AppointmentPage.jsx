@@ -70,15 +70,20 @@ const AppointmentPage = () => {
     if (!selectedDate) return;
     
     setLoadingSlots(true);
+    setError(null);
     try {
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
       const data = await appointmentAPI.getAvailableSlots(dateStr, formData.serviceType);
       setAvailableSlots(data.available_slots || []);
-      setError(null);
+      
+      // If selected time is no longer available, clear it
+      if (selectedTime && !data.available_slots?.includes(selectedTime)) {
+        setSelectedTime('');
+      }
     } catch (err) {
       console.error('Error loading slots:', err);
       setAvailableSlots([]);
-      setError('Failed to load available time slots');
+      // Don't show error for slot loading, just show empty state
     } finally {
       setLoadingSlots(false);
     }
@@ -138,6 +143,9 @@ const AppointmentPage = () => {
       setAppointmentId(result.id);
       setSubmitted(true);
       
+      // Store email for success message
+      const submittedEmail = formData.email;
+      
       // Reset form
       setFormData({
         name: '',
@@ -152,9 +160,16 @@ const AppointmentPage = () => {
       });
       setSelectedDate(new Date());
       setSelectedTime('');
+      setAvailableSlots([]);
     } catch (err) {
       console.error('Error creating appointment:', err);
-      setError(err.detail || err.message || 'Failed to create appointment. Please try again.');
+      const errorMessage = err?.detail || err?.message || err?.error || 'Failed to create appointment. Please try again.';
+      setError(errorMessage);
+      
+      // If it's a time slot conflict, reload available slots
+      if (errorMessage.includes('already booked') || errorMessage.includes('time slot')) {
+        loadAvailableSlots();
+      }
     } finally {
       setSubmitting(false);
     }
@@ -182,16 +197,23 @@ const AppointmentPage = () => {
           <div className="mb-6 p-6 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex items-center gap-3 mb-2">
               <CheckCircle2 className="text-green-600" size={24} />
-              <h3 className="text-lg font-semibold text-green-800">Appointment Booked Successfully!</h3>
+              <h3 className="text-lg font-semibold text-green-800">Appointment Booked Successfully! 🎉</h3>
             </div>
             <p className="text-green-700 mb-2">
-              Your appointment has been confirmed. A confirmation email has been sent to <strong>{formData.email}</strong>.
+              Your appointment has been confirmed. A confirmation email has been sent to your email address.
+            </p>
+            <p className="text-green-700 mb-2">
+              An admin notification has also been sent to <strong>olivier.niyo250@gmail.com</strong>.
             </p>
             {appointmentId && (
-              <p className="text-sm text-green-600">Appointment ID: {appointmentId}</p>
+              <p className="text-sm text-green-600 mb-4">Appointment ID: <strong>{appointmentId}</strong></p>
             )}
             <Button
-              onClick={() => setSubmitted(false)}
+              onClick={() => {
+                setSubmitted(false);
+                setAppointmentId(null);
+                setError(null);
+              }}
               variant="outline"
               className="mt-4"
             >
