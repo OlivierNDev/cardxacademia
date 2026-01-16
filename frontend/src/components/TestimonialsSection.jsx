@@ -57,28 +57,27 @@ const TestimonialsSection = () => {
                       : 'opacity-0 absolute inset-0'
                   }`}
                 >
-                    <div className="text-center">
-                      <h3 className="text-2xl font-bold text-teal-500 mb-6">
-                        {testimonial.country}
-                      </h3>
-                      <p className="text-gray-600 text-lg leading-relaxed mb-8 italic">
-                        "{testimonial.testimonial}"
-                      </p>
-                      <div className="flex items-center justify-center gap-4">
-                        <img 
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-16 h-16 rounded-full object-cover border-4 border-teal-100"
-                        />
-                        <div className="text-left">
-                          <p className="font-bold text-gray-800">{testimonial.name}</p>
-                          <p className="text-teal-500">{testimonial.country}</p>
-                        </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-teal-500 mb-6">
+                      {testimonial.country}
+                    </h3>
+                    <p className="text-gray-600 text-lg leading-relaxed mb-8 italic">
+                      "{testimonial.testimonial}"
+                    </p>
+                    <div className="flex items-center justify-center gap-4">
+                      <img 
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-16 h-16 rounded-full object-cover border-4 border-teal-100"
+                      />
+                      <div className="text-left">
+                        <p className="font-bold text-gray-800">{testimonial.name}</p>
+                        <p className="text-teal-500">{testimonial.country}</p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
