@@ -34,9 +34,9 @@ const HeroSection = () => {
             </a>
           </div>
 
-          {/* Service Cards */}
+          {/* Service Cards - Show first 3 featured services */}
           <div className="space-y-4">
-            {services.map((service) => (
+            {services.slice(0, 3).map((service) => (
               <div 
                 key={service.id}
                 className="bg-white/95 backdrop-blur-sm rounded-lg p-5 flex justify-between items-center group hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"

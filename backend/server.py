@@ -1,23 +1,31 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
+from typing import List, Optional, Literal
+from datetime import datetime, timezone, date
 import uuid
-from datetime import datetime, timezone
+import pytz
+from services.email_service import EmailService
+
+# Kigali timezone
+KIGALI_TZ = pytz.timezone('Africa/Kigali')
 
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ.get('DB_NAME', 'cardxacademia')]
+
+# Initialize Email Service
+email_service = EmailService()
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -36,6 +44,42 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
+
+
+# Appointment Models
+class CustomerInfo(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    phone: str = Field(..., min_length=10, max_length=20)
+    country: Optional[str] = Field(None, max_length=100)
+
+class AppointmentInfo(BaseModel):
+    date: date
+    time: str = Field(..., pattern=r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')  # HH:MM format
+    appointment_type: Literal["in_person", "virtual"] = "in_person"
+    location: Optional[str] = Field(None, max_length=200)  # For in-person appointments
+    worker: Optional[str] = Field(None, max_length=100)  # Staff member name
+    service_type: Literal["visa_consultation", "admission_guidance", "general_inquiry", "work_permit", "express_entry"]
+    duration: int = Field(default=30, ge=15, le=120)  # minutes, between 15 and 120
+    notes: Optional[str] = Field(None, max_length=500)
+
+class AppointmentCreate(BaseModel):
+    customer: CustomerInfo
+    appointment: AppointmentInfo
+
+class Appointment(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    customer: CustomerInfo
+    appointment: AppointmentInfo
+    status: Literal["pending", "confirmed", "cancelled", "completed"] = "pending"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(KIGALI_TZ))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(KIGALI_TZ))
+    confirmed_at: Optional[datetime] = None
+    cancelled_at: Optional[datetime] = None
+    email_sent: bool = False
+    reminder_sent: bool = False
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
@@ -65,6 +109,177 @@ async def get_status_checks():
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     
     return status_checks
+
+
+# Appointment Endpoints
+@api_router.post("/appointments", response_model=Appointment, status_code=201)
+async def create_appointment(appointment_data: AppointmentCreate):
+    """Create a new appointment and send confirmation emails"""
+    try:
+        # Check for conflicting appointments
+        appointment_date_str = appointment_data.appointment.date.isoformat()
+        existing = await db.appointments.find_one({
+            "appointment.date": appointment_date_str,
+            "appointment.time": appointment_data.appointment.time,
+            "status": {"$in": ["pending", "confirmed"]}
+        })
+        
+        if existing:
+            raise HTTPException(
+                status_code=400,
+                detail="This time slot is already booked. Please choose another time."
+            )
+        
+        # Create appointment object
+        appointment = Appointment(
+            customer=appointment_data.customer,
+            appointment=appointment_data.appointment
+        )
+        
+        # Convert to dict for MongoDB (with timezone handling)
+        doc = appointment.model_dump()
+        doc['appointment']['date'] = appointment_date_str
+        # Store datetimes in Kigali timezone
+        doc['created_at'] = doc['created_at'].isoformat()
+        doc['updated_at'] = doc['updated_at'].isoformat()
+        doc['timezone'] = 'Africa/Kigali'  # Store timezone info
+        
+        # Save to database
+        result = await db.appointments.insert_one(doc)
+        
+        # Send emails
+        email_sent = False
+        try:
+            # Send confirmation to customer
+            customer_email_sent = email_service.send_appointment_confirmation(doc)
+            
+            # Send notification to admin
+            admin_email_sent = email_service.send_admin_notification(doc)
+            
+            if customer_email_sent:
+                email_sent = True
+                # Update email_sent status
+                await db.appointments.update_one(
+                    {"id": appointment.id},
+                    {"$set": {"email_sent": True}}
+                )
+                logger.info(f"Confirmation emails sent for appointment {appointment.id}")
+            else:
+                logger.warning(f"Failed to send emails for appointment {appointment.id}")
+        except Exception as e:
+            logger.error(f"Error sending emails for appointment {appointment.id}: {str(e)}")
+            # Don't fail the appointment creation if email fails
+        
+        return appointment
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating appointment: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create appointment")
+
+
+@api_router.get("/appointments/available-slots")
+async def get_available_slots(date_str: str, service_type: str):
+    """Get available time slots for a given date"""
+    try:
+        # Parse date
+        appointment_date = datetime.fromisoformat(date_str).date()
+        date_str_iso = appointment_date.isoformat()
+        
+        # Get all appointments for this date
+        appointments = await db.appointments.find({
+            "appointment.date": date_str_iso,
+            "status": {"$in": ["pending", "confirmed"]}
+        }).to_list(1000)
+        
+        # Define available time slots (9 AM to 5 PM, 30-minute intervals)
+        all_slots = []
+        for hour in range(9, 17):  # 9 AM to 4:30 PM
+            for minute in [0, 30]:
+                all_slots.append(f"{hour:02d}:{minute:02d}")
+        
+        # Get booked slots
+        booked_slots = {appt['appointment']['time'] for appt in appointments}
+        
+        # Calculate available slots
+        available_slots = [slot for slot in all_slots if slot not in booked_slots]
+        
+        return {
+            "date": date_str_iso,
+            "service_type": service_type,
+            "available_slots": available_slots,
+            "total_slots": len(all_slots),
+            "booked_slots": len(booked_slots),
+            "available_count": len(available_slots)
+        }
+        
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    except Exception as e:
+        logger.error(f"Error getting available slots: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to get available slots")
+
+
+@api_router.get("/appointments/{appointment_id}", response_model=Appointment)
+async def get_appointment(appointment_id: str):
+    """Get appointment by ID"""
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    # Convert date string back to date object for response
+    if isinstance(appointment.get('appointment', {}).get('date'), str):
+        appointment['appointment']['date'] = datetime.fromisoformat(
+            appointment['appointment']['date']
+        ).date()
+    
+    # Convert datetime strings back to datetime objects
+    for field in ['created_at', 'updated_at', 'confirmed_at', 'cancelled_at']:
+        if appointment.get(field) and isinstance(appointment[field], str):
+            appointment[field] = datetime.fromisoformat(appointment[field])
+    
+    return appointment
+
+
+@api_router.patch("/appointments/{appointment_id}/cancel", response_model=Appointment)
+async def cancel_appointment(appointment_id: str):
+    """Cancel an appointment"""
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    if appointment.get('status') == 'cancelled':
+        raise HTTPException(status_code=400, detail="Appointment is already cancelled")
+    
+    # Update appointment
+    update_data = {
+        "status": "cancelled",
+        "cancelled_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.appointments.update_one(
+        {"id": appointment_id},
+        {"$set": update_data}
+    )
+    
+    # Get updated appointment
+    updated = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    
+    # Convert for response
+    if isinstance(updated.get('appointment', {}).get('date'), str):
+        updated['appointment']['date'] = datetime.fromisoformat(
+            updated['appointment']['date']
+        ).date()
+    
+    for field in ['created_at', 'updated_at', 'confirmed_at', 'cancelled_at']:
+        if updated.get(field) and isinstance(updated[field], str):
+            updated[field] = datetime.fromisoformat(updated[field])
+    
+    return updated
 
 # Include the router in the main app
 app.include_router(api_router)

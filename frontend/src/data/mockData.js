@@ -6,10 +6,8 @@ export const navLinks = [
     name: 'Visa Applications', 
     href: '#',
     dropdown: [
-      { name: 'Canada Visa', href: '/visa/canada' },
-      { name: 'Germany Visa', href: '/visa/germany' },
-      { name: 'USA Visa', href: '/visa/usa' },
-      { name: 'UK Visa', href: '/visa/uk' },
+      { name: 'Student Visa', href: '/visa/student' },
+      { name: 'Visitor Visa', href: '/visa/visitor' },
     ]
   },
   { name: 'Contact Us', href: '/contact' },
@@ -19,18 +17,73 @@ export const navLinks = [
 export const services = [
   {
     id: 1,
-    title: 'Air Ticketing Services',
-    href: '/services/air-ticketing'
+    title: 'Student Visa Application',
+    description: 'Comprehensive assistance for student visa applications to study abroad',
+    href: '/services/student-visa',
+    icon: 'graduation-cap'
   },
   {
     id: 2,
-    title: 'Admission Guidance',
-    href: '/services/admission'
+    title: 'Visitor Visa Application',
+    description: 'Expert guidance for tourist and visitor visa applications',
+    href: '/services/visitor-visa',
+    icon: 'passport'
   },
   {
     id: 3,
-    title: 'VISA Application Guidance',
-    href: '/services/visa'
+    title: 'Work Permit Application',
+    description: 'Professional support for work permit applications and documentation',
+    href: '/services/work-permit',
+    icon: 'briefcase'
+  },
+  {
+    id: 4,
+    title: 'Express Entry for Canada',
+    description: 'Complete Express Entry program guidance for Canadian immigration',
+    href: '/services/express-entry',
+    icon: 'map-pin'
+  },
+  {
+    id: 5,
+    title: 'University Admission Guidance',
+    description: 'Personalized assistance for university applications and admissions',
+    href: '/services/admission',
+    icon: 'book-open'
+  },
+  {
+    id: 6,
+    title: 'Air Ticketing Services',
+    description: 'Affordable flight bookings and travel arrangements worldwide',
+    href: '/services/air-ticketing',
+    icon: 'plane'
+  },
+  {
+    id: 7,
+    title: 'Document Preparation',
+    description: 'Professional help with visa and immigration document preparation',
+    href: '/services/document-preparation',
+    icon: 'file-text'
+  },
+  {
+    id: 8,
+    title: 'Immigration Consultation',
+    description: 'Expert immigration consultation and assessment services',
+    href: '/services/immigration-consultation',
+    icon: 'users'
+  },
+  {
+    id: 9,
+    title: 'Language Test Preparation',
+    description: 'Guidance for IELTS, TOEFL, and other language proficiency tests',
+    href: '/services/language-tests',
+    icon: 'languages'
+  },
+  {
+    id: 10,
+    title: 'Scholarship Applications',
+    description: 'Assistance with finding and applying for international scholarships',
+    href: '/services/scholarships',
+    icon: 'award'
   }
 ];
 
