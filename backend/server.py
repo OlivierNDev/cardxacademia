@@ -199,16 +199,29 @@ async def create_appointment(appointment_data: AppointmentCreate):
 async def get_available_slots(date_str: str, service_type: str, appointment_type: str = "in_person"):
     """Get available time slots for a given date"""
     try:
-        # Parse date
-        appointment_date = datetime.fromisoformat(date_str).date()
+        # Parse date with validation
+        try:
+            appointment_date = datetime.fromisoformat(date_str).date()
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+        
         date_str_iso = appointment_date.isoformat()
         
-        # Get all appointments for this date with error handling
+        # Get all appointments for this date with timeout and error handling
+        appointments = []
         try:
-            appointments = await db.appointments.find({
-                "appointment.date": date_str_iso,
-                "status": {"$in": ["pending", "confirmed"]}
-            }).to_list(1000)
+            # Use asyncio.wait_for to add timeout (5 seconds)
+            appointments = await asyncio.wait_for(
+                db.appointments.find({
+                    "appointment.date": date_str_iso,
+                    "status": {"$in": ["pending", "confirmed"]}
+                }).to_list(1000),
+                timeout=5.0
+            )
+        except asyncio.TimeoutError:
+            logger.error(f"❌ MongoDB query timeout for date {date_str_iso}")
+            # Return all slots as available if database timeout
+            appointments = []
         except Exception as e:
             logger.error(f"❌ MongoDB error getting appointments: {str(e)}")
             appointments = []  # Return empty list if database error
@@ -234,8 +247,8 @@ async def get_available_slots(date_str: str, service_type: str, appointment_type
             "available_count": len(available_slots)
         }
         
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error getting available slots: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to get available slots")
