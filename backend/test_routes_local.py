@@ -58,7 +58,10 @@ def main():
     test("pilgrimage-bookings GET (expect 405)", "GET", "/api/pilgrimage-bookings")
     
     print("\n=== If all return 200/201 (or 405 for GET pilgrimage), routes and backend are OK. ===")
-    print("If CONNECTION REFUSED: start backend with: cd backend && uvicorn server:app --reload --port 8000")
+    print("If CONNECTION REFUSED: start backend with:")
+    print("  cd backend")
+    print("  uvicorn server:app --reload --port 8000")
+    print("Swagger docs: http://localhost:8000/docs")
 
 if __name__ == "__main__":
     main()

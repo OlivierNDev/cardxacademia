@@ -543,6 +543,8 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
 @api_router.get("/pilgrimage-bookings/{booking_id}", response_model=PilgrimageBooking)
 async def get_pilgrimage_booking(booking_id: str):
     """Get pilgrimage booking by ID"""
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database connection unavailable. Please try again in a few moments.")
     booking = await db.pilgrimage_bookings.find_one({"id": booking_id}, {"_id": 0})
     
     if not booking:

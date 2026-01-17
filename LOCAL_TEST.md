@@ -24,9 +24,9 @@ You should see:
 
 ### 1.2 Run route test script
 
-In another terminal:
+In another terminal (PowerShell on Windows):
 
-```bash
+```powershell
 cd backend
 python test_routes_local.py
 ```
@@ -118,7 +118,16 @@ Check:
 - Browser / Postman: exact URL you call (and that it’s the Render backend, not a different host).
 - Render: service that serves `cardxacademia.onrender.com` is the **Python/FastAPI** one (from `render.yaml` / `uvicorn server:app`), not a Node/Express app.
 
-## 5. Checklist
+## 5. Swagger / OpenAPI
+
+FastAPI exposes interactive docs at:
+
+- Local: `http://localhost:8000/docs`
+- Render: `https://cardxacademia.onrender.com/docs`
+
+Use it to confirm `POST /api/pilgrimage-bookings` and `GET /api/appointments/available-slots` exist and to try requests.
+
+## 6. Checklist
 
 - [ ] Backend: `uvicorn server:app --reload --port 8000` runs without crash.
 - [ ] `GET /api/` and `GET /api/health` return 200 and JSON.
