@@ -87,6 +87,35 @@ class Appointment(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint to verify server and database connectivity"""
+    health_status = {
+        "status": "healthy",
+        "server": "running",
+        "database": "unknown",
+        "email_service": "unknown"
+    }
+    
+    # Check MongoDB connection
+    try:
+        await asyncio.wait_for(db.command("ping"), timeout=3.0)
+        health_status["database"] = "connected"
+    except asyncio.TimeoutError:
+        health_status["database"] = "timeout"
+        health_status["status"] = "degraded"
+    except Exception as e:
+        health_status["database"] = f"error: {str(e)}"
+        health_status["status"] = "degraded"
+    
+    # Check email service
+    if email_service.client:
+        health_status["email_service"] = "configured"
+    else:
+        health_status["email_service"] = "not_configured"
+    
+    return health_status
+
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
     status_dict = input.model_dump()
