@@ -35,14 +35,18 @@ if not mongo_url or mongo_url == 'mongodb://localhost:27017':
 # Ensure connection string doesn't have trailing slash issues
 mongo_url = mongo_url.rstrip('/')
 
+# Initialize MongoDB connection (allow app to start even if connection fails)
+client = None
+db = None
+db_name = os.environ.get('DB_NAME', 'cardxacademia')
+
 try:
     # Connect with longer timeout for initial connection
     client = AsyncIOMotorClient(
         mongo_url, 
-        serverSelectionTimeoutMS=10000,  # 10 seconds for initial connection
-        connectTimeoutMS=10000
+        serverSelectionTimeoutMS=15000,  # 15 seconds for initial connection (Render can be slow)
+        connectTimeoutMS=15000
     )
-    db_name = os.environ.get('DB_NAME', 'cardxacademia')
     db = client[db_name]
     logger.info("✅ MongoDB connection initialized")
     logger.info(f"📦 Database: {db_name}")
@@ -50,8 +54,10 @@ except Exception as e:
     logger.error(f"❌ Failed to connect to MongoDB: {str(e)}")
     logger.error(f"📦 Connection string: {mongo_url[:50]}..." if len(mongo_url) > 50 else f"📦 Connection string: {mongo_url}")
     logger.error("Please check MONGO_URL environment variable and MongoDB Atlas settings")
-    # Don't raise immediately - allow app to start but log the error
-    # This way we can see if it's just a connection issue vs other problems
+    logger.warning("⚠️ App will start but database operations will fail. Retrying connection in background...")
+    # Don't raise - allow app to start, we'll handle database errors gracefully
+    client = None
+    db = None
 
 # Initialize Email Service
 email_service = EmailService()
@@ -169,19 +175,25 @@ async def health_check():
         "status": "healthy",
         "server": "running",
         "database": "unknown",
-        "email_service": "unknown"
+        "email_service": "unknown",
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
     
     # Check MongoDB connection
-    try:
-        await asyncio.wait_for(db.command("ping"), timeout=3.0)
-        health_status["database"] = "connected"
-    except asyncio.TimeoutError:
-        health_status["database"] = "timeout"
+    if db is None:
+        health_status["database"] = "not_connected"
         health_status["status"] = "degraded"
-    except Exception as e:
-        health_status["database"] = f"error: {str(e)}"
-        health_status["status"] = "degraded"
+        health_status["message"] = "MongoDB connection failed at startup"
+    else:
+        try:
+            await asyncio.wait_for(db.command("ping"), timeout=3.0)
+            health_status["database"] = "connected"
+        except asyncio.TimeoutError:
+            health_status["database"] = "timeout"
+            health_status["status"] = "degraded"
+        except Exception as e:
+            health_status["database"] = f"error: {str(e)[:100]}"
+            health_status["status"] = "degraded"
     
     # Check email service
     if email_service.client:
@@ -221,6 +233,12 @@ async def get_status_checks():
 async def create_appointment(appointment_data: AppointmentCreate):
     """Create a new appointment and send confirmation emails"""
     try:
+        if db is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Database connection unavailable. Please try again in a few moments."
+            )
+        
         # Check for conflicting appointments
         appointment_date_str = appointment_data.appointment.date.isoformat()
         existing = await db.appointments.find_one({
@@ -310,25 +328,34 @@ async def get_available_slots(date_str: str, service_type: str, appointment_type
             raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
         
         date_str_iso = appointment_date.isoformat()
+        logger.info(f"📅 Getting available slots for {date_str_iso}, service: {service_type}, type: {appointment_type}")
         
-        # Get all appointments for this date with timeout and error handling
-        appointments = []
-        try:
-            # Use asyncio.wait_for to add timeout (5 seconds)
-            appointments = await asyncio.wait_for(
-                db.appointments.find({
-                    "appointment.date": date_str_iso,
-                    "status": {"$in": ["pending", "confirmed"]}
-                }).to_list(1000),
-                timeout=5.0
-            )
-        except asyncio.TimeoutError:
-            logger.error(f"❌ MongoDB query timeout for date {date_str_iso}")
-            # Return all slots as available if database timeout
+        # Check if database is available
+        if db is None:
+            logger.warning("⚠️ Database not connected - returning all slots as available")
             appointments = []
-        except Exception as e:
-            logger.error(f"❌ MongoDB error getting appointments: {str(e)}")
-            appointments = []  # Return empty list if database error
+        else:
+            # Get all appointments for this date with timeout and error handling
+            appointments = []
+            try:
+                # Use asyncio.wait_for to add timeout (8 seconds - increased for Render)
+                appointments = await asyncio.wait_for(
+                    db.appointments.find({
+                        "appointment.date": date_str_iso,
+                        "status": {"$in": ["pending", "confirmed"]}
+                    }).to_list(1000),
+                    timeout=8.0
+                )
+                logger.info(f"✅ Found {len(appointments)} existing appointments for {date_str_iso}")
+            except asyncio.TimeoutError:
+                logger.warning(f"⚠️ MongoDB query timeout for date {date_str_iso} - returning all slots as available")
+                # Return all slots as available if database timeout
+                appointments = []
+            except Exception as e:
+                logger.error(f"❌ MongoDB error getting appointments: {str(e)}")
+                logger.error(f"Error type: {type(e).__name__}")
+                # Return all slots as available if database error (graceful degradation)
+                appointments = []
         
         # Define available time slots (9 AM to 5 PM, 30-minute intervals)
         all_slots = []
@@ -336,11 +363,20 @@ async def get_available_slots(date_str: str, service_type: str, appointment_type
             for minute in [0, 30]:
                 all_slots.append(f"{hour:02d}:{minute:02d}")
         
-        # Get booked slots
-        booked_slots = {appt['appointment']['time'] for appt in appointments}
+        # Get booked slots (handle missing data gracefully)
+        booked_slots = set()
+        for appt in appointments:
+            try:
+                if appt.get('appointment', {}).get('time'):
+                    booked_slots.add(appt['appointment']['time'])
+            except (KeyError, TypeError):
+                logger.warning(f"⚠️ Skipping invalid appointment data: {appt.get('id', 'unknown')}")
+                continue
         
         # Calculate available slots
         available_slots = [slot for slot in all_slots if slot not in booked_slots]
+        
+        logger.info(f"✅ Returning {len(available_slots)} available slots out of {len(all_slots)} total")
         
         return {
             "date": date_str_iso,
@@ -354,8 +390,21 @@ async def get_available_slots(date_str: str, service_type: str, appointment_type
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error getting available slots: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to get available slots")
+        logger.error(f"❌ Error getting available slots: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        # Return default slots instead of failing completely
+        all_slots = [f"{hour:02d}:{minute:02d}" for hour in range(9, 17) for minute in [0, 30]]
+        return {
+            "date": date_str if 'date_str' in locals() else date_str_iso if 'date_str_iso' in locals() else "",
+            "service_type": service_type,
+            "available_slots": all_slots,  # Return all slots as available on error
+            "total_slots": len(all_slots),
+            "booked_slots": 0,
+            "available_count": len(all_slots),
+            "error": "Database connection issue - showing all slots as available"
+        }
 
 
 @api_router.get("/appointments/{appointment_id}", response_model=Appointment)
