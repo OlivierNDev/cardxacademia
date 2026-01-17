@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { testimonials } from '../data/mockData';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
@@ -28,12 +28,12 @@ const TestimonialsSection = () => {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-  const nextTextSlide = () => {
+  const nextTextSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setTextTestimonialIndex((prev) => (prev + 1) % textTestimonials.length);
     setTimeout(() => setIsAnimating(false), 500);
-  };
+  }, [isAnimating, textTestimonials.length]);
 
   const prevTextSlide = () => {
     if (isAnimating) return;
@@ -59,7 +59,7 @@ const TestimonialsSection = () => {
       const interval = setInterval(nextTextSlide, 5000);
       return () => clearInterval(interval);
     }
-  }, [textTestimonials.length]);
+  }, [textTestimonials.length, nextTextSlide]);
 
   return (
     <section className="py-20 bg-gray-50">

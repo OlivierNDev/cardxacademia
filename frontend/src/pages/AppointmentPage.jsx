@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,14 +72,7 @@ const AppointmentPage = () => {
     { value: 'general_inquiry', label: 'General Inquiry' },
   ];
 
-  // Load available slots when date or service type changes
-  useEffect(() => {
-    if (selectedDate && formData.serviceType) {
-      loadAvailableSlots();
-    }
-  }, [selectedDate, formData.serviceType]);
-
-  const loadAvailableSlots = async () => {
+  const loadAvailableSlots = useCallback(async () => {
     if (!selectedDate) return;
     
     setLoadingSlots(true);
@@ -116,7 +109,14 @@ const AppointmentPage = () => {
     } finally {
       setLoadingSlots(false);
     }
-  };
+  }, [selectedDate, formData.serviceType, formData.appointmentType, selectedTime]);
+
+  // Load available slots when date or service type changes
+  useEffect(() => {
+    if (selectedDate && formData.serviceType) {
+      loadAvailableSlots();
+    }
+  }, [selectedDate, formData.serviceType, loadAvailableSlots]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
