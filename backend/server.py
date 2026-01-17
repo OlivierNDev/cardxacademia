@@ -20,10 +20,25 @@ KIGALI_TZ = pytz.timezone('Africa/Kigali')
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Configure logging first (before using logger)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ.get('DB_NAME', 'cardxacademia')]
+if not mongo_url or mongo_url == 'mongodb://localhost:27017':
+    logger.warning("⚠️ MONGO_URL not set! Using default localhost. This will fail in production.")
+try:
+    client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
+    db = client[os.environ.get('DB_NAME', 'cardxacademia')]
+    logger.info("✅ MongoDB connection initialized")
+except Exception as e:
+    logger.error(f"❌ Failed to connect to MongoDB: {str(e)}")
+    logger.error("Please check MONGO_URL environment variable")
+    raise
 
 # Initialize Email Service
 email_service = EmailService()
@@ -483,12 +498,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Log startup info
+logger.info("🚀 Starting CardX Academia Backend Server")
+logger.info(f"📦 MongoDB URL: {'***' if mongo_url and 'mongodb+srv' in mongo_url else mongo_url if mongo_url else 'NOT SET'}")
+logger.info(f"📦 Database Name: {os.environ.get('DB_NAME', 'cardxacademia')}")
+logger.info(f"📦 CORS Origins: {os.environ.get('CORS_ORIGINS', '*')}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
