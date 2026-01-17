@@ -3,13 +3,45 @@ import axios from 'axios';
 // Backend API URL - use environment variable or default to localhost:8000
 const API_BASE_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
+// Log API URL in development (helps with debugging)
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔗 API Base URL:', API_BASE_URL);
+}
+
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 second timeout
+  timeout: 30000, // 30 second timeout (Render free tier can be slow)
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  (config) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('❌ API Error:', error.message);
+      console.error('📡 API URL:', error.config?.baseURL + error.config?.url);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const appointmentAPI = {
   // Create a new appointment

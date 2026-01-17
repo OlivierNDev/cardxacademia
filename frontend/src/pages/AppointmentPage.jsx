@@ -99,9 +99,11 @@ const AppointmentPage = () => {
       } else if (err.message) {
         errorMessage = err.message;
       } else if (err.code === 'ECONNABORTED') {
-        errorMessage = 'Request timed out. Please check your connection and try again.';
+        errorMessage = 'Request timed out. The backend server may be starting up (Render free tier can take 30-60 seconds). Please wait a moment and try again.';
       } else if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error')) {
-        errorMessage = 'Cannot connect to server. Please make sure the backend is running.';
+        errorMessage = 'Cannot connect to backend server. Please check if the backend is deployed and the API URL is configured correctly.';
+      } else if (err.message?.includes('localhost')) {
+        errorMessage = 'Backend API URL not configured. Please set REACT_APP_API_URL environment variable in Vercel.';
       }
       
       setError(errorMessage);
