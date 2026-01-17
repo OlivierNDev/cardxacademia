@@ -151,31 +151,58 @@ export const testimonials = [
     id: 2,
     country: 'Canada',
     name: 'Salomon Niyitanga',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    image: '', // No profile picture
     testimonial: 'I am beyond grateful to Cardx Academia and Travel Tours for helping me secure my Canadian student visa to study at Algonquin College and book my flight from Rwanda to Ottawa. Their expertise made the entire process smooth and stress free. From guiding me through the visa application to finding the best flight deal, their support was exceptional. I highly recommend their services to anyone looking for a seamless journey to study abroad.',
     type: 'video',
-    videoUrl: 'https://example.com/videos/salomon-testimonial.mp4', // Replace with actual video URL
-    thumbnail: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=700&fit=crop'
+    videoUrl: '/videos/salomon.mp4', // Local video file
+    thumbnail: '',
+    instagramEmbed: false
   },
   {
     id: 3,
     country: 'Canada',
     name: 'Olivier Niyiduhaye',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    image: '', // No profile picture
     testimonial: 'I am deeply thankful to Cardx Academia and Travel Tours for their outstanding support throughout my visa application process. With their guidance, I successfully secured my Canadian student visa and am now ready to begin my studies in Canada. Their team was incredibly helpful — from preparing my documents to following up with IRCC and ensuring every step went smoothly.',
     type: 'video',
-    videoUrl: 'https://example.com/videos/olivier-testimonial.mp4', // Replace with actual video URL
-    thumbnail: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=700&fit=crop'
+    videoUrl: '/videos/Olivier.mp4', // Local video file
+    thumbnail: '',
+    instagramEmbed: false
   },
   {
     id: 4,
     country: 'Israel',
     name: 'Christine Twambazimana',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    image: '', // No profile picture
     testimonial: 'Thanks to Cardx Academia and Travel Tours, I secured full scholarship to Reichman University in Israel and successfully obtained my student visa. Their guidance throughout the scholarship application and visa process was invaluable. I felt supported every step of the way, and I couldn\'t have done it without their expert assistance. I highly recommend them to anyone pursuing international education',
     type: 'video',
-    videoUrl: 'https://example.com/videos/christine-testimonial.mp4', // Replace with actual video URL
-    thumbnail: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=700&fit=crop'
+    videoUrl: '/videos/Christine.mp4', // Local video file
+    thumbnail: '',
+    instagramEmbed: false,
+    scholarship: true
+  },
+  {
+    id: 5,
+    country: 'Student Visa Success',
+    name: 'Theogene',
+    image: '', // No profile picture
+    testimonial: 'We are proud to announce another remarkable success from Cardx Academia. Our client, Theogene, has officially secured his student visa to pursue his higher education abroad. This milestone is a reflection of his commitment and our team\'s dedication to guiding students through every step of their study-abroad journey — from admissions and visa processing to pre-departure preparation. With our support, Theogene also received a scholarship to help fund his educational journey, making his dream of studying abroad a reality.',
+    type: 'video',
+    videoUrl: '/videos/Theogene.mp4', // Local video file
+    thumbnail: '', // Will use video poster
+    scholarship: true, // Indicates they received a scholarship
+    instagramEmbed: false // Using local video file
+  },
+  {
+    id: 6,
+    country: '',
+    name: 'Mukamisha',
+    image: '', // No profile picture
+    testimonial: '',
+    type: 'video',
+    videoUrl: '/videos/Mukamisha.mp4', // Local video file
+    thumbnail: '',
+    instagramEmbed: false
   }
 ];
 
