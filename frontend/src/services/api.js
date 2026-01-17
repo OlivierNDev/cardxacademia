@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Backend API URL - use environment variable or default to localhost:8000
-const API_BASE_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+// Strip trailing slash to avoid double slashes in paths
+const API_BASE_URL = (process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 // Log API URL in development (helps with debugging)
 if (process.env.NODE_ENV === 'development') {
@@ -98,7 +99,10 @@ export const pilgrimageAPI = {
       const response = await api.post('/api/pilgrimage-bookings', bookingData);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: error.message };
+      // Axios: error.response.data is FastAPI's JSON (e.g. {detail: "..."} or {detail: [{msg: "..."}]})
+      const data = error.response?.data;
+      if (data) throw data;
+      throw { detail: error.message || 'Network error. Please check your connection and try again.' };
     }
   },
 

@@ -206,7 +206,15 @@ const IsraelTourApplicationPage = () => {
       
     } catch (err) {
       console.error('Error submitting pilgrimage booking:', err);
-      const errorMessage = err?.detail || err?.message || err?.error || 'Failed to submit booking. Please try again.';
+      // FastAPI returns { detail: "msg" } or { detail: [{ loc: [], msg: "..." }] } for 422
+      let errorMessage = 'Failed to submit booking. Please try again.';
+      if (err?.detail) {
+        errorMessage = Array.isArray(err.detail) 
+          ? err.detail.map(d => d?.msg || JSON.stringify(d)).join('. ') 
+          : String(err.detail);
+      } else if (err?.message) {
+        errorMessage = err.message;
+      }
       setError(errorMessage);
     } finally {
       setSubmitting(false);

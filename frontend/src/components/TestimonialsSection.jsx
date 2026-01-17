@@ -3,7 +3,17 @@ import { Link } from 'react-router-dom';
 import { testimonials } from '../data/mockData';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 
+// Responsive: 1 on mobile, 2 on tablet, 3 on desktop
+const getSlidesPerView = () => {
+  if (typeof window === 'undefined') return 3;
+  const w = window.innerWidth;
+  if (w < 640) return 1;
+  if (w < 1024) return 2;
+  return 3;
+};
+
 const TestimonialsSection = () => {
+  const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView);
   const [videoSliderIndex, setVideoSliderIndex] = useState(0);
   const [textTestimonialIndex, setTextTestimonialIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -12,19 +22,35 @@ const TestimonialsSection = () => {
   const videoTestimonials = testimonials.filter(t => t.type === 'video');
   const textTestimonials = testimonials.filter(t => t.type === 'text');
 
+  const maxVideoSlides = Math.max(1, Math.ceil(videoTestimonials.length / slidesPerView));
+
+  // Update slidesPerView on resize
+  useEffect(() => {
+    const onResize = () => {
+      const next = getSlidesPerView();
+      setSlidesPerView((prev) => {
+        if (prev !== next) {
+          setVideoSliderIndex(0);
+          return next;
+        }
+        return prev;
+      });
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const nextVideoSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    const maxSlides = Math.ceil(videoTestimonials.length / 3);
-    setVideoSliderIndex((prev) => (prev + 1) % maxSlides);
+    setVideoSliderIndex((prev) => (prev + 1) % maxVideoSlides);
     setTimeout(() => setIsAnimating(false), 500);
   };
 
   const prevVideoSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    const maxSlides = Math.ceil(videoTestimonials.length / 3);
-    setVideoSliderIndex((prev) => (prev - 1 + maxSlides) % maxSlides);
+    setVideoSliderIndex((prev) => (prev - 1 + maxVideoSlides) % maxVideoSlides);
     setTimeout(() => setIsAnimating(false), 500);
   };
 
@@ -44,14 +70,13 @@ const TestimonialsSection = () => {
 
   // Auto-slide video testimonials
   useEffect(() => {
-    if (videoTestimonials.length > 3) {
+    if (videoTestimonials.length > slidesPerView) {
       const interval = setInterval(() => {
-        const maxSlides = Math.ceil(videoTestimonials.length / 3);
-        setVideoSliderIndex((prev) => (prev + 1) % maxSlides);
+        setVideoSliderIndex((prev) => (prev + 1) % maxVideoSlides);
       }, 5000);
       return () => clearInterval(interval);
     }
-  }, [videoTestimonials.length]);
+  }, [videoTestimonials.length, slidesPerView, maxVideoSlides]);
 
   // Auto-slide text testimonials
   useEffect(() => {
@@ -62,11 +87,11 @@ const TestimonialsSection = () => {
   }, [textTestimonials.length, nextTextSlide]);
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
             Our Clients' Journeys
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -74,26 +99,29 @@ const TestimonialsSection = () => {
           </p>
         </div>
 
-        {/* Video Testimonials Slider - Instagram Format */}
+        {/* Video Testimonials Slider - 1 on mobile, 2 tablet, 3 desktop */}
         {videoTestimonials.length > 0 && (
           <div className="mb-12">
-            <div className="relative max-w-6xl mx-auto">
+            <div className="relative max-w-6xl mx-auto px-0 sm:px-4">
               {/* Video Slider Container */}
               <div className="overflow-hidden rounded-lg">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${videoSliderIndex * (100 / Math.min(videoTestimonials.length, 3))}%)` }}
+                  style={{ 
+                    width: `${(videoTestimonials.length / slidesPerView) * 100}%`,
+                    transform: `translateX(-${videoSliderIndex * (slidesPerView / videoTestimonials.length) * 100}%)` 
+                  }}
                 >
                   {videoTestimonials.map((testimonial) => (
                     <div
                       key={testimonial.id}
-                      className="w-full flex-shrink-0 px-3"
-                      style={{ width: `${100 / Math.min(videoTestimonials.length, 3)}%` }}
+                      className="flex-shrink-0 px-2 sm:px-3"
+                      style={{ width: `${100 / videoTestimonials.length}%` }}
                     >
                       <div className="group">
                         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all">
-                          {/* Video Container - Instagram format (9:16) */}
-                          <div className="relative aspect-[9/16] bg-black">
+                          {/* Video: 9:16, max-h on mobile so it fits on phone screens */}
+                          <div className="relative aspect-[9/16] max-h-[50vh] sm:max-h-none bg-black w-full">
                             {testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4') ? (
                               <>
                                 <video
@@ -107,10 +135,10 @@ const TestimonialsSection = () => {
                                 {/* Play Overlay - Click to go to full page */}
                                 <Link
                                   to="/testimonials"
-                                  className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors"
+                                  className="absolute inset-0 flex items-center justify-center bg-black/20 sm:bg-black/30 transition-colors"
                                 >
-                                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Play size={24} className="text-gray-800 ml-1" />
+                                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/90 rounded-full flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                    <Play size={22} className="text-gray-800 ml-0.5 sm:ml-1" />
                                   </div>
                                 </Link>
                                 {/* Video badge */}
@@ -199,8 +227,8 @@ const TestimonialsSection = () => {
                                 )}
                               </div>
                             </div>
-                            {/* Full testimonial text - fully readable */}
-                            <p className="text-xs text-gray-600 leading-relaxed">
+                            {/* Testimonial text: line-clamp for equal card heights */}
+                            <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 min-h-[3.25rem]">
                               {testimonial.testimonial}
                             </p>
                           </div>
@@ -211,28 +239,28 @@ const TestimonialsSection = () => {
                 </div>
               </div>
 
-              {/* Navigation Arrows for Video Slider */}
-              {videoTestimonials.length > 3 && (
+              {/* Navigation Arrows - smaller on mobile, only when more than 1 page */}
+              {maxVideoSlides > 1 && (
                 <>
                   <button 
                     onClick={prevVideoSlide}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-6 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+                    className="absolute left-0 top-[45%] sm:top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
                   >
-                    <ChevronLeft size={24} />
+                    <ChevronLeft size={22} />
                   </button>
                   <button 
                     onClick={nextVideoSlide}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-6 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+                    className="absolute right-0 top-[45%] sm:top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
                   >
-                    <ChevronRight size={24} />
+                    <ChevronRight size={22} />
                   </button>
                 </>
               )}
 
               {/* Dots for Video Slider */}
-              {videoTestimonials.length > 3 && (
-                <div className="flex justify-center gap-2 mt-6">
-                  {Array.from({ length: Math.ceil(videoTestimonials.length / 3) }).map((_, index) => (
+              {maxVideoSlides > 1 && (
+                <div className="flex justify-center gap-1.5 sm:gap-2 mt-4 sm:mt-6">
+                  {Array.from({ length: maxVideoSlides }).map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setVideoSliderIndex(index)}
@@ -251,30 +279,30 @@ const TestimonialsSection = () => {
 
         {/* Text Testimonials Slider */}
         {textTestimonials.length > 0 && (
-          <div className="relative max-w-4xl mx-auto">
-            {/* Slider Container */}
-            <div className="bg-white rounded-lg shadow-md p-8 lg:p-12 overflow-hidden">
-              <div className="relative min-h-[300px]">
+          <div className="relative max-w-4xl mx-auto px-2 sm:px-4">
+            {/* Slider Container - responsive padding */}
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
+              <div className="relative min-h-[220px] sm:min-h-[260px] md:min-h-[300px]">
                 {textTestimonials.map((testimonial, index) => (
                   <div 
                     key={testimonial.id}
                     className={`transition-all duration-500 ${
                       index === textTestimonialIndex 
                         ? 'opacity-100 relative' 
-                        : 'opacity-0 absolute inset-0'
+                        : 'opacity-0 absolute inset-0 pointer-events-none'
                     }`}
                   >
-                    <div className="text-center">
-                      <h3 className="text-2xl font-bold text-blue-500 mb-6">
+                    <div className="text-center px-2 sm:px-0">
+                      <h3 className="text-xl sm:text-2xl font-bold text-blue-500 mb-3 sm:mb-6">
                         {testimonial.country}
                       </h3>
-                      <p className="text-gray-600 text-lg leading-relaxed mb-8 italic">
+                      <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-4 sm:mb-8 italic">
                         "{testimonial.testimonial}"
                       </p>
                       <div className="flex items-center justify-center">
                         <div className="text-center">
-                          <p className="font-bold text-gray-800">{testimonial.name}</p>
-                          <p className="text-blue-500">{testimonial.country}</p>
+                          <p className="font-bold text-gray-800 text-sm sm:text-base">{testimonial.name}</p>
+                          <p className="text-blue-500 text-sm">{testimonial.country}</p>
                           {testimonial.scholarship && (
                             <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-semibold">
                               Scholarship Awarded
@@ -288,22 +316,22 @@ const TestimonialsSection = () => {
               </div>
             </div>
 
-            {/* Navigation Arrows */}
+            {/* Navigation Arrows - responsive size */}
             <button 
               onClick={prevTextSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-6 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={22} />
             </button>
             <button 
               onClick={nextTextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-6 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={22} />
             </button>
 
             {/* Dots */}
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center gap-2 mt-4 sm:mt-8">
               {textTestimonials.map((_, index) => (
                 <button
                   key={index}
@@ -320,10 +348,10 @@ const TestimonialsSection = () => {
         )}
 
         {/* See All Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 sm:mt-12">
           <Link 
             to="/testimonials"
-            className="inline-block border-2 border-blue-500 text-blue-500 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500 hover:text-white transition-all"
+            className="inline-block border-2 border-blue-500 text-blue-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-500 hover:text-white transition-all"
           >
             View All Testimonials
           </Link>

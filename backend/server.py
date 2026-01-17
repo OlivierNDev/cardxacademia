@@ -473,6 +473,12 @@ async def cancel_appointment(appointment_id: str):
 async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
     """Create a new Israel Pilgrimage booking and send confirmation emails"""
     try:
+        if db is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Database connection unavailable. Please try again in a few moments."
+            )
+        
         # Create booking object
         booking = PilgrimageBooking(
             customer=booking_data.customer,
