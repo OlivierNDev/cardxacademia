@@ -25,7 +25,7 @@ services:
   # Frontend Static Site
   - type: static
     name: cardxacademia-frontend
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && NODE_OPTIONS="--max-old-space-size=4096" yarn install && NODE_OPTIONS="--max-old-space-size=4096" yarn build
     staticPublishPath: ./frontend/build
     # Note: date-fns has been downgraded to ^3.6.0 for react-day-picker compatibility
     envVars:
@@ -33,3 +33,5 @@ services:
         sync: false
       - key: NODE_VERSION
         value: 22.22.0
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=4096
