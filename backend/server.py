@@ -28,17 +28,30 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # MongoDB connection
-mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI') or 'mongodb://localhost:27017'
 if not mongo_url or mongo_url == 'mongodb://localhost:27017':
     logger.warning("⚠️ MONGO_URL not set! Using default localhost. This will fail in production.")
+
+# Ensure connection string doesn't have trailing slash issues
+mongo_url = mongo_url.rstrip('/')
+
 try:
-    client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
-    db = client[os.environ.get('DB_NAME', 'cardxacademia')]
+    # Connect with longer timeout for initial connection
+    client = AsyncIOMotorClient(
+        mongo_url, 
+        serverSelectionTimeoutMS=10000,  # 10 seconds for initial connection
+        connectTimeoutMS=10000
+    )
+    db_name = os.environ.get('DB_NAME', 'cardxacademia')
+    db = client[db_name]
     logger.info("✅ MongoDB connection initialized")
+    logger.info(f"📦 Database: {db_name}")
 except Exception as e:
     logger.error(f"❌ Failed to connect to MongoDB: {str(e)}")
-    logger.error("Please check MONGO_URL environment variable")
-    raise
+    logger.error(f"📦 Connection string: {mongo_url[:50]}..." if len(mongo_url) > 50 else f"📦 Connection string: {mongo_url}")
+    logger.error("Please check MONGO_URL environment variable and MongoDB Atlas settings")
+    # Don't raise immediately - allow app to start but log the error
+    # This way we can see if it's just a connection issue vs other problems
 
 # Initialize Email Service
 email_service = EmailService()
@@ -490,10 +503,14 @@ async def get_pilgrimage_booking(booking_id: str):
 # Include the router in the main app
 app.include_router(api_router)
 
+# CORS configuration - strip whitespace and trailing slashes
+cors_origins_str = os.environ.get('CORS_ORIGINS', '*')
+cors_origins = [origin.strip().rstrip('/') for origin in cors_origins_str.split(',')] if cors_origins_str != '*' else ['*']
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -502,7 +519,8 @@ app.add_middleware(
 logger.info("🚀 Starting CardX Academia Backend Server")
 logger.info(f"📦 MongoDB URL: {'***' if mongo_url and 'mongodb+srv' in mongo_url else mongo_url if mongo_url else 'NOT SET'}")
 logger.info(f"📦 Database Name: {os.environ.get('DB_NAME', 'cardxacademia')}")
-logger.info(f"📦 CORS Origins: {os.environ.get('CORS_ORIGINS', '*')}")
+logger.info(f"📦 CORS Origins: {cors_origins}")
+logger.info(f"📦 Python Version: {os.sys.version}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
