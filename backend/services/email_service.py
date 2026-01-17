@@ -34,7 +34,8 @@ class EmailService:
         to: str,
         subject: str,
         html_content: str,
-        reply_to: Optional[str] = None
+        reply_to: Optional[str] = None,
+        cc: Optional[list] = None
     ) -> bool:
         """Internal method to send email via Resend"""
         if not self.client:
@@ -55,6 +56,10 @@ class EmailService:
             
             if reply_to:
                 params["reply_to"] = reply_to
+            
+            if cc:
+                params["cc"] = cc
+                logger.info(f"Adding CC recipients: {', '.join(cc)}")
             
             logger.info(f"Attempting to send email to {to} with subject: {subject}")
             # Use the correct Resend API - Emails class
@@ -398,10 +403,14 @@ class EmailService:
         
         subject = f"New Appointment Booking - {customer_name} - {formatted_date}"
         
+        # CC recipients for admin notifications
+        cc_recipients = ['debonnairem@gmail.com', 'nmerveille50@gmail.com']
+        
         return self._send_email(
             to=self.admin_email,
             subject=subject,
-            html_content=html_content
+            html_content=html_content,
+            cc=cc_recipients
         )
     
     def send_pilgrimage_confirmation(self, booking_data: Dict) -> bool:
@@ -701,8 +710,12 @@ class EmailService:
         
         subject = f"New Israel Pilgrimage Booking - {customer_name} - {tour_dates}"
         
+        # CC recipients for admin notifications
+        cc_recipients = ['debonnairem@gmail.com', 'nmerveille50@gmail.com']
+        
         return self._send_email(
             to=self.admin_email,
             subject=subject,
-            html_content=html_content
+            html_content=html_content,
+            cc=cc_recipients
         )

@@ -77,8 +77,11 @@ const TestimonialsPage = () => {
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
                 Video Testimonials
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-2xl mx-auto mb-2">
                 Watch real stories from our clients who have successfully achieved their dreams with our support
+              </p>
+              <p className="text-sm text-gray-500">
+                Showing {videoTestimonials.length} video testimonials
               </p>
             </div>
 
@@ -224,8 +227,11 @@ const TestimonialsPage = () => {
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
                 Written Testimonials
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-2xl mx-auto mb-2">
                 Read about our clients' experiences in their own words
+              </p>
+              <p className="text-sm text-gray-500">
+                Showing {textTestimonials.length} testimonials
               </p>
             </div>
 
@@ -238,15 +244,15 @@ const TestimonialsPage = () => {
                   <p className="text-gray-600 leading-relaxed italic mb-4">
                     "{testimonial.testimonial}"
                   </p>
-                  <div>
-                    <p className="font-bold text-gray-800">{testimonial.name}</p>
-                    <p className="text-sm text-blue-500">{testimonial.country}</p>
-                    {testimonial.scholarship && (
-                      <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-semibold">
-                        Scholarship Awarded
-                      </span>
-                    )}
-                  </div>
+                    <div>
+                      <p className="font-bold text-gray-800">{testimonial.name}</p>
+                      <p className="text-sm text-blue-500">{testimonial.country}</p>
+                      {testimonial.scholarship && (
+                        <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-semibold">
+                          Scholarship Awarded
+                        </span>
+                      )}
+                    </div>
                 </div>
               ))}
             </div>
