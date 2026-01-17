@@ -21,12 +21,13 @@ export const appointmentAPI = {
   },
 
   // Get available time slots for a date
-  getAvailableSlots: async (date, serviceType) => {
+  getAvailableSlots: async (date, serviceType, appointmentType = 'in_person') => {
     try {
       const response = await api.get('/api/appointments/available-slots', {
         params: { 
           date_str: date, 
-          service_type: serviceType 
+          service_type: serviceType,
+          appointment_type: appointmentType
         },
       });
       return response.data;

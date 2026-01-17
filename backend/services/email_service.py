@@ -15,13 +15,19 @@ class EmailService:
     def __init__(self):
         self.api_key = os.environ.get('RESEND_API_KEY')
         self.from_email = os.environ.get('FROM_EMAIL', 'CardX Academia <noreply@cardxacademia.com>')
-        self.admin_email = os.environ.get('ADMIN_EMAIL', 'olivier.niyo250@gmail.com')
+        self.admin_email = os.environ.get('ADMIN_EMAIL')
+        
+        if not self.admin_email:
+            logger.warning("ADMIN_EMAIL not found in environment variables. Admin notifications will be disabled.")
         
         if not self.api_key:
             logger.warning("RESEND_API_KEY not found. Email service will be disabled.")
             self.client = None
         else:
-            self.client = Resend(api_key=self.api_key)
+            # Set API key for resend module
+            resend.api_key = self.api_key
+            # Initialize Emails client
+            self.client = Emails()
     
     def _send_email(
         self,
@@ -46,11 +52,20 @@ class EmailService:
             if reply_to:
                 params["reply_to"] = reply_to
             
-            email = self.client.Emails.send(params)
-            logger.info(f"Email sent successfully to {to}. Email ID: {email.get('id', 'unknown')}")
-            return True
+            logger.info(f"Attempting to send email to {to} with subject: {subject}")
+            email = self.client.send(params)
+            
+            if email and email.get('id'):
+                logger.info(f"✅ Email sent successfully to {to}. Email ID: {email.get('id')}")
+                return True
+            else:
+                logger.error(f"❌ Email send returned no ID. Response: {email}")
+                return False
         except Exception as e:
-            logger.error(f"Failed to send email to {to}: {str(e)}")
+            logger.error(f"❌ Failed to send email to {to}: {str(e)}")
+            logger.error(f"Error type: {type(e).__name__}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return False
     
     def send_appointment_confirmation(self, appointment_data: Dict) -> bool:
@@ -258,6 +273,10 @@ class EmailService:
     
     def send_admin_notification(self, appointment_data: Dict) -> bool:
         """Send notification email to admin about new appointment booking"""
+        if not self.admin_email:
+            logger.warning("ADMIN_EMAIL not configured. Skipping admin notification.")
+            return False
+            
         customer_name = appointment_data.get('customer', {}).get('name', 'Unknown')
         customer_email = appointment_data.get('customer', {}).get('email', 'Unknown')
         customer_phone = appointment_data.get('customer', {}).get('phone', 'Not provided')

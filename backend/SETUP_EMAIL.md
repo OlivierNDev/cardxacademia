@@ -17,7 +17,7 @@ DB_NAME=cardxacademia
 CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 
 # Resend Email Service
-RESEND_API_KEY=re_avH2qdHB_BdiasBpMqkKYJDhgax3SMHv1
+RESEND_API_KEY=your_resend_api_key_here
 FROM_EMAIL=CardX Academia <noreply@cardxacademia.com>
 ADMIN_EMAIL=info@cardxacademia.com
 ```

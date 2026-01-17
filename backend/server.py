@@ -150,24 +150,39 @@ async def create_appointment(appointment_data: AppointmentCreate):
         # Send emails
         email_sent = False
         try:
+            logger.info(f"📧 Starting email sending process for appointment {appointment.id}")
+            
             # Send confirmation to customer
+            logger.info(f"📧 Sending confirmation email to customer: {appointment_data.customer.email}")
             customer_email_sent = email_service.send_appointment_confirmation(doc)
             
             # Send notification to admin
+            logger.info(f"📧 Sending admin notification email")
             admin_email_sent = email_service.send_admin_notification(doc)
             
-            if customer_email_sent:
+            if customer_email_sent and admin_email_sent:
                 email_sent = True
                 # Update email_sent status
                 await db.appointments.update_one(
                     {"id": appointment.id},
                     {"$set": {"email_sent": True}}
                 )
-                logger.info(f"Confirmation emails sent for appointment {appointment.id}")
+                logger.info(f"✅ Both emails sent successfully for appointment {appointment.id}")
+            elif customer_email_sent:
+                email_sent = True
+                await db.appointments.update_one(
+                    {"id": appointment.id},
+                    {"$set": {"email_sent": True}}
+                )
+                logger.warning(f"⚠️ Customer email sent but admin email failed for appointment {appointment.id}")
+            elif admin_email_sent:
+                logger.warning(f"⚠️ Admin email sent but customer email failed for appointment {appointment.id}")
             else:
-                logger.warning(f"Failed to send emails for appointment {appointment.id}")
+                logger.error(f"❌ Both emails failed to send for appointment {appointment.id}")
         except Exception as e:
-            logger.error(f"Error sending emails for appointment {appointment.id}: {str(e)}")
+            logger.error(f"❌ Error sending emails for appointment {appointment.id}: {str(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
             # Don't fail the appointment creation if email fails
         
         return appointment

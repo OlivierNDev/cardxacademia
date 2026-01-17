@@ -36,19 +36,13 @@ const AppointmentPage = () => {
     phone: '',
     appointmentType: 'in_person',
     location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
-    worker: '',
+    worker: 'any',
     serviceType: 'visa_consultation',
     duration: 30,
     description: '',
   });
 
-  // Workers/Consultants list
-  const workers = [
-    'Olivier Niyo',
-    'Salomon Niyitanga',
-    'Lisa K.',
-    'Christine Twambazimana',
-  ];
+  // Workers/Consultants list - removed, using "Any Available Consultant" only
 
   // Service types
   const serviceTypes = [
@@ -73,7 +67,7 @@ const AppointmentPage = () => {
     setError(null);
     try {
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      const data = await appointmentAPI.getAvailableSlots(dateStr, formData.serviceType);
+      const data = await appointmentAPI.getAvailableSlots(dateStr, formData.serviceType, formData.appointmentType);
       setAvailableSlots(data.available_slots || []);
       
       // If selected time is no longer available, clear it
@@ -132,7 +126,7 @@ const AppointmentPage = () => {
           time: selectedTime,
           appointment_type: formData.appointmentType,
           location: formData.appointmentType === 'in_person' ? formData.location : null,
-          worker: formData.worker || null,
+          worker: formData.worker && formData.worker !== 'any' ? formData.worker : null,
           service_type: formData.serviceType,
           duration: formData.duration,
           notes: formData.description,
@@ -153,7 +147,7 @@ const AppointmentPage = () => {
         phone: '',
         appointmentType: 'in_person',
         location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
-        worker: '',
+        worker: 'any',
         serviceType: 'visa_consultation',
         duration: 30,
         description: '',
@@ -203,7 +197,7 @@ const AppointmentPage = () => {
               Your appointment has been confirmed. A confirmation email has been sent to your email address.
             </p>
             <p className="text-green-700 mb-2">
-              An admin notification has also been sent to <strong>olivier.niyo250@gmail.com</strong>.
+              Our team has been notified and will confirm your appointment shortly.
             </p>
             {appointmentId && (
               <p className="text-sm text-green-600 mb-4">Appointment ID: <strong>{appointmentId}</strong></p>
@@ -327,12 +321,7 @@ const AppointmentPage = () => {
                     <SelectValue placeholder="Select a consultant" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any Available Consultant</SelectItem>
-                    {workers.map((worker) => (
-                      <SelectItem key={worker} value={worker}>
-                        {worker}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="any">Any Available Consultant</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -462,13 +451,6 @@ const AppointmentPage = () => {
                       {formData.appointmentType === 'in_person' ? 'In-Person' : 'Virtual'}
                     </span>
                   </div>
-                  {formData.worker && (
-                    <div className="flex items-center gap-2">
-                      <User size={16} className="text-gray-400" />
-                      <span className="text-gray-600">Consultant:</span>
-                      <span className="font-medium">{formData.worker}</span>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex gap-3 mt-6">
@@ -496,7 +478,7 @@ const AppointmentPage = () => {
                         phone: '',
                         appointmentType: 'in_person',
                         location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
-                        worker: '',
+                        worker: 'any',
                         serviceType: 'visa_consultation',
                         duration: 30,
                         description: '',
