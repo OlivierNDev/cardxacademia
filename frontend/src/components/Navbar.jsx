@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, Search, Menu, X } from 'lucide-react';
 import { navLinks } from '../data/mockData';
+import SearchModal from './SearchModal';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,28 +72,25 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="lg:hidden p-2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile Menu Button and Search */}
+        <div className="lg:hidden flex items-center gap-2">
+          <button 
+            onClick={() => setSearchOpen(!searchOpen)}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <Search size={20} className="text-gray-600" />
+          </button>
+          <button 
+            className="p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
-      {/* Search Bar */}
-      {searchOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white shadow-lg p-4 z-40">
-          <div className="max-w-2xl mx-auto">
-            <input 
-              type="text"
-              placeholder="Search..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              autoFocus
-            />
-          </div>
-        </div>
-      )}
+      {/* Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile Menu */}
       {isOpen && (
