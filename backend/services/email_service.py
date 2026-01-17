@@ -5,7 +5,7 @@ Handles sending emails for appointments, confirmations, and notifications
 import os
 import logging
 from typing import Dict, Optional
-from resend import Resend
+import resend
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
