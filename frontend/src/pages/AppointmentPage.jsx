@@ -76,8 +76,9 @@ const AppointmentPage = () => {
       }
     } catch (err) {
       console.error('Error loading slots:', err);
+      console.error('Error details:', err.response || err.message);
+      setError(`Failed to load time slots: ${err.message || 'Please try again'}`);
       setAvailableSlots([]);
-      // Don't show error for slot loading, just show empty state
     } finally {
       setLoadingSlots(false);
     }
@@ -259,8 +260,8 @@ const AppointmentPage = () => {
                           onClick={() => setSelectedTime(slot)}
                           className={`p-2 text-sm rounded border transition-all ${
                             selectedTime === slot
-                              ? 'bg-teal-500 text-white border-teal-500'
-                              : 'bg-white border-gray-300 hover:border-teal-300 hover:bg-teal-50'
+                              ? 'bg-yellow-400 text-white border-yellow-400'
+                              : 'bg-white border-gray-300 hover:border-blue-300 hover:bg-blue-50'
                           }`}
                         >
                           {slot}
@@ -457,7 +458,7 @@ const AppointmentPage = () => {
                   <Button
                     type="submit"
                     disabled={submitting || !selectedDate || !selectedTime}
-                    className="flex-1 bg-teal-500 hover:bg-teal-600"
+                    className="flex-1 bg-yellow-400 hover:bg-yellow-500"
                   >
                     {submitting ? (
                       <>

@@ -4,12 +4,15 @@ export const navLinks = [
   { name: 'Services', href: '/services' },
   { 
     name: 'Visa Applications', 
-    href: '#',
+    href: '/visa',
     dropdown: [
+      { name: 'All Visa Types', href: '/visa' },
       { name: 'Student Visa', href: '/visa/student' },
+      { name: 'Work Visa', href: '/visa/work' },
       { name: 'Visitor Visa', href: '/visa/visitor' },
     ]
   },
+  { name: 'Israel Pilgrimage', href: '/israel-pilgrimage-2025' },
   { name: 'Contact Us', href: '/contact' },
   { name: 'About', href: '/about' },
 ];

@@ -195,18 +195,22 @@ async def create_appointment(appointment_data: AppointmentCreate):
 
 
 @api_router.get("/appointments/available-slots")
-async def get_available_slots(date_str: str, service_type: str):
+async def get_available_slots(date_str: str, service_type: str, appointment_type: str = "in_person"):
     """Get available time slots for a given date"""
     try:
         # Parse date
         appointment_date = datetime.fromisoformat(date_str).date()
         date_str_iso = appointment_date.isoformat()
         
-        # Get all appointments for this date
-        appointments = await db.appointments.find({
-            "appointment.date": date_str_iso,
-            "status": {"$in": ["pending", "confirmed"]}
-        }).to_list(1000)
+        # Get all appointments for this date with error handling
+        try:
+            appointments = await db.appointments.find({
+                "appointment.date": date_str_iso,
+                "status": {"$in": ["pending", "confirmed"]}
+            }).to_list(1000)
+        except Exception as e:
+            logger.error(f"❌ MongoDB error getting appointments: {str(e)}")
+            appointments = []  # Return empty list if database error
         
         # Define available time slots (9 AM to 5 PM, 30-minute intervals)
         all_slots = []

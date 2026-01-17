@@ -28,7 +28,7 @@ const HeroSection = () => {
             </p>
             <a 
               href="/application"
-              className="inline-block bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg hover:-translate-y-1"
+              className="inline-block bg-yellow-400 hover:bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg"
             >
               Apply Now
             </a>
@@ -41,12 +41,12 @@ const HeroSection = () => {
                 key={service.id}
                 className="bg-white/95 backdrop-blur-sm rounded-lg p-5 flex justify-between items-center group hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
               >
-                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-teal-500 transition-colors">
+                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-500 transition-colors">
                   {service.title}
                 </h3>
                 <a 
                   href={service.href}
-                  className="flex items-center gap-2 text-teal-500 font-medium group-hover:gap-3 transition-all"
+                  className="flex items-center gap-2 text-blue-500 font-medium group-hover:gap-3 transition-all"
                 >
                   Learn More
                   <ArrowRight size={18} />

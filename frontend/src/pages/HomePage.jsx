@@ -5,6 +5,7 @@ import HeroSection from '../components/HeroSection';
 import StatsSection from '../components/StatsSection';
 import WhyChooseUs from '../components/WhyChooseUs';
 import AirTicketSection from '../components/AirTicketSection';
+import IsraelPilgrimageBanner from '../components/IsraelPilgrimageBanner';
 import CTABanner from '../components/CTABanner';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ContactSection from '../components/ContactSection';
@@ -18,6 +19,7 @@ const HomePage = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <IsraelPilgrimageBanner />
         <StatsSection />
         <WhyChooseUs />
         <AirTicketSection />

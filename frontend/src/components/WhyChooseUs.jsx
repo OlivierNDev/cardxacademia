@@ -34,13 +34,13 @@ const WhyChooseUs = () => {
                 key={feature.id}
                 className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-2 group"
               >
-                <div className="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-teal-500 transition-colors">
+                <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors">
                   <IconComponent 
                     size={32} 
-                    className="text-teal-500 group-hover:text-white transition-colors" 
+                    className="text-blue-500 group-hover:text-white transition-colors" 
                   />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-500 transition-colors">
+                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-500 transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">

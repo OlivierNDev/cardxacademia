@@ -26,8 +26,8 @@ class EmailService:
         else:
             # Set API key for resend module
             resend.api_key = self.api_key
-            # Initialize Emails client
-            self.client = Emails()
+            # Use resend.emails module directly
+            self.client = resend.emails
     
     def _send_email(
         self,
@@ -41,6 +41,10 @@ class EmailService:
             logger.error("Email service not initialized. Check RESEND_API_KEY.")
             return False
         
+        # Ensure API key is set
+        if not resend.api_key:
+            resend.api_key = self.api_key
+        
         try:
             params = {
                 "from": self.from_email,
@@ -53,7 +57,8 @@ class EmailService:
                 params["reply_to"] = reply_to
             
             logger.info(f"Attempting to send email to {to} with subject: {subject}")
-            email = self.client.send(params)
+            # Use resend.emails.send() directly
+            email = resend.emails.send(params)
             
             if email and email.get('id'):
                 logger.info(f"✅ Email sent successfully to {to}. Email ID: {email.get('id')}")
