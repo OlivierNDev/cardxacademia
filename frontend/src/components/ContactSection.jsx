@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { contactInfo } from '../data/mockData';
 
 const ContactSection = () => {
@@ -28,7 +27,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-teal-50 to-white">
+    <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
@@ -40,30 +39,24 @@ const ContactSection = () => {
               If you have any enquires, email us using the form and we will get back.
             </p>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <a 
                 href={`mailto:${contactInfo.email}`}
-                className="flex items-center gap-4 text-teal-600 hover:text-teal-700 transition-colors group"
+                className="block text-blue-600 hover:text-blue-700 transition-colors p-3 border border-gray-200 rounded-lg hover:bg-blue-50"
               >
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
-                  <Mail size={20} className="group-hover:text-white" />
-                </div>
-                <span className="text-lg">{contactInfo.email}</span>
+                <span className="text-sm font-semibold text-gray-700">Email:</span>
+                <span className="text-lg ml-2">{contactInfo.email}</span>
               </a>
               <a 
                 href={`tel:${contactInfo.phone}`}
-                className="flex items-center gap-4 text-teal-600 hover:text-teal-700 transition-colors group"
+                className="block text-blue-600 hover:text-blue-700 transition-colors p-3 border border-gray-200 rounded-lg hover:bg-blue-50"
               >
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
-                  <Phone size={20} className="group-hover:text-white" />
-                </div>
-                <span className="text-lg">{contactInfo.phone}</span>
+                <span className="text-sm font-semibold text-gray-700">Phone:</span>
+                <span className="text-lg ml-2">{contactInfo.phone}</span>
               </a>
-              <div className="flex items-start gap-4 text-teal-600">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MapPin size={20} />
-                </div>
-                <span className="text-lg">{contactInfo.address}</span>
+              <div className="text-gray-600 p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-semibold text-gray-700">Address:</span>
+                <span className="text-lg ml-2">{contactInfo.address}</span>
               </div>
             </div>
           </div>
@@ -121,13 +114,9 @@ const ContactSection = () => {
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-teal-500 hover:bg-teal-600 text-white py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-wide"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? (
-                  <span className="animate-pulse">Sending...</span>
-                ) : (
-                  <>Submit<Send size={20} /></>
-                )}
+                {isSubmitting ? 'Sending...' : 'Submit'}
               </button>
             </form>
           </div>

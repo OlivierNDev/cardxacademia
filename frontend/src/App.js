@@ -13,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import IsraelPilgrimagePage from "./pages/IsraelPilgrimagePage";
 import IsraelTourApplicationPage from "./pages/IsraelTourApplicationPage";
 import ApplicationSubmittedPage from "./pages/ApplicationSubmittedPage";
+import TestimonialsPage from "./pages/TestimonialsPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/israel-pilgrimage-2025" element={<IsraelPilgrimagePage />} />
           <Route path="/apply-israel-tour" element={<IsraelTourApplicationPage />} />
           <Route path="/application-submitted" element={<ApplicationSubmittedPage />} />
+          <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </BrowserRouter>

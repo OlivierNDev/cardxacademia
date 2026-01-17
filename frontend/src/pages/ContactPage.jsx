@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -7,13 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send,
-  Clock
-} from 'lucide-react';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +18,25 @@ const ContactPage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef(null);
+
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, []);
+
+  // Scroll to success message when form is submitted
+  useEffect(() => {
+    if (submitted && formRef.current) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [submitted]);
 
   const handleChange = (e) => {
     setFormData({
@@ -49,6 +61,12 @@ const ContactPage = () => {
         message: ''
       });
       
+      // Scroll to top to show success message
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitted(false), 5000);
     }, 1000);
@@ -56,42 +74,32 @@ const ContactPage = () => {
 
   const contactInfo = [
     {
-      icon: Mail,
       title: 'Email',
       value: 'info@cardxacademia.com',
-      link: 'mailto:info@cardxacademia.com',
-      color: 'bg-blue-50 text-blue-500'
+      link: 'mailto:info@cardxacademia.com'
     },
     {
-      icon: Phone,
       title: 'Phone',
       value: '+250 787 420 838',
       link: 'tel:+250787420838',
-      country: '🇷🇼',
-      color: 'bg-yellow-50 text-yellow-500'
+      country: '🇷🇼'
     },
     {
-      icon: Phone,
       title: 'Phone',
       value: '+1 (343) 999-2932',
       link: 'tel:+13439992932',
-      country: '🇨🇦',
-      color: 'bg-yellow-50 text-yellow-500'
+      country: '🇨🇦'
     },
     {
-      icon: Phone,
       title: 'Phone',
       value: '+972 53-481-0764',
       link: 'tel:+972534810764',
-      country: '🇮🇱',
-      color: 'bg-yellow-50 text-yellow-500'
+      country: '🇮🇱'
     },
     {
-      icon: MapPin,
       title: 'Address',
       value: 'Town Center Building (TCB), 1st Floor, Door F1B-013D, Kigali City',
-      link: '#',
-      color: 'bg-blue-50 text-blue-500'
+      link: '#'
     }
   ];
 
@@ -126,35 +134,24 @@ const ContactPage = () => {
               </p>
 
               <div className="space-y-4 mb-8">
-                {contactInfo.map((info, index) => {
-                  const IconComponent = info.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={info.link}
-                      className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
-                    >
-                      <div className={`w-12 h-12 ${info.color} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                        <IconComponent size={20} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-800 mb-1">{info.title}</h3>
-                        <p className="text-gray-600 flex items-center gap-2">
-                          {info.country && <span>{info.country}</span>}
-                          <span>{info.value}</span>
-                        </p>
-                      </div>
-                    </a>
-                  );
-                })}
+                {contactInfo.map((info, index) => (
+                  <a
+                    key={index}
+                    href={info.link}
+                    className="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-100"
+                  >
+                    <h3 className="font-semibold text-gray-800 mb-1">{info.title}</h3>
+                    <p className="text-gray-600 flex items-center gap-2">
+                      {info.country && <span>{info.country}</span>}
+                      <span>{info.value}</span>
+                    </p>
+                  </a>
+                ))}
               </div>
 
               {/* Office Hours */}
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <Clock className="text-blue-500" size={24} />
-                  <h3 className="text-xl font-bold text-gray-800">Office Hours</h3>
-                </div>
+              <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Office Hours</h3>
                 <div className="space-y-2 text-gray-600">
                   <p><span className="font-semibold">Monday - Friday:</span> 9:00 AM - 5:00 PM</p>
                   <p><span className="font-semibold">Saturday:</span> 9:00 AM - 1:00 PM</p>
@@ -164,7 +161,7 @@ const ContactPage = () => {
             </div>
 
             {/* Contact Form */}
-            <div>
+            <div ref={formRef}>
               <h2 className="text-3xl font-bold text-gray-800 mb-6">
                 Send us a Message
               </h2>
@@ -250,16 +247,9 @@ const ContactPage = () => {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-6 text-lg"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-6 text-lg"
                 >
-                  {submitting ? (
-                    <>Sending...</>
-                  ) : (
-                    <>
-                      <Send size={20} className="mr-2" />
-                      Send Message
-                    </>
-                  )}
+                  {submitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </form>
             </div>
@@ -275,8 +265,7 @@ const ContactPage = () => {
           </h2>
           <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
             <div className="text-center">
-              <MapPin className="mx-auto text-gray-400 mb-2" size={48} />
-              <p className="text-gray-600 font-medium">
+              <p className="text-gray-600 font-medium mb-1">
                 Town Center Building (TCB)
               </p>
               <p className="text-gray-500 text-sm">

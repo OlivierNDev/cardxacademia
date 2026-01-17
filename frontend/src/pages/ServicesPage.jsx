@@ -3,20 +3,6 @@ import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
-import { 
-  GraduationCap, 
-  School, 
-  FileText, 
-  Briefcase, 
-  UserCheck, 
-  ClipboardCheck,
-  Plane,
-  Award,
-  Globe,
-  Mail,
-  MapPin,
-  Car
-} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -24,73 +10,61 @@ const services = [
   {
     id: 1,
     title: 'Assistance with Studying and Working Abroad',
-    icon: GraduationCap,
     description: 'Comprehensive support for students and professionals seeking opportunities to study and work internationally.'
   },
   {
     id: 2,
     title: 'University Selection Support',
-    icon: School,
     description: 'Expert guidance to help you choose the right university that matches your academic goals and career aspirations.'
   },
   {
     id: 3,
     title: 'Guidance on University Application Processes',
-    icon: FileText,
     description: 'Step-by-step assistance through the entire university application process, ensuring all requirements are met.'
   },
   {
     id: 4,
     title: 'Career Advisory Services',
-    icon: Briefcase,
     description: 'Professional career counseling to help you make informed decisions about your future career path.'
   },
   {
     id: 5,
     title: 'Admission Consulting',
-    icon: UserCheck,
     description: 'Personalized admission consulting services to maximize your chances of acceptance to top universities.'
   },
   {
     id: 6,
     title: 'University/College Offer and Admission Management',
-    icon: ClipboardCheck,
     description: 'Complete management of your university offers and admissions, from acceptance to enrollment.'
   },
   {
     id: 7,
     title: 'Visa Application Support',
-    icon: Plane,
     description: 'Expert assistance with visa applications, documentation, and follow-up to ensure successful approval.'
   },
   {
     id: 8,
     title: 'Help Finding Partial and Full Scholarships',
-    icon: Award,
     description: 'Comprehensive scholarship search and application support to help you secure funding for your education.'
   },
   {
     id: 9,
     title: 'Application Assistance for International Conferences',
-    icon: Globe,
     description: 'Support with applications for international conferences, workshops, and academic events.'
   },
   {
     id: 10,
     title: 'Support with Application for Invitation Letters',
-    icon: Mail,
     description: 'Assistance in obtaining invitation letters required for visa applications and travel purposes.'
   },
   {
     id: 11,
     title: 'Travel Arrangements Including Flight Booking',
-    icon: MapPin,
     description: 'Complete travel arrangement services including affordable flight bookings and itinerary planning.'
   },
   {
     id: 12,
     title: 'Airport Pickup Services',
-    icon: Car,
     description: 'Reliable airport pickup and transfer services to ensure a smooth arrival at your destination.'
   }
 ];
@@ -116,52 +90,48 @@ const ServicesPage = () => {
       {/* Services Grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => {
-              const IconComponent = service.icon;
-              return (
-                <div 
-                  key={service.id}
-                  className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-2 group border border-gray-100"
-                >
-                  <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors">
-                    <IconComponent 
-                      size={32} 
-                      className="text-blue-500 group-hover:text-white transition-colors" 
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-500 transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service) => (
+              <div 
+                key={service.id}
+                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <h3 className="text-lg font-bold text-gray-800 mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-sm">
+                  {service.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Israel Pilgrimage Banner */}
-      <section className="py-12 bg-gradient-to-r from-yellow-400 to-yellow-500">
+      <section className="py-12 bg-gradient-to-r from-blue-50 to-orange-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border-2 border-white/20">
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-blue-100">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  🌍 Special Tour: Holy Land Pilgrimage to Israel
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+                    Special Tour
+                  </span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  Holy Land Pilgrimage to Israel
                 </h3>
-                <p className="text-white/90 mb-3">
-                  December 30, 2025 – January 14, 2026 • $2,900 USD
+                <p className="text-gray-600 mb-3">
+                  March 29 - April 5, 2026 • $2,900 USD
                 </p>
-                <p className="text-white/90 text-sm">
+                <p className="text-gray-600 text-sm">
                   A spiritual journey through the land of the Bible. Walk where Jesus walked.
                 </p>
               </div>
               <div className="flex gap-3">
                 <Link to="/israel-pilgrimage-2025">
-                  <Button className="bg-white text-yellow-500 hover:bg-gray-100">
+                  <Button className="bg-white border-2 border-blue-500 text-blue-500 hover:bg-blue-50">
                     Learn More
                   </Button>
                 </Link>

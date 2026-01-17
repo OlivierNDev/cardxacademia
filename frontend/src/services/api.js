@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// Use relative URLs for development (proxy will handle routing)
-// Use REACT_APP_BACKEND_URL for production
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || '';
+// Backend API URL - use environment variable or default to localhost:8000
+const API_BASE_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -53,6 +52,28 @@ export const appointmentAPI = {
   cancelAppointment: async (appointmentId) => {
     try {
       const response = await api.patch(`/api/appointments/${appointmentId}/cancel`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: error.message };
+    }
+  },
+};
+
+export const pilgrimageAPI = {
+  // Create a new pilgrimage booking
+  createPilgrimageBooking: async (bookingData) => {
+    try {
+      const response = await api.post('/api/pilgrimage-bookings', bookingData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: error.message };
+    }
+  },
+
+  // Get pilgrimage booking by ID
+  getPilgrimageBooking: async (bookingId) => {
+    try {
+      const response = await api.get(`/api/pilgrimage-bookings/${bookingId}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: error.message };

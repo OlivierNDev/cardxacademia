@@ -6,14 +6,6 @@ import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import { Button } from '@/components/ui/button';
 import { 
-  GraduationCap, 
-  Briefcase, 
-  Plane, 
-  Users, 
-  Heart,
-  Building2,
-  Globe,
-  FileCheck,
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
@@ -22,7 +14,6 @@ const visaTypes = [
   {
     id: 'student',
     title: 'Student Visa',
-    icon: GraduationCap,
     description: 'Comprehensive assistance for student visa applications to study abroad at universities, colleges, and educational institutions worldwide.',
     href: '/visa/student',
     features: [
@@ -37,7 +28,6 @@ const visaTypes = [
   {
     id: 'work',
     title: 'Work Visa / Work Permit',
-    icon: Briefcase,
     description: 'Professional support for work visa and work permit applications, helping you secure employment opportunities abroad.',
     href: '/visa/work',
     features: [
@@ -52,7 +42,6 @@ const visaTypes = [
   {
     id: 'visitor',
     title: 'Visitor / Tourist Visa',
-    icon: Plane,
     description: 'Expert guidance for tourist and visitor visa applications for short-term travel, tourism, and family visits.',
     href: '/visa/visitor',
     features: [
@@ -67,7 +56,6 @@ const visaTypes = [
   {
     id: 'business',
     title: 'Business Visa',
-    icon: Building2,
     description: 'Assistance with business visa applications for business meetings, conferences, and commercial activities.',
     href: '/visa/business',
     features: [
@@ -82,7 +70,6 @@ const visaTypes = [
   {
     id: 'family',
     title: 'Family / Spouse Visa',
-    icon: Heart,
     description: 'Support for family reunification visas, spouse visas, and dependent visas to join family members abroad.',
     href: '/visa/family',
     features: [
@@ -97,7 +84,6 @@ const visaTypes = [
   {
     id: 'permanent',
     title: 'Permanent Residence',
-    icon: Globe,
     description: 'Comprehensive guidance for permanent residence applications, including Express Entry, skilled worker programs, and immigration pathways.',
     href: '/visa/permanent',
     features: [
@@ -112,7 +98,6 @@ const visaTypes = [
   {
     id: 'transit',
     title: 'Transit Visa',
-    icon: FileCheck,
     description: 'Assistance with transit visa applications for travelers passing through countries on their way to final destinations.',
     href: '/visa/transit',
     features: [
@@ -127,7 +112,6 @@ const visaTypes = [
   {
     id: 'express-entry',
     title: 'Express Entry (Canada)',
-    icon: CheckCircle2,
     description: 'Complete Express Entry program guidance for Canadian immigration through Federal Skilled Worker, Federal Skilled Trades, and Canadian Experience Class programs.',
     href: '/visa/express-entry',
     features: [
@@ -148,12 +132,12 @@ const VisaPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-16">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Visa Application Services
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Comprehensive visa support for all types of applications. We handle student visas, work permits, visitor visas, and more.
           </p>
         </div>
@@ -179,67 +163,57 @@ const VisaPage = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Our Visa Services
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visaTypes.map((visa) => {
-              const IconComponent = visa.icon;
-              return (
-                <div 
-                  key={visa.id}
-                  className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-2 group border border-gray-100"
-                >
-                  <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors">
-                    <IconComponent 
-                      size={32} 
-                      className="text-blue-500 group-hover:text-white transition-colors" 
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-500 transition-colors">
-                    {visa.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-4">
-                    {visa.description}
-                  </p>
-                  
-                  {/* Features */}
-                  <div className="mb-4">
-                    <p className="text-sm font-semibold text-gray-700 mb-2">What We Offer:</p>
-                    <ul className="space-y-1 mb-4">
-                      {visa.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="text-sm text-gray-600 flex items-center gap-2">
-                          <CheckCircle2 size={14} className="text-blue-500 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Popular Countries */}
-                  <div className="mb-4">
-                    <p className="text-xs font-semibold text-gray-500 mb-1">Popular Destinations:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {visa.popularCountries.slice(0, 3).map((country, idx) => (
-                        <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                          {country}
-                        </span>
-                      ))}
-                      {visa.popularCountries.length > 3 && (
-                        <span className="text-xs text-gray-500">+{visa.popularCountries.length - 3} more</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <Link to={visa.href}>
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-4 group-hover:bg-yellow-400 group-hover:text-white group-hover:border-yellow-400 transition-colors"
-                    >
-                      Learn More
-                      <ArrowRight size={16} className="ml-2" />
-                    </Button>
-                  </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visaTypes.map((visa) => (
+              <div 
+                key={visa.id}
+                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <h3 className="text-lg font-bold text-gray-800 mb-3">
+                  {visa.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed mb-4 text-sm">
+                  {visa.description}
+                </p>
+                
+                {/* Features */}
+                <div className="mb-4">
+                  <p className="text-xs font-semibold text-gray-700 mb-2">What We Offer:</p>
+                  <ul className="space-y-1 mb-4">
+                    {visa.features.slice(0, 3).map((feature, idx) => (
+                      <li key={idx} className="text-xs text-gray-600">
+                        • {feature}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              );
-            })}
+
+                {/* Popular Countries */}
+                <div className="mb-4">
+                  <p className="text-xs font-semibold text-gray-500 mb-1">Popular Destinations:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {visa.popularCountries.slice(0, 3).map((country, idx) => (
+                      <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        {country}
+                      </span>
+                    ))}
+                    {visa.popularCountries.length > 3 && (
+                      <span className="text-xs text-gray-500">+{visa.popularCountries.length - 3} more</span>
+                    )}
+                  </div>
+                </div>
+
+                <Link to={visa.href}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-4 border-blue-500 text-blue-500 hover:bg-blue-50"
+                  >
+                    Learn More
+                    <ArrowRight size={16} className="ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
@@ -23,11 +23,25 @@ import {
   Calendar,
   Send,
   FileText,
-  Building2
+  Building2,
+  Loader2,
+  CheckCircle2,
+  XCircle
 } from 'lucide-react';
+import { pilgrimageAPI } from '@/services/api';
 
 const IsraelTourApplicationPage = () => {
   const navigate = useNavigate();
+  
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, []);
+
   const [formData, setFormData] = useState({
     // Personal Information
     fullName: '',
@@ -68,6 +82,9 @@ const IsraelTourApplicationPage = () => {
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+  const [bookingId, setBookingId] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -105,7 +122,7 @@ const IsraelTourApplicationPage = () => {
     const requiredFields = [
       'fullName', 'dateOfBirth', 'gender', 'nationality', 'passportNumber',
       'passportExpiryDate', 'email', 'phone', 'address', 'city', 'country',
-      'churchName', 'emergencyContactName', 'emergencyContactPhone'
+      'emergencyContactName', 'emergencyContactPhone'
     ];
 
     requiredFields.forEach(field => {
@@ -136,15 +153,64 @@ const IsraelTourApplicationPage = () => {
     }
 
     setSubmitting(true);
+    setError(null);
 
-    // Store form data in sessionStorage to pass to confirmation page
-    sessionStorage.setItem('israelTourApplication', JSON.stringify(formData));
+    try {
+      // Prepare booking data for API
+      const bookingData = {
+        customer: {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth || null,
+          gender: formData.gender || null,
+          nationality: formData.nationality || null,
+          passportNumber: formData.passportNumber || null,
+          passportExpiryDate: formData.passportExpiryDate || null,
+          address: formData.address || null,
+          city: formData.city || null,
+          country: formData.country || null,
+          alternatePhone: formData.alternatePhone || null,
+        },
+        booking: {
+          tourDates: "March 29, 2026 – April 5, 2026",
+          tourCost: "USD $2,900",
+          churchName: formData.churchName || null,
+          churchAddress: formData.churchAddress || null,
+          pastorName: formData.pastorName || null,
+          pastorPhone: formData.pastorPhone || null,
+          membershipYears: formData.membershipYears || null,
+          previousTravel: formData.previousTravel || null,
+          medicalConditions: formData.medicalConditions || null,
+          dietaryRequirements: formData.dietaryRequirements || null,
+          emergencyContactName: formData.emergencyContactName || null,
+          emergencyContactPhone: formData.emergencyContactPhone || null,
+          emergencyContactRelationship: formData.emergencyContactRelationship || null,
+          specialRequests: formData.specialRequests || null,
+          howDidYouHear: formData.howDidYouHear || null,
+        }
+      };
 
-    // Simulate form submission
-    setTimeout(() => {
+      // Submit to backend
+      const result = await pilgrimageAPI.createPilgrimageBooking(bookingData);
+      
+      setBookingId(result.id);
+      setSubmitted(true);
+      
+      // Scroll to top
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+      
+    } catch (err) {
+      console.error('Error submitting pilgrimage booking:', err);
+      const errorMessage = err?.detail || err?.message || err?.error || 'Failed to submit booking. Please try again.';
+      setError(errorMessage);
+    } finally {
       setSubmitting(false);
-      navigate('/application-submitted');
-    }, 1500);
+    }
   };
 
   return (
@@ -153,26 +219,166 @@ const IsraelTourApplicationPage = () => {
       <Navbar />
       
       {/* Header */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-12">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
             Holy Land Pilgrimage Application
           </h1>
-          <p className="text-white/90 text-lg">
-            December 30, 2025 – January 14, 2026
+          <p className="text-gray-600 text-lg">
+            March 29, 2026 – April 5, 2026
+          </p>
+          <p className="text-gray-500 text-sm mt-2">
+            Registration Deadline: March 15, 2026
           </p>
         </div>
       </section>
 
-      {/* Application Form */}
-      <section className="py-12">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-white rounded-lg shadow-sm p-8 mb-6">
-            <p className="text-gray-600 mb-6">
-              Please fill out all required fields. Registration deadline: <strong>December 12, 2025</strong>
-            </p>
+      {/* Success Message */}
+      {submitted && (
+        <section className="py-8">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <CheckCircle2 className="text-green-600" size={28} />
+                <h3 className="text-2xl font-semibold text-green-800">✅ Booking Submitted Successfully</h3>
+              </div>
+              
+              <div className="space-y-4 text-green-800">
+                <p className="text-lg">
+                  Thank you for registering for the Israel Pilgrimage Travel Program.
+                </p>
+                <p>
+                  Your booking has been successfully submitted and is currently under review.
+                  Our team will verify your details and contact you shortly with the next steps.
+                </p>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="mt-6 pt-6 border-t border-green-300">
+                  <h4 className="text-xl font-bold text-green-900 mb-4">💳 Payment Options</h4>
+                  <p className="mb-4">You may complete your payment using any of the options below:</p>
+                  
+                  <div className="bg-white rounded-lg p-5 mb-4 border border-green-200">
+                    <h5 className="font-bold text-green-900 mb-2">Option 1: Bank Transfer</h5>
+                    <div className="space-y-1 text-sm">
+                      <p><span className="font-semibold">Account Name:</span> Cardx Academia</p>
+                      <p><span className="font-semibold">Account Number:</span> XXXXXXXXXX</p>
+                      <p><span className="font-semibold">Bank Name:</span> [Bank Name]</p>
+                      <p><span className="font-semibold">Reference:</span> Your Full Name – Israel Pilgrimage</p>
+                    </div>
+                    <p className="mt-3 text-sm">
+                      After payment, please email your proof of payment to<br />
+                      <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                        📧 info@cardxacademia.com
+                      </a>
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-5 border border-green-200">
+                    <h5 className="font-bold text-green-900 mb-2">Option 2: Office Payment</h5>
+                    <p className="text-sm">
+                      You may also bring your payment directly to our office.<br />
+                      Please come with your booking confirmation details.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-green-300">
+                  <p className="mb-2">
+                    If you have any questions or need assistance, feel free to contact us at
+                  </p>
+                  <p>
+                    <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                      📧 info@cardxacademia.com
+                    </a>
+                  </p>
+                </div>
+
+                <p className="mt-6 text-lg font-medium">
+                  We look forward to accompanying you on this meaningful journey.
+                </p>
+                <p className="text-right text-green-700 font-semibold">
+                  — Cardx Academia Team
+                </p>
+              </div>
+
+              {bookingId && (
+                <div className="mt-6 pt-4 border-t border-green-300">
+                  <p className="text-sm text-green-600">Booking ID: <strong className="font-mono">{bookingId}</strong></p>
+                </div>
+              )}
+
+              <div className="mt-6">
+                <Button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setBookingId(null);
+                    setError(null);
+                    // Reset form
+                    setFormData({
+                      fullName: '',
+                      dateOfBirth: '',
+                      gender: '',
+                      nationality: '',
+                      passportNumber: '',
+                      passportIssueDate: '',
+                      passportExpiryDate: '',
+                      placeOfBirth: '',
+                      email: '',
+                      phone: '',
+                      alternatePhone: '',
+                      address: '',
+                      city: '',
+                      country: '',
+                      churchName: '',
+                      churchAddress: '',
+                      pastorName: '',
+                      pastorPhone: '',
+                      membershipYears: '',
+                      previousTravel: '',
+                      medicalConditions: '',
+                      dietaryRequirements: '',
+                      emergencyContactName: '',
+                      emergencyContactPhone: '',
+                      emergencyContactRelationship: '',
+                      specialRequests: '',
+                      howDidYouHear: ''
+                    });
+                  }}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Submit Another Booking
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Error Message */}
+      {error && !submitted && (
+        <section className="py-8">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <XCircle className="text-red-600" size={24} />
+                <h3 className="text-lg font-semibold text-red-800">Error</h3>
+              </div>
+              <p className="text-red-700">{error}</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Application Form */}
+      {!submitted && (
+        <section className="py-12">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="bg-white rounded-lg shadow-sm p-8 mb-6">
+              <p className="text-gray-600 mb-6">
+                Please fill out all required fields. Registration deadline: <strong>March 15, 2026</strong>
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-8">
               {/* Personal Information */}
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
@@ -370,25 +576,23 @@ const IsraelTourApplicationPage = () => {
                 </div>
               </div>
 
-              {/* Church Information */}
+              {/* Church Information (Optional) */}
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                   <Building2 size={24} />
-                  Church Information
+                  Church Information (Optional)
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="churchName">Church Name *</Label>
+                    <Label htmlFor="churchName">Church Name</Label>
                     <Input
                       id="churchName"
                       name="churchName"
                       value={formData.churchName}
                       onChange={handleChange}
-                      required
                       className="mt-1"
-                      placeholder="Your church name"
+                      placeholder="Your church name (optional)"
                     />
-                    {errors.churchName && <p className="text-red-500 text-sm mt-1">{errors.churchName}</p>}
                   </div>
                   <div>
                     <Label htmlFor="membershipYears">Years of Membership</Label>
@@ -399,7 +603,7 @@ const IsraelTourApplicationPage = () => {
                       value={formData.membershipYears}
                       onChange={handleChange}
                       className="mt-1"
-                      placeholder="Number of years"
+                      placeholder="Number of years (optional)"
                     />
                   </div>
                   <div className="md:col-span-2">
@@ -410,7 +614,7 @@ const IsraelTourApplicationPage = () => {
                       value={formData.churchAddress}
                       onChange={handleChange}
                       className="mt-1"
-                      placeholder="Church location"
+                      placeholder="Church location (optional)"
                     />
                   </div>
                   <div>
@@ -421,7 +625,7 @@ const IsraelTourApplicationPage = () => {
                       value={formData.pastorName}
                       onChange={handleChange}
                       className="mt-1"
-                      placeholder="Pastor's name"
+                      placeholder="Pastor's name (optional)"
                     />
                   </div>
                   <div>
@@ -432,10 +636,13 @@ const IsraelTourApplicationPage = () => {
                       value={formData.pastorPhone}
                       onChange={handleChange}
                       className="mt-1"
-                      placeholder="Pastor's phone"
+                      placeholder="Pastor's phone (optional)"
                     />
                   </div>
                 </div>
+                <p className="text-sm text-gray-500 mt-2">
+                  Note: Registration is done at the CardX Academia & Travel Tours office. Church information is optional.
+                </p>
               </div>
 
               {/* Travel & Medical Information */}
@@ -564,10 +771,13 @@ const IsraelTourApplicationPage = () => {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-6 text-lg"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-6 text-lg"
                 >
                   {submitting ? (
-                    <>Submitting Application...</>
+                    <>
+                      <Loader2 className="mr-2 animate-spin" size={20} />
+                      Submitting Application...
+                    </>
                   ) : (
                     <>
                       <Send size={20} className="mr-2" />
@@ -580,6 +790,7 @@ const IsraelTourApplicationPage = () => {
           </div>
         </div>
       </section>
+      )}
 
       <Footer />
       <ScrollToTop />

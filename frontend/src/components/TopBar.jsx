@@ -1,22 +1,18 @@
 import React from 'react';
-import { Mail, Phone, MapPin } from 'lucide-react';
 import { contactInfo } from '../data/mockData';
 
 const TopBar = () => {
   return (
     <div className="bg-white py-2 px-4 border-b border-gray-100">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center text-sm">
-        <div className="flex flex-wrap items-center gap-6">
-          <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-2 text-gray-600 hover:text-teal-500 transition-colors">
-            <Mail size={14} className="text-gray-500" />
+        <div className="flex flex-wrap items-center gap-4 md:gap-6">
+          <a href={`mailto:${contactInfo.email}`} className="text-gray-600 hover:text-blue-500 transition-colors">
             <span>{contactInfo.email}</span>
           </a>
-          <a href={`tel:${contactInfo.phone}`} className="flex items-center gap-2 text-gray-600 hover:text-teal-500 transition-colors">
-            <Phone size={14} className="text-gray-500" />
+          <a href={`tel:${contactInfo.phone}`} className="text-gray-600 hover:text-blue-500 transition-colors">
             <span>{contactInfo.phone}</span>
           </a>
-          <div className="hidden md:flex items-center gap-2 text-gray-600">
-            <MapPin size={14} className="text-gray-500" />
+          <div className="hidden md:block text-gray-600">
             <span>{contactInfo.address}</span>
           </div>
         </div>

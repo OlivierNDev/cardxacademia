@@ -7,25 +7,8 @@ import ScrollToTop from '../components/ScrollToTop';
 import { Button } from '@/components/ui/button';
 import { stats, whyChooseUs } from '../data/mockData';
 import { 
-  GraduationCap, 
-  Globe, 
-  Award, 
-  Users, 
-  ShieldCheck,
-  Ticket,
-  Target,
-  Heart,
   ArrowRight
 } from 'lucide-react';
-
-const iconMap = {
-  visa: ShieldCheck,
-  ticket: Ticket,
-  consultation: Users,
-  global: Globe,
-  success: Award,
-  admission: GraduationCap,
-};
 
 const AboutPage = () => {
   return (
@@ -34,12 +17,12 @@ const AboutPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-16">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             About Cardx Academia
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Your trusted partner in global education and travel
           </p>
         </div>
@@ -66,15 +49,15 @@ const AboutPage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-blue-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Our Impact
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="bg-white rounded-lg p-8 text-center shadow-sm">
-                <div className="text-4xl font-bold text-yellow-400 mb-2">
+              <div key={index} className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
+                <div className="text-4xl font-bold text-blue-500 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-600 text-lg">
@@ -87,27 +70,17 @@ const AboutPage = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-yellow-50 rounded-lg p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
-                  <Target className="text-white" size={24} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800">Our Mission</h3>
-              </div>
+            <div className="bg-white rounded-lg p-8 border border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
               <p className="text-gray-700 leading-relaxed">
                 To empower students and professionals by providing expert guidance, comprehensive support, and seamless services for international education and travel. We strive to make global opportunities accessible and achievable for everyone, regardless of their background.
               </p>
             </div>
-            <div className="bg-blue-50 rounded-lg p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                  <Heart className="text-white" size={24} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800">Our Vision</h3>
-              </div>
+            <div className="bg-white rounded-lg p-8 border border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
               <p className="text-gray-700 leading-relaxed">
                 To become the leading educational consulting firm in East Africa, recognized for excellence in student placement, visa services, and travel support. We envision a world where every student has access to quality international education opportunities.
               </p>
@@ -117,89 +90,62 @@ const AboutPage = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Why Choose Us
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {whyChooseUs.map((feature) => {
-              const IconComponent = iconMap[feature.icon] || ShieldCheck;
-              return (
-                <div 
-                  key={feature.id}
-                  className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent 
-                      size={24} 
-                      className="text-blue-500" 
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whyChooseUs.map((feature) => (
+              <div 
+                key={feature.id}
+                className="bg-gray-50 rounded-lg p-6 border border-gray-200"
+              >
+                <h3 className="text-lg font-bold text-gray-800 mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-sm">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Services Overview */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             What We Offer
           </h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <GraduationCap className="text-yellow-400 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">University Selection & Admission</h4>
-                  <p className="text-gray-600 text-sm">Expert guidance in choosing the right university and navigating the admission process.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">University Selection & Admission</h4>
+                <p className="text-gray-600 text-sm">Expert guidance in choosing the right university and navigating the admission process.</p>
               </div>
-              <div className="flex items-start gap-4">
-                <ShieldCheck className="text-blue-500 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">Visa Application Support</h4>
-                  <p className="text-gray-600 text-sm">Comprehensive assistance for all types of visa applications worldwide.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Visa Application Support</h4>
+                <p className="text-gray-600 text-sm">Comprehensive assistance for all types of visa applications worldwide.</p>
               </div>
-              <div className="flex items-start gap-4">
-                <Ticket className="text-yellow-400 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">Air Ticket Booking</h4>
-                  <p className="text-gray-600 text-sm">Affordable flight bookings and travel arrangements for your journey.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Air Ticket Booking</h4>
+                <p className="text-gray-600 text-sm">Affordable flight bookings and travel arrangements for your journey.</p>
               </div>
             </div>
             <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <Users className="text-blue-500 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">Personalized Consultations</h4>
-                  <p className="text-gray-600 text-sm">One-on-one consultations tailored to your specific needs and goals.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Personalized Consultations</h4>
+                <p className="text-gray-600 text-sm">One-on-one consultations tailored to your specific needs and goals.</p>
               </div>
-              <div className="flex items-start gap-4">
-                <Award className="text-yellow-400 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">Scholarship Assistance</h4>
-                  <p className="text-gray-600 text-sm">Help finding and applying for partial and full scholarships.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Scholarship Assistance</h4>
+                <p className="text-gray-600 text-sm">Help finding and applying for partial and full scholarships.</p>
               </div>
-              <div className="flex items-start gap-4">
-                <Globe className="text-blue-500 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h4 className="font-bold text-gray-800 mb-1">Global Reach</h4>
-                  <p className="text-gray-600 text-sm">Partnerships with universities across 40+ countries worldwide.</p>
-                </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Global Reach</h4>
+                <p className="text-gray-600 text-sm">Partnerships with universities across 40+ countries worldwide.</p>
               </div>
             </div>
           </div>
@@ -207,7 +153,7 @@ const AboutPage = () => {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-yellow-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Our Core Values

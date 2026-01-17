@@ -29,6 +29,25 @@ const AppointmentPage = () => {
   const [error, setError] = useState(null);
   const [appointmentId, setAppointmentId] = useState(null);
 
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, []);
+
+  // Scroll to top when form is submitted successfully
+  useEffect(() => {
+    if (submitted) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [submitted]);
+
   // Form data
   const [formData, setFormData] = useState({
     name: '',
@@ -77,7 +96,22 @@ const AppointmentPage = () => {
     } catch (err) {
       console.error('Error loading slots:', err);
       console.error('Error details:', err.response || err.message);
-      setError(`Failed to load time slots: ${err.message || 'Please try again'}`);
+      
+      // Extract more detailed error message
+      let errorMessage = 'Failed to load time slots';
+      if (err.response?.data?.detail) {
+        errorMessage = err.response.data.detail;
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.message) {
+        errorMessage = err.message;
+      } else if (err.code === 'ECONNABORTED') {
+        errorMessage = 'Request timed out. Please check your connection and try again.';
+      } else if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error')) {
+        errorMessage = 'Cannot connect to server. Please make sure the backend is running.';
+      }
+      
+      setError(errorMessage);
       setAvailableSlots([]);
     } finally {
       setLoadingSlots(false);

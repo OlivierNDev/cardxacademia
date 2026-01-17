@@ -6,47 +6,32 @@ import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import { Button } from '@/components/ui/button';
 import { 
-  Plane, 
-  CheckCircle2, 
-  FileText, 
-  Clock,
-  Globe,
-  ArrowRight,
-  MapPin,
-  Camera,
-  CreditCard,
-  Calendar
+  ArrowRight
 } from 'lucide-react';
 
 const VisitorVisaPage = () => {
   const services = [
     {
-      icon: FileText,
       title: 'Application Guidance',
       description: 'Step-by-step assistance through the entire visitor visa application process.'
     },
     {
-      icon: FileText,
       title: 'Document Preparation',
       description: 'Help preparing all required documents including invitation letters, travel itineraries, and financial proof.'
     },
     {
-      icon: CreditCard,
       title: 'Financial Documentation',
       description: 'Guidance on preparing bank statements, proof of funds, and financial support documents.'
     },
     {
-      icon: MapPin,
       title: 'Travel Itinerary Planning',
       description: 'Assistance creating detailed travel plans and itineraries required for visa applications.'
     },
     {
-      icon: Calendar,
       title: 'Timeline Management',
       description: 'Help managing application deadlines and processing times for timely submission.'
     },
     {
-      icon: Globe,
       title: 'Multiple Entry Support',
       description: 'Guidance on applying for single or multiple entry visitor visas based on your travel needs.'
     }
@@ -80,17 +65,12 @@ const VisitorVisaPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-16">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
-              <Plane size={40} className="text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Visitor / Tourist Visa
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Expert guidance for tourist and visitor visa applications for short-term travel, tourism, and family visits
           </p>
         </div>
@@ -120,21 +100,15 @@ const VisitorVisaPage = () => {
             How We Help You
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div 
-                  key={index}
-                  className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent size={24} className="text-yellow-500" />
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-2">{service.title}</h3>
-                  <p className="text-sm text-gray-600">{service.description}</p>
-                </div>
-              );
-            })}
+            {services.map((service, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <h3 className="font-bold text-gray-800 mb-2 text-sm">{service.title}</h3>
+                <p className="text-xs text-gray-600">{service.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -150,11 +124,10 @@ const VisitorVisaPage = () => {
               <p className="text-gray-600 mb-6">
                 While requirements vary by country, here are common documents needed for visitor visa applications:
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {requirements.map((req, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{req}</span>
+                  <li key={index} className="text-gray-700 text-sm">
+                    • {req}
                   </li>
                 ))}
               </ul>
@@ -181,12 +154,12 @@ const VisitorVisaPage = () => {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-yellow-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Application Process
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { step: '1', title: 'Consultation', desc: 'Assess your travel plans and visa requirements' },
               { step: '2', title: 'Documentation', desc: 'Prepare and review all required documents' },
@@ -195,10 +168,8 @@ const VisitorVisaPage = () => {
               { step: '5', title: 'Interview Prep', desc: 'Prepare for visa interview if required' },
               { step: '6', title: 'Approval', desc: 'Assist with visa collection and travel planning' }
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 text-center shadow-sm">
-                <div className="w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-                  {item.step}
-                </div>
+              <div key={index} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <div className="text-sm font-semibold text-blue-500 mb-2">Step {item.step}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.desc}</p>
               </div>

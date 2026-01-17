@@ -6,58 +6,40 @@ import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import { Button } from '@/components/ui/button';
 import { 
-  Briefcase, 
-  CheckCircle2, 
-  FileText, 
-  Building2,
-  Clock,
-  Globe,
-  ArrowRight,
-  Users,
-  Award,
-  TrendingUp,
-  UserCheck
+  ArrowRight
 } from 'lucide-react';
 
 const WorkVisaPage = () => {
   const services = [
     {
-      icon: UserCheck,
       title: 'Eligibility Assessment',
       description: 'Evaluate your qualifications, work experience, and skills to determine the best work visa options for you.'
     },
     {
-      icon: Building2,
       title: 'Employer Sponsorship Support',
       description: 'Assist with finding employers who can sponsor your work visa and guide them through the sponsorship process.'
     },
     {
-      icon: FileText,
       title: 'Work Permit Applications',
       description: 'Complete support for work permit applications, including all required forms and documentation.'
     },
     {
-      icon: Award,
       title: 'Skills Assessment',
       description: 'Help with skills assessment and credential evaluation required for skilled worker visa programs.'
     },
     {
-      icon: FileText,
       title: 'Labor Market Impact',
       description: 'Assistance with Labor Market Impact Assessments (LMIAs) and similar employer documentation requirements.'
     },
     {
-      icon: TrendingUp,
       title: 'Career Guidance',
       description: 'Professional advice on career paths, job opportunities, and work authorization options in your destination country.'
     },
     {
-      icon: Clock,
       title: 'Timeline Management',
       description: 'Help you understand processing times, manage deadlines, and ensure timely submission of all documents.'
     },
     {
-      icon: Globe,
       title: 'Work Authorization Support',
       description: 'Guidance on work authorization, visa renewals, and transitioning to permanent residence if applicable.'
     }
@@ -141,17 +123,12 @@ const WorkVisaPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-16">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
-              <Briefcase size={40} className="text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Work Visa / Work Permit Application
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Professional support for work visa and work permit applications, helping you secure employment opportunities abroad
           </p>
         </div>
@@ -181,21 +158,15 @@ const WorkVisaPage = () => {
             How We Help You
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div 
-                  key={index}
-                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <div className="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent size={24} className="text-yellow-500" />
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-2">{service.title}</h3>
-                  <p className="text-sm text-gray-600">{service.description}</p>
-                </div>
-              );
-            })}
+            {services.map((service, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <h3 className="font-bold text-gray-800 mb-2 text-sm">{service.title}</h3>
+                <p className="text-xs text-gray-600">{service.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -211,11 +182,10 @@ const WorkVisaPage = () => {
               <p className="text-gray-600 mb-6">
                 While requirements vary by country and visa type, here are common documents needed for work visa applications:
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {requirements.map((req, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{req}</span>
+                  <li key={index} className="text-gray-700 text-sm">
+                    • {req}
                   </li>
                 ))}
               </ul>
@@ -247,12 +217,12 @@ const WorkVisaPage = () => {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-yellow-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Our Application Process
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { step: '1', title: 'Consultation', desc: 'Assess your qualifications and work visa options' },
               { step: '2', title: 'Job Search Support', desc: 'Help find employers or assess job offers' },
@@ -263,10 +233,8 @@ const WorkVisaPage = () => {
               { step: '7', title: 'Approval Support', desc: 'Assist with visa issuance and travel arrangements' },
               { step: '8', title: 'Post-Arrival', desc: 'Support with work authorization and settlement' }
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 text-center shadow-sm">
-                <div className="w-12 h-12 bg-yellow-400 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-                  {item.step}
-                </div>
+              <div key={index} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <div className="text-sm font-semibold text-blue-500 mb-2">Step {item.step}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.desc}</p>
               </div>

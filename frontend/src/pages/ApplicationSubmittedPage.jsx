@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -16,10 +16,17 @@ import {
 } from 'lucide-react';
 
 const ApplicationSubmittedPage = () => {
-  const navigate = useNavigate();
-  
   // Get application data from sessionStorage
   const applicationData = JSON.parse(sessionStorage.getItem('israelTourApplication') || '{}');
+
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, []);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -27,7 +34,7 @@ const ApplicationSubmittedPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <TopBar />
       <Navbar />
       
@@ -35,8 +42,8 @@ const ApplicationSubmittedPage = () => {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="mb-8">
-            <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="text-green-500" size={48} />
+            <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="text-blue-500" size={48} />
             </div>
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               Application Submitted Successfully!
@@ -55,44 +62,17 @@ const ApplicationSubmittedPage = () => {
             </div>
           )}
 
-          <div className="bg-yellow-50 rounded-lg p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Next Steps</h2>
-            <div className="space-y-4 text-left">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">1</div>
-                <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Review Your Application</h3>
-                  <p className="text-gray-600">Our team will review your application and contact you within 2-3 business days.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">2</div>
-                <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Make Payment</h3>
-                  <p className="text-gray-600">Once approved, you'll receive payment instructions. See payment details below.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">3</div>
-                <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Submit Payment Proof</h3>
-                  <p className="text-gray-600">Send proof of payment via email or WhatsApp to confirm your seat.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">4</div>
-                <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Visa Processing</h3>
-                  <p className="text-gray-600">Visa processing will begin after deposit confirmation.</p>
-                </div>
-              </div>
-            </div>
+          {/* Final UX Message */}
+          <div className="bg-orange-50 rounded-lg p-8 mb-8 border-2 border-orange-200">
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Thank you for applying for the CardX Academia Holy Land Pilgrimage. Please complete your payment using the bank details below. Our team will contact you within 2–3 working days to confirm your seat and visa process.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Payment Information */}
-      <section className="py-20 bg-blue-50">
+      {/* Payment Information - ONLY VISIBLE AFTER SUBMISSION */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white rounded-lg shadow-sm p-8">
             <div className="flex items-center gap-3 mb-6">
@@ -103,7 +83,7 @@ const ApplicationSubmittedPage = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="font-bold text-gray-800 mb-4">Tour Cost</h3>
-                <div className="bg-yellow-50 rounded-lg p-4 mb-4">
+                <div className="bg-orange-50 rounded-lg p-4 mb-4">
                   <p className="text-3xl font-bold text-gray-800">USD $2,900</p>
                   <p className="text-gray-600">per person</p>
                 </div>
@@ -115,10 +95,11 @@ const ApplicationSubmittedPage = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Account Name:</span>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-gray-800">CardX Academia & Travel Tours</span>
+                      <span className="font-semibold text-gray-800">CardX Academia & Travel Tours Ltd</span>
                       <button
-                        onClick={() => copyToClipboard('CardX Academia & Travel Tours')}
+                        onClick={() => copyToClipboard('CardX Academia & Travel Tours Ltd')}
                         className="text-blue-500 hover:text-blue-600"
+                        title="Copy to clipboard"
                       >
                         <Copy size={16} />
                       </button>
@@ -144,7 +125,7 @@ const ApplicationSubmittedPage = () => {
               </div>
 
               <div className="bg-blue-50 rounded-lg p-6">
-                <h3 className="font-bold text-gray-800 mb-3">Payment Notes</h3>
+                <h3 className="font-bold text-gray-800 mb-3">Payment Instructions</h3>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="text-blue-500 flex-shrink-0 mt-1" size={20} />
@@ -179,31 +160,33 @@ const ApplicationSubmittedPage = () => {
             <a href="mailto:tours@cardxacademia.com" className="bg-blue-50 rounded-lg p-6 hover:shadow-md transition-shadow">
               <Mail className="text-blue-500 mb-3" size={32} />
               <h3 className="font-bold text-gray-800 mb-2">Email</h3>
-              <p className="text-gray-600">tours@cardxacademia.com</p>
+              <p className="text-gray-600 text-sm mb-1">tours@cardxacademia.com</p>
+              <p className="text-gray-600 text-sm">cardxtraveltours@gmail.com</p>
             </a>
-            <a href="tel:+250788603451" className="bg-yellow-50 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <Phone className="text-yellow-500 mb-3" size={32} />
+            <a href="tel:+250788603451" className="bg-orange-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <Phone className="text-orange-500 mb-3" size={32} />
               <h3 className="font-bold text-gray-800 mb-2">Phone</h3>
               <p className="text-gray-600">+250 788 603 451</p>
+              <p className="text-gray-600">+250 787 420 838</p>
             </a>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-yellow-400">
+      <section className="py-16 bg-blue-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Thank You for Your Application
           </h2>
-          <p className="text-white/90 mb-8 text-lg">
+          <p className="text-gray-600 mb-8 text-lg">
             We look forward to welcoming you on this life-changing spiritual journey.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/israel-pilgrimage-2025">
               <Button 
                 size="lg" 
-                className="bg-white text-yellow-500 hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-6 text-lg"
               >
                 View Tour Details
               </Button>
@@ -212,7 +195,7 @@ const ApplicationSubmittedPage = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-6 text-lg"
+                className="border-2 border-blue-500 text-blue-500 hover:bg-blue-50 font-semibold px-8 py-6 text-lg"
               >
                 Return to Home
                 <ArrowRight size={20} className="ml-2" />

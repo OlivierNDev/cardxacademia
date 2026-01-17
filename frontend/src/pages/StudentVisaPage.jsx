@@ -6,57 +6,40 @@ import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import { Button } from '@/components/ui/button';
 import { 
-  GraduationCap, 
-  CheckCircle2, 
-  FileText, 
-  DollarSign,
-  Clock,
-  Globe,
-  ArrowRight,
-  BookOpen,
-  Users,
-  Award
+  ArrowRight
 } from 'lucide-react';
 
 const StudentVisaPage = () => {
   const services = [
     {
-      icon: BookOpen,
       title: 'University Selection Support',
       description: 'Help you choose the right university and program that matches your academic goals and career aspirations.'
     },
     {
-      icon: FileText,
       title: 'Application Process Guidance',
       description: 'Step-by-step assistance through the entire university application process, ensuring all requirements are met.'
     },
     {
-      icon: FileText,
       title: 'Document Preparation',
       description: 'Professional help preparing all required documents including transcripts, recommendation letters, and personal statements.'
     },
     {
-      icon: DollarSign,
       title: 'Financial Documentation',
       description: 'Guidance on preparing financial documents, bank statements, and proof of funds required for visa applications.'
     },
     {
-      icon: Users,
       title: 'Visa Interview Preparation',
       description: 'Comprehensive interview coaching and practice sessions to help you confidently answer visa officer questions.'
     },
     {
-      icon: Award,
       title: 'Scholarship Applications',
       description: 'Assistance finding and applying for partial and full scholarships to fund your education abroad.'
     },
     {
-      icon: Clock,
       title: 'Timeline Management',
       description: 'Help you manage application deadlines, visa processing times, and ensure timely submission of all documents.'
     },
     {
-      icon: Globe,
       title: 'Post-Arrival Support',
       description: 'Ongoing support after you arrive, including orientation, accommodation assistance, and settling in.'
     }
@@ -90,17 +73,12 @@ const StudentVisaPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-16">
+      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
-              <GraduationCap size={40} className="text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Student Visa Application
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Comprehensive assistance for student visa applications to study abroad at top universities and colleges worldwide
           </p>
         </div>
@@ -130,21 +108,15 @@ const StudentVisaPage = () => {
             How We Help You
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div 
-                  key={index}
-                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <div className="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent size={24} className="text-yellow-500" />
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-2">{service.title}</h3>
-                  <p className="text-sm text-gray-600">{service.description}</p>
-                </div>
-              );
-            })}
+            {services.map((service, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <h3 className="font-bold text-gray-800 mb-2 text-sm">{service.title}</h3>
+                <p className="text-xs text-gray-600">{service.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -160,11 +132,10 @@ const StudentVisaPage = () => {
               <p className="text-gray-600 mb-6">
                 While requirements vary by country, here are the common documents needed for student visa applications:
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {requirements.map((req, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{req}</span>
+                  <li key={index} className="text-gray-700 text-sm">
+                    • {req}
                   </li>
                 ))}
               </ul>
@@ -196,12 +167,12 @@ const StudentVisaPage = () => {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-yellow-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
             Our Application Process
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { step: '1', title: 'Consultation', desc: 'Initial assessment of your goals and eligibility' },
               { step: '2', title: 'University Selection', desc: 'Help you choose the right institution and program' },
@@ -212,10 +183,8 @@ const StudentVisaPage = () => {
               { step: '7', title: 'Follow-up', desc: 'Monitor application status and respond to requests' },
               { step: '8', title: 'Post-Arrival', desc: 'Support after you arrive at your destination' }
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 text-center shadow-sm">
-                <div className="w-12 h-12 bg-yellow-400 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-                  {item.step}
-                </div>
+              <div key={index} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <div className="text-sm font-semibold text-blue-500 mb-2">Step {item.step}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.desc}</p>
               </div>

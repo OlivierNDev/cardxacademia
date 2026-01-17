@@ -82,6 +82,53 @@ class Appointment(BaseModel):
     email_sent: bool = False
     reminder_sent: bool = False
 
+# Israel Pilgrimage Models
+class PilgrimageCustomerInfo(BaseModel):
+    fullName: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    phone: str = Field(..., min_length=10, max_length=20)
+    dateOfBirth: Optional[str] = None
+    gender: Optional[str] = None
+    nationality: Optional[str] = None
+    passportNumber: Optional[str] = None
+    passportExpiryDate: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    alternatePhone: Optional[str] = None
+
+class PilgrimageBookingInfo(BaseModel):
+    tourDates: str = "March 29, 2026 – April 5, 2026"
+    tourCost: str = "USD $2,900"
+    churchName: Optional[str] = None
+    churchAddress: Optional[str] = None
+    pastorName: Optional[str] = None
+    pastorPhone: Optional[str] = None
+    membershipYears: Optional[str] = None
+    previousTravel: Optional[str] = None
+    medicalConditions: Optional[str] = None
+    dietaryRequirements: Optional[str] = None
+    emergencyContactName: Optional[str] = None
+    emergencyContactPhone: Optional[str] = None
+    emergencyContactRelationship: Optional[str] = None
+    specialRequests: Optional[str] = None
+    howDidYouHear: Optional[str] = None
+
+class PilgrimageBookingCreate(BaseModel):
+    customer: PilgrimageCustomerInfo
+    booking: PilgrimageBookingInfo
+
+class PilgrimageBooking(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    customer: PilgrimageCustomerInfo
+    booking: PilgrimageBookingInfo
+    status: Literal["pending", "confirmed", "cancelled"] = "pending"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(KIGALI_TZ))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(KIGALI_TZ))
+    email_sent: bool = False
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
@@ -342,6 +389,88 @@ async def cancel_appointment(appointment_id: str):
             updated[field] = datetime.fromisoformat(updated[field])
     
     return updated
+
+
+# Israel Pilgrimage Booking Endpoints
+@api_router.post("/pilgrimage-bookings", response_model=PilgrimageBooking, status_code=201)
+async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
+    """Create a new Israel Pilgrimage booking and send confirmation emails"""
+    try:
+        # Create booking object
+        booking = PilgrimageBooking(
+            customer=booking_data.customer,
+            booking=booking_data.booking
+        )
+        
+        # Convert to dict for MongoDB
+        doc = booking.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+        doc['updated_at'] = doc['updated_at'].isoformat()
+        doc['timezone'] = 'Africa/Kigali'
+        
+        # Save to database
+        result = await db.pilgrimage_bookings.insert_one(doc)
+        
+        # Send emails
+        email_sent = False
+        try:
+            logger.info(f"📧 Starting email sending process for pilgrimage booking {booking.id}")
+            
+            # Send confirmation to customer
+            logger.info(f"📧 Sending confirmation email to customer: {booking_data.customer.email}")
+            customer_email_sent = email_service.send_pilgrimage_confirmation(doc)
+            
+            # Send notification to admin
+            logger.info(f"📧 Sending admin notification email for pilgrimage booking")
+            admin_email_sent = email_service.send_pilgrimage_admin_notification(doc)
+            
+            if customer_email_sent and admin_email_sent:
+                email_sent = True
+                await db.pilgrimage_bookings.update_one(
+                    {"id": booking.id},
+                    {"$set": {"email_sent": True}}
+                )
+                logger.info(f"✅ Both emails sent successfully for pilgrimage booking {booking.id}")
+            elif customer_email_sent:
+                email_sent = True
+                await db.pilgrimage_bookings.update_one(
+                    {"id": booking.id},
+                    {"$set": {"email_sent": True}}
+                )
+                logger.warning(f"⚠️ Customer email sent but admin email failed for pilgrimage booking {booking.id}")
+            elif admin_email_sent:
+                logger.warning(f"⚠️ Admin email sent but customer email failed for pilgrimage booking {booking.id}")
+            else:
+                logger.error(f"❌ Both emails failed to send for pilgrimage booking {booking.id}")
+        except Exception as e:
+            logger.error(f"❌ Error sending emails for pilgrimage booking {booking.id}: {str(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            # Don't fail the booking creation if email fails
+        
+        return booking
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating pilgrimage booking: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create pilgrimage booking")
+
+
+@api_router.get("/pilgrimage-bookings/{booking_id}", response_model=PilgrimageBooking)
+async def get_pilgrimage_booking(booking_id: str):
+    """Get pilgrimage booking by ID"""
+    booking = await db.pilgrimage_bookings.find_one({"id": booking_id}, {"_id": 0})
+    
+    if not booking:
+        raise HTTPException(status_code=404, detail="Pilgrimage booking not found")
+    
+    # Convert datetime strings back to datetime objects
+    for field in ['created_at', 'updated_at']:
+        if booking.get(field) and isinstance(booking[field], str):
+            booking[field] = datetime.fromisoformat(booking[field])
+    
+    return booking
 
 # Include the router in the main app
 app.include_router(api_router)

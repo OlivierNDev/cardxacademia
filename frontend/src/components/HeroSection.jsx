@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { services } from '../data/mockData';
 import { ArrowRight } from 'lucide-react';
 
@@ -26,12 +27,13 @@ const HeroSection = () => {
             <p className="text-lg lg:text-xl mb-8 text-gray-200 leading-relaxed">
               Unlock your potential with personalized learning solutions tailored just for you. Let's transform your educational journey together!
             </p>
-            <a 
-              href="/application"
-              className="inline-block bg-yellow-400 hover:bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg"
+            <Link 
+              to="/about"
+              className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg flex items-center gap-2"
             >
-              Apply Now
-            </a>
+              Learn More
+              <ArrowRight size={20} />
+            </Link>
           </div>
 
           {/* Service Cards - Show first 3 featured services */}
@@ -39,18 +41,18 @@ const HeroSection = () => {
             {services.slice(0, 3).map((service) => (
               <div 
                 key={service.id}
-                className="bg-white/95 backdrop-blur-sm rounded-lg p-5 flex justify-between items-center group hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
+                className="bg-white/95 backdrop-blur-sm rounded-lg p-5 flex justify-between items-center group hover:shadow-xl transition-all hover:-translate-y-1"
               >
                 <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-500 transition-colors">
                   {service.title}
                 </h3>
-                <a 
-                  href={service.href}
+                <Link 
+                  to={service.href}
                   className="flex items-center gap-2 text-blue-500 font-medium group-hover:gap-3 transition-all"
                 >
                   Learn More
                   <ArrowRight size={18} />
-                </a>
+                </Link>
               </div>
             ))}
           </div>
