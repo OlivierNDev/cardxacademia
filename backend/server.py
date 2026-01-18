@@ -5,6 +5,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 import asyncio
+import hashlib
+import traceback
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional, Literal
@@ -58,12 +60,38 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
     global client, db
     
     # Get MongoDB URL from environment (supports both MONGO_URL and MONGODB_URI)
-    mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI')
+    raw_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI') or ''
     
-    if not mongo_url or mongo_url == 'mongodb://localhost:27017':
+    # Step 1: Safe diagnostics - print what Render is really using
+    logger.info("=" * 60)
+    logger.info("[MONGO] 🔍 DIAGNOSTIC INFORMATION")
+    logger.info("=" * 60)
+    logger.info(f"[MONGO] env present: {bool(raw_url)}")
+    logger.info(f"[MONGO] env length: {len(raw_url)}")
+    logger.info(f"[MONGO] startswith mongodb: {raw_url.startswith(('mongodb://', 'mongodb+srv://'))}")
+    logger.info(f"[MONGO] has leading/trailing whitespace: {raw_url != raw_url.strip()}")
+    if raw_url:
+        logger.info(f"[MONGO] sha256 (first 12 chars): {hashlib.sha256(raw_url.encode()).hexdigest()[:12]}")
+        
+        # Redact credentials safely for logging
+        safe_url = raw_url
+        if "://" in safe_url and "@" in safe_url:
+            try:
+                proto, rest = safe_url.split("://", 1)
+                creds, after = rest.split("@", 1)
+                safe_url = f"{proto}://***:***@{after}"
+            except:
+                safe_url = "*** (error parsing for redaction)"
+        logger.info(f"[MONGO] uri (redacted): {safe_url}")
+    logger.info("=" * 60)
+    
+    if not raw_url or raw_url.strip() == 'mongodb://localhost:27017':
         logger.error("❌ MONGO_URL not set! Using default localhost. This will fail in production.")
         logger.error("⚠️ Please set MONGO_URL environment variable in Render Dashboard")
         mongo_url = 'mongodb://localhost:27017'
+    else:
+        # Always strip the URL from env (common Render issue: trailing spaces/newlines)
+        mongo_url = raw_url.strip()
     
     # Validate connection string format
     is_valid, validation_msg = validate_mongo_url(mongo_url)
@@ -94,9 +122,11 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
             logger.info(f"🔄 MongoDB connection attempt {attempt}/{max_retries}")
             
             # Configure client with appropriate settings
+            # Increased timeouts for Render (network is slower than local)
             client_options = {
-                'serverSelectionTimeoutMS': 10000,  # 10 seconds
-                'connectTimeoutMS': 10000,
+                'serverSelectionTimeoutMS': 20000,  # 20 seconds (increased from 10)
+                'connectTimeoutMS': 20000,          # 20 seconds (increased from 10)
+                'socketTimeoutMS': 20000,           # 20 seconds (added)
             }
             
             # For mongodb+srv, ensure TLS is enabled
@@ -105,44 +135,78 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
                 client_options['tlsAllowInvalidCertificates'] = False
             
             # Create client
+            logger.info(f"[MONGO] Creating AsyncIOMotorClient with options: {client_options}")
             client = AsyncIOMotorClient(mongo_url, **client_options)
             db = client[db_name]
             
-            # Test connection with ping
-            await asyncio.wait_for(db.command("ping"), timeout=5.0)
-            
-            logger.info("✅ MongoDB connection established successfully")
-            logger.info(f"📦 Database: {db_name}")
-            logger.info(f"📦 Host: {host_part}")
-            return True
+            # Test connection with ping - log exact exception
+            logger.info(f"[MONGO] Testing connection with ping...")
+            try:
+                await client.admin.command("ping")
+                logger.info("[MONGO] ✅ connected successfully")
+                logger.info("✅ MongoDB connection established successfully")
+                logger.info(f"📦 Database: {db_name}")
+                logger.info(f"📦 Host: {host_part}")
+                return True
+            except Exception as ping_error:
+                # Log the exact exception (this is the missing piece)
+                logger.error(f"[MONGO] ❌ ping failed: {repr(ping_error)}")
+                logger.error(f"[MONGO] error type: {type(ping_error).__name__}")
+                logger.error(f"[MONGO] error message: {str(ping_error)}")
+                logger.error(f"[MONGO] traceback:\n{traceback.format_exc()}")
+                raise  # Re-raise to be caught by outer exception handler
             
         except asyncio.TimeoutError:
             logger.warning(f"⏱️ MongoDB connection timeout (attempt {attempt}/{max_retries})")
-            if client:
-                client.close()
+            if 'client' in locals() and client:
+                try:
+                    client.close()
+                except:
+                    pass
                 client = None
                 db = None
         except Exception as e:
+            # Log the exact exception with full details
+            error_repr = repr(e)
+            error_type = type(e).__name__
             error_msg = str(e)
-            logger.error(f"❌ MongoDB connection failed (attempt {attempt}/{max_retries}): {error_msg}")
+            
+            logger.error("=" * 60)
+            logger.error(f"[MONGO] ❌ CONNECTION FAILED (attempt {attempt}/{max_retries})")
+            logger.error("=" * 60)
+            logger.error(f"[MONGO] ❌ connect failed: {error_repr}")
+            logger.error(f"[MONGO] error type: {error_type}")
+            logger.error(f"[MONGO] error message: {error_msg}")
+            logger.error(f"[MONGO] traceback:\n{traceback.format_exc()}")
+            logger.error("=" * 60)
             
             # Provide specific error guidance
-            if "bad auth" in error_msg.lower() or "authentication failed" in error_msg.lower():
+            if "bad auth" in error_msg.lower() or "authentication failed" in error_msg.lower() or "AuthenticationFailed" in error_type:
                 logger.error("🔐 Authentication failed! Check:")
                 logger.error("   1. MongoDB Atlas → Database Access → Verify username/password")
                 logger.error("   2. Reset password if needed")
                 logger.error("   3. Update MONGO_URL in Render with correct credentials")
-            elif "timeout" in error_msg.lower():
+            elif "timeout" in error_msg.lower() or "Timeout" in error_type or "ServerSelectionTimeoutError" in error_type:
                 logger.error("⏱️ Connection timeout! Check:")
                 logger.error("   1. MongoDB Atlas cluster is running (not paused)")
                 logger.error("   2. Network Access allows 0.0.0.0/0")
                 logger.error("   3. Connection string format is correct")
-            elif "not found" in error_msg.lower() or "dns" in error_msg.lower():
-                logger.error("🌐 DNS/Network error! Check:")
+            elif "not found" in error_msg.lower() or "dns" in error_msg.lower() or "ENOTFOUND" in error_msg or "ConfigurationError" in error_type:
+                logger.error("🌐 DNS/Network/Configuration error! Check:")
                 logger.error("   1. Connection string hostname is correct")
                 logger.error("   2. MongoDB Atlas cluster exists and is active")
+                logger.error("   3. Connection string format is valid")
+            elif "InvalidURI" in error_type or "ConfigurationError" in error_type:
+                logger.error("🔗 Invalid URI format! Check:")
+                logger.error("   1. Connection string has correct format")
+                logger.error("   2. No extra quotes or spaces")
+                logger.error("   3. Special characters in password are URL-encoded")
+            elif "CERTIFICATE" in error_msg or "TLS" in error_type:
+                logger.error("🔒 TLS/Certificate error! Check:")
+                logger.error("   1. MongoDB Atlas cluster supports TLS")
+                logger.error("   2. Network allows TLS connections")
             
-            if client:
+            if 'client' in locals() and client:
                 try:
                     client.close()
                 except:
