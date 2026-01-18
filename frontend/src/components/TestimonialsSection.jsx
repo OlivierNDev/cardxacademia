@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { testimonials } from '../data/mockData';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
@@ -17,6 +17,7 @@ const TestimonialsSection = () => {
   const [videoSliderIndex, setVideoSliderIndex] = useState(0);
   const [textTestimonialIndex, setTextTestimonialIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const videoRefs = useRef({});
 
   // Get all video and text testimonials
   const videoTestimonials = testimonials.filter(t => t.type === 'video');
@@ -86,6 +87,24 @@ const TestimonialsSection = () => {
     }
   }, [textTestimonials.length, nextTextSlide]);
 
+  // Auto-play videos when they become visible
+  useEffect(() => {
+    const visibleVideos = videoTestimonials.slice(
+      videoSliderIndex * slidesPerView,
+      (videoSliderIndex * slidesPerView) + slidesPerView
+    );
+    
+    visibleVideos.forEach((testimonial) => {
+      const video = videoRefs.current[testimonial.id];
+      if (video && testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4')) {
+        video.muted = true;
+        video.play().catch(() => {
+          // Auto-play was prevented, that's okay
+        });
+      }
+    });
+  }, [videoSliderIndex, slidesPerView, videoTestimonials]);
+
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
@@ -125,20 +144,28 @@ const TestimonialsSection = () => {
                             {testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4') ? (
                               <>
                                 <video
+                                  ref={(el) => {
+                                    videoRefs.current[testimonial.id] = el;
+                                  }}
                                   src={testimonial.videoUrl}
                                   poster={testimonial.thumbnail || '/video-poster.svg'}
                                   className="w-full h-full object-cover"
                                   loop
                                   playsInline
                                   muted
-                                  preload="metadata"
+                                  autoPlay
+                                  preload="auto"
+                                  onLoadedData={(e) => {
+                                    // Ensure video plays when loaded
+                                    e.target.play().catch(() => {});
+                                  }}
                                 />
-                                {/* Play Overlay - Click to go to full page */}
+                                {/* Subtle overlay - only shows on hover, doesn't block video */}
                                 <Link
                                   to="/testimonials"
-                                  className="absolute inset-0 flex items-center justify-center bg-black/20 sm:bg-black/30 transition-colors"
+                                  className="absolute inset-0 flex items-center justify-center bg-transparent hover:bg-black/10 transition-colors"
                                 >
-                                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/90 rounded-full flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
                                     <Play size={22} className="text-gray-800 ml-0.5 sm:ml-1" />
                                   </div>
                                 </Link>

@@ -99,6 +99,12 @@ const TestimonialsPage = () => {
                         <video
                           ref={(el) => {
                             videoRefs.current[testimonial.id] = el;
+                            // Auto-play when video element is ready
+                            if (el) {
+                              el.play().catch(() => {
+                                // Auto-play was prevented, user interaction required
+                              });
+                            }
                           }}
                           src={testimonial.videoUrl}
                           poster={testimonial.thumbnail || '/video-poster.svg'}
@@ -106,17 +112,25 @@ const TestimonialsPage = () => {
                           loop
                           playsInline
                           muted={mutedVideos[testimonial.id] === false ? false : true}
+                          autoPlay
+                          preload="auto"
                           onPlay={() => setPlayingVideos(prev => ({ ...prev, [testimonial.id]: true }))}
                           onPause={() => setPlayingVideos(prev => ({ ...prev, [testimonial.id]: false }))}
                           onEnded={() => setPlayingVideos(prev => ({ ...prev, [testimonial.id]: false }))}
-                          preload="metadata"
+                          onLoadedMetadata={() => {
+                            // Try to play when metadata is loaded
+                            const video = videoRefs.current[testimonial.id];
+                            if (video && mutedVideos[testimonial.id] !== false) {
+                              video.play().catch(() => {});
+                            }
+                          }}
                         />
                         
-                        {/* Play/Pause Overlay - always visible on touch (mobile), hover on desktop */}
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 sm:bg-black/30 transition-colors">
+                        {/* Play/Pause Overlay - subtle, only shows on hover/touch */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-transparent hover:bg-black/10 transition-colors">
                           <button
                             onClick={() => togglePlay(testimonial.id)}
-                            className="w-14 h-14 sm:w-16 sm:h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all opacity-90 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation"
+                            className="w-14 h-14 sm:w-16 sm:h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all opacity-0 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation shadow-lg"
                           >
                             {playingVideos[testimonial.id] ? (
                               <Pause size={24} className="text-gray-800" />
