@@ -27,37 +27,92 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# MongoDB connection
-mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI') or 'mongodb://localhost:27017'
-if not mongo_url or mongo_url == 'mongodb://localhost:27017':
-    logger.warning("⚠️ MONGO_URL not set! Using default localhost. This will fail in production.")
-
-# Ensure connection string doesn't have trailing slash issues
-mongo_url = mongo_url.rstrip('/')
-
-# Initialize MongoDB connection (allow app to start even if connection fails)
+# MongoDB connection - will be initialized in startup event
 client = None
 db = None
 db_name = os.environ.get('DB_NAME', 'cardxacademia')
 
-try:
-    # Connect with longer timeout for initial connection
-    client = AsyncIOMotorClient(
-        mongo_url, 
-        serverSelectionTimeoutMS=15000,  # 15 seconds for initial connection (Render can be slow)
-        connectTimeoutMS=15000
-    )
-    db = client[db_name]
-    logger.info("✅ MongoDB connection initialized")
-    logger.info(f"📦 Database: {db_name}")
-except Exception as e:
-    logger.error(f"❌ Failed to connect to MongoDB: {str(e)}")
-    logger.error(f"📦 Connection string: {mongo_url[:50]}..." if len(mongo_url) > 50 else f"📦 Connection string: {mongo_url}")
-    logger.error("Please check MONGO_URL environment variable and MongoDB Atlas settings")
-    logger.warning("⚠️ App will start but database operations will fail. Retrying connection in background...")
-    # Don't raise - allow app to start, we'll handle database errors gracefully
-    client = None
-    db = None
+async def connect_to_mongodb(max_retries=3, retry_delay=2):
+    """Connect to MongoDB with retry logic"""
+    global client, db
+    
+    # Get MongoDB URL from environment (supports both MONGO_URL and MONGODB_URI)
+    mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI')
+    
+    if not mongo_url or mongo_url == 'mongodb://localhost:27017':
+        logger.warning("⚠️ MONGO_URL not set! Using default localhost. This will fail in production.")
+        mongo_url = 'mongodb://localhost:27017'
+    
+    # Ensure connection string doesn't have trailing slash issues
+    mongo_url = mongo_url.rstrip('/')
+    
+    # Extract host for logging (without credentials)
+    try:
+        if 'mongodb+srv://' in mongo_url:
+            host_part = mongo_url.split('@')[1].split('/')[0].split('?')[0] if '@' in mongo_url else '***'
+        elif 'mongodb://' in mongo_url:
+            host_part = mongo_url.split('@')[1].split('/')[0].split('?')[0] if '@' in mongo_url else mongo_url.split('//')[1].split('/')[0].split('?')[0]
+        else:
+            host_part = '***'
+    except:
+        host_part = '***'
+    
+    logger.info(f"🔌 Attempting to connect to MongoDB at: {host_part}")
+    
+    # Retry logic
+    for attempt in range(1, max_retries + 1):
+        try:
+            logger.info(f"🔄 MongoDB connection attempt {attempt}/{max_retries}")
+            
+            # Configure client with appropriate settings
+            client_options = {
+                'serverSelectionTimeoutMS': 10000,  # 10 seconds
+                'connectTimeoutMS': 10000,
+            }
+            
+            # For mongodb+srv, ensure TLS is enabled
+            if 'mongodb+srv://' in mongo_url:
+                client_options['tls'] = True
+                client_options['tlsAllowInvalidCertificates'] = False
+            
+            # Create client
+            client = AsyncIOMotorClient(mongo_url, **client_options)
+            db = client[db_name]
+            
+            # Test connection with ping
+            await asyncio.wait_for(db.command("ping"), timeout=5.0)
+            
+            logger.info("✅ MongoDB connection established successfully")
+            logger.info(f"📦 Database: {db_name}")
+            logger.info(f"📦 Host: {host_part}")
+            return True
+            
+        except asyncio.TimeoutError:
+            logger.warning(f"⏱️ MongoDB connection timeout (attempt {attempt}/{max_retries})")
+            if client:
+                client.close()
+                client = None
+                db = None
+        except Exception as e:
+            error_msg = str(e)
+            logger.error(f"❌ MongoDB connection failed (attempt {attempt}/{max_retries}): {error_msg}")
+            if client:
+                try:
+                    client.close()
+                except:
+                    pass
+                client = None
+                db = None
+            
+            # Wait before retry (exponential backoff)
+            if attempt < max_retries:
+                wait_time = retry_delay * attempt
+                logger.info(f"⏳ Waiting {wait_time}s before retry...")
+                await asyncio.sleep(wait_time)
+    
+    logger.error("❌ Failed to connect to MongoDB after all retries")
+    logger.error("⚠️ App will start but database operations will fail")
+    return False
 
 # Initialize Email Service
 email_service = EmailService()
@@ -183,7 +238,18 @@ async def health_check():
     if db is None:
         health_status["database"] = "not_connected"
         health_status["status"] = "degraded"
-        health_status["message"] = "MongoDB connection failed at startup"
+        health_status["message"] = "MongoDB connection not established. Retrying in background..."
+        
+        # Try to reconnect once if not connected
+        try:
+            logger.info("🔄 Health check: Attempting MongoDB reconnection...")
+            success = await connect_to_mongodb(max_retries=1, retry_delay=1)
+            if success:
+                health_status["database"] = "connected"
+                health_status["status"] = "healthy"
+                health_status["message"] = "MongoDB connection restored"
+        except Exception as e:
+            logger.error(f"Health check reconnection failed: {str(e)}")
     else:
         try:
             await asyncio.wait_for(db.command("ping"), timeout=3.0)
@@ -191,9 +257,24 @@ async def health_check():
         except asyncio.TimeoutError:
             health_status["database"] = "timeout"
             health_status["status"] = "degraded"
+            health_status["message"] = "MongoDB ping timeout"
         except Exception as e:
-            health_status["database"] = f"error: {str(e)[:100]}"
+            error_msg = str(e)[:100]
+            health_status["database"] = f"error: {error_msg}"
             health_status["status"] = "degraded"
+            health_status["message"] = error_msg
+            
+            # If connection is broken, reset and retry
+            if "not connected" in error_msg.lower() or "connection" in error_msg.lower():
+                logger.warning("🔄 Connection appears broken, resetting...")
+                global client
+                if client:
+                    try:
+                        client.close()
+                    except:
+                        pass
+                client = None
+                db = None
     
     # Check email service
     if email_service.client:
@@ -202,6 +283,24 @@ async def health_check():
         health_status["email_service"] = "not_configured"
     
     return health_status
+
+@api_router.post("/health/reconnect")
+async def reconnect_mongodb():
+    """Manual endpoint to trigger MongoDB reconnection"""
+    logger.info("🔄 Manual MongoDB reconnection requested")
+    success = await connect_to_mongodb(max_retries=3, retry_delay=2)
+    
+    if success:
+        return {
+            "status": "success",
+            "message": "MongoDB connection established",
+            "database": db_name
+        }
+    else:
+        return {
+            "status": "failed",
+            "message": "Failed to connect to MongoDB after retries"
+        }
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
@@ -574,11 +673,49 @@ app.add_middleware(
 
 # Log startup info
 logger.info("🚀 Starting CardX Academia Backend Server")
-logger.info(f"📦 MongoDB URL: {'***' if mongo_url and 'mongodb+srv' in mongo_url else mongo_url if mongo_url else 'NOT SET'}")
+mongo_url_env = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI') or 'NOT SET'
+if mongo_url_env != 'NOT SET' and 'mongodb+srv' in mongo_url_env:
+    logger.info(f"📦 MongoDB URL: *** (mongodb+srv connection)")
+else:
+    logger.info(f"📦 MongoDB URL: {mongo_url_env}")
 logger.info(f"📦 Database Name: {os.environ.get('DB_NAME', 'cardxacademia')}")
 logger.info(f"📦 CORS Origins: {cors_origins}")
 logger.info(f"📦 Python Version: {os.sys.version}")
 
+@app.on_event("startup")
+async def startup_db_client():
+    """Initialize MongoDB connection on app startup"""
+    logger.info("🔄 Initializing MongoDB connection...")
+    success = await connect_to_mongodb(max_retries=3, retry_delay=2)
+    
+    # If connection failed, start background retry task
+    if not success:
+        logger.info("🔄 Starting background MongoDB reconnection task...")
+        asyncio.create_task(background_reconnect_mongodb())
+
+async def background_reconnect_mongodb():
+    """Background task to retry MongoDB connection periodically"""
+    global client, db
+    
+    while True:
+        # Wait 30 seconds before retrying
+        await asyncio.sleep(30)
+        
+        # Only retry if not connected
+        if db is None:
+            logger.info("🔄 Background: Retrying MongoDB connection...")
+            success = await connect_to_mongodb(max_retries=2, retry_delay=3)
+            if success:
+                logger.info("✅ Background: MongoDB connection restored!")
+                break
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    """Close MongoDB connection on app shutdown"""
+    global client
+    if client:
+        logger.info("🔌 Closing MongoDB connection...")
+        try:
+            client.close()
+        except Exception as e:
+            logger.error(f"Error closing MongoDB connection: {str(e)}")
