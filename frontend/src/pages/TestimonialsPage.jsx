@@ -101,6 +101,7 @@ const TestimonialsPage = () => {
                             videoRefs.current[testimonial.id] = el;
                           }}
                           src={testimonial.videoUrl}
+                          poster={testimonial.thumbnail || '/video-poster.svg'}
                           className="w-full h-full object-cover"
                           loop
                           playsInline

@@ -126,6 +126,7 @@ const TestimonialsSection = () => {
                               <>
                                 <video
                                   src={testimonial.videoUrl}
+                                  poster={testimonial.thumbnail || '/video-poster.svg'}
                                   className="w-full h-full object-cover"
                                   loop
                                   playsInline
