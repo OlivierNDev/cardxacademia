@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000, // 30 second timeout (Render free tier can be slow)
+  timeout: 60000, // 60 second timeout (safe buffer for network delays)
   headers: {
     'Content-Type': 'application/json',
   },
