@@ -226,63 +226,70 @@ async def root():
 @api_router.get("/health")
 async def health_check():
     """Health check endpoint to verify server and database connectivity"""
-    health_status = {
-        "status": "healthy",
-        "server": "running",
-        "database": "unknown",
-        "email_service": "unknown",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
+    global client, db
     
-    # Check MongoDB connection
-    if db is None:
-        health_status["database"] = "not_connected"
-        health_status["status"] = "degraded"
-        health_status["message"] = "MongoDB connection not established. Retrying in background..."
+    try:
+        health_status = {
+            "status": "healthy",
+            "server": "running",
+            "database": "unknown",
+            "email_service": "unknown",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
         
-        # Try to reconnect once if not connected
-        try:
-            logger.info("🔄 Health check: Attempting MongoDB reconnection...")
-            success = await connect_to_mongodb(max_retries=1, retry_delay=1)
-            if success:
+        # Check MongoDB connection
+        if db is None:
+            health_status["database"] = "not_connected"
+            health_status["status"] = "degraded"
+            health_status["message"] = "MongoDB connection not established. Retrying in background..."
+        else:
+            try:
+                await asyncio.wait_for(db.command("ping"), timeout=3.0)
                 health_status["database"] = "connected"
-                health_status["status"] = "healthy"
-                health_status["message"] = "MongoDB connection restored"
-        except Exception as e:
-            logger.error(f"Health check reconnection failed: {str(e)}")
-    else:
+            except asyncio.TimeoutError:
+                health_status["database"] = "timeout"
+                health_status["status"] = "degraded"
+                health_status["message"] = "MongoDB ping timeout"
+            except Exception as e:
+                error_msg = str(e)[:100]
+                health_status["database"] = f"error: {error_msg}"
+                health_status["status"] = "degraded"
+                health_status["message"] = error_msg
+                
+                # If connection is broken, reset
+                if "not connected" in error_msg.lower() or "connection" in error_msg.lower():
+                    logger.warning("🔄 Connection appears broken, resetting...")
+                    if client:
+                        try:
+                            client.close()
+                        except:
+                            pass
+                    client = None
+                    db = None
+        
+        # Check email service
         try:
-            await asyncio.wait_for(db.command("ping"), timeout=3.0)
-            health_status["database"] = "connected"
-        except asyncio.TimeoutError:
-            health_status["database"] = "timeout"
-            health_status["status"] = "degraded"
-            health_status["message"] = "MongoDB ping timeout"
+            if hasattr(email_service, 'client') and email_service.client:
+                health_status["email_service"] = "configured"
+            else:
+                health_status["email_service"] = "not_configured"
         except Exception as e:
-            error_msg = str(e)[:100]
-            health_status["database"] = f"error: {error_msg}"
-            health_status["status"] = "degraded"
-            health_status["message"] = error_msg
-            
-            # If connection is broken, reset and retry
-            if "not connected" in error_msg.lower() or "connection" in error_msg.lower():
-                logger.warning("🔄 Connection appears broken, resetting...")
-                global client
-                if client:
-                    try:
-                        client.close()
-                    except:
-                        pass
-                client = None
-                db = None
-    
-    # Check email service
-    if email_service.client:
-        health_status["email_service"] = "configured"
-    else:
-        health_status["email_service"] = "not_configured"
-    
-    return health_status
+            logger.warning(f"Error checking email service: {str(e)}")
+            health_status["email_service"] = "unknown"
+        
+        return health_status
+    except Exception as e:
+        logger.error(f"❌ Health check error: {str(e)}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        return {
+            "status": "error",
+            "server": "running",
+            "database": "unknown",
+            "email_service": "unknown",
+            "error": str(e)[:200],
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
 
 @api_router.post("/health/reconnect")
 async def reconnect_mongodb():
@@ -685,29 +692,39 @@ logger.info(f"📦 Python Version: {os.sys.version}")
 @app.on_event("startup")
 async def startup_db_client():
     """Initialize MongoDB connection on app startup"""
-    logger.info("🔄 Initializing MongoDB connection...")
-    success = await connect_to_mongodb(max_retries=3, retry_delay=2)
-    
-    # If connection failed, start background retry task
-    if not success:
-        logger.info("🔄 Starting background MongoDB reconnection task...")
-        asyncio.create_task(background_reconnect_mongodb())
+    try:
+        logger.info("🔄 Initializing MongoDB connection...")
+        success = await connect_to_mongodb(max_retries=3, retry_delay=2)
+        
+        # If connection failed, start background retry task
+        if not success:
+            logger.info("🔄 Starting background MongoDB reconnection task...")
+            asyncio.create_task(background_reconnect_mongodb())
+    except Exception as e:
+        logger.error(f"❌ Startup error: {str(e)}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        # Don't crash the app, just log the error
 
 async def background_reconnect_mongodb():
     """Background task to retry MongoDB connection periodically"""
     global client, db
     
     while True:
-        # Wait 30 seconds before retrying
-        await asyncio.sleep(30)
-        
-        # Only retry if not connected
-        if db is None:
-            logger.info("🔄 Background: Retrying MongoDB connection...")
-            success = await connect_to_mongodb(max_retries=2, retry_delay=3)
-            if success:
-                logger.info("✅ Background: MongoDB connection restored!")
-                break
+        try:
+            # Wait 30 seconds before retrying
+            await asyncio.sleep(30)
+            
+            # Only retry if not connected
+            if db is None:
+                logger.info("🔄 Background: Retrying MongoDB connection...")
+                success = await connect_to_mongodb(max_retries=2, retry_delay=3)
+                if success:
+                    logger.info("✅ Background: MongoDB connection restored!")
+                    break
+        except Exception as e:
+            logger.error(f"❌ Background reconnection error: {str(e)}")
+            # Continue the loop even if there's an error
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
