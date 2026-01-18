@@ -32,6 +32,27 @@ client = None
 db = None
 db_name = os.environ.get('DB_NAME', 'cardxacademia')
 
+def validate_mongo_url(url):
+    """Validate MongoDB connection string format"""
+    if not url:
+        return False, "URL is empty"
+    if not url.startswith(('mongodb://', 'mongodb+srv://')):
+        return False, "URL must start with mongodb:// or mongodb+srv://"
+    # Check if database name is included (should have /database_name before ?)
+    if 'mongodb+srv://' in url or 'mongodb://' in url:
+        # Extract the part after the host
+        if '@' in url:
+            after_host = url.split('@')[1]
+        else:
+            after_host = url.split('//')[1]
+        
+        # Check if there's a database name (path after host)
+        if '/' in after_host:
+            db_part = after_host.split('/')[1].split('?')[0]
+            if not db_part:
+                return False, "Database name is missing (should be: mongodb+srv://.../database_name)"
+    return True, "Valid"
+
 async def connect_to_mongodb(max_retries=3, retry_delay=2):
     """Connect to MongoDB with retry logic"""
     global client, db
@@ -40,8 +61,16 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
     mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI')
     
     if not mongo_url or mongo_url == 'mongodb://localhost:27017':
-        logger.warning("⚠️ MONGO_URL not set! Using default localhost. This will fail in production.")
+        logger.error("❌ MONGO_URL not set! Using default localhost. This will fail in production.")
+        logger.error("⚠️ Please set MONGO_URL environment variable in Render Dashboard")
         mongo_url = 'mongodb://localhost:27017'
+    
+    # Validate connection string format
+    is_valid, validation_msg = validate_mongo_url(mongo_url)
+    if not is_valid:
+        logger.error(f"❌ Invalid MongoDB connection string: {validation_msg}")
+        logger.error("⚠️ Connection string should be: mongodb+srv://user:pass@cluster.net/database_name")
+        return False
     
     # Ensure connection string doesn't have trailing slash issues
     mongo_url = mongo_url.rstrip('/')
@@ -96,6 +125,23 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
         except Exception as e:
             error_msg = str(e)
             logger.error(f"❌ MongoDB connection failed (attempt {attempt}/{max_retries}): {error_msg}")
+            
+            # Provide specific error guidance
+            if "bad auth" in error_msg.lower() or "authentication failed" in error_msg.lower():
+                logger.error("🔐 Authentication failed! Check:")
+                logger.error("   1. MongoDB Atlas → Database Access → Verify username/password")
+                logger.error("   2. Reset password if needed")
+                logger.error("   3. Update MONGO_URL in Render with correct credentials")
+            elif "timeout" in error_msg.lower():
+                logger.error("⏱️ Connection timeout! Check:")
+                logger.error("   1. MongoDB Atlas cluster is running (not paused)")
+                logger.error("   2. Network Access allows 0.0.0.0/0")
+                logger.error("   3. Connection string format is correct")
+            elif "not found" in error_msg.lower() or "dns" in error_msg.lower():
+                logger.error("🌐 DNS/Network error! Check:")
+                logger.error("   1. Connection string hostname is correct")
+                logger.error("   2. MongoDB Atlas cluster exists and is active")
+            
             if client:
                 try:
                     client.close()
@@ -112,6 +158,7 @@ async def connect_to_mongodb(max_retries=3, retry_delay=2):
     
     logger.error("❌ Failed to connect to MongoDB after all retries")
     logger.error("⚠️ App will start but database operations will fail")
+    logger.error("📖 See MONGODB_CONNECTION_REPORT.md for troubleshooting guide")
     return False
 
 # Initialize Email Service
