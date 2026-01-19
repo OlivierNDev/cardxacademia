@@ -29,7 +29,10 @@ uvicorn server:app --host 127.0.0.1 --port 8000
 
 ## 📚 Documentation
 
+- **MONGODB_ATLAS_FRESH_START.md** - Complete guide to delete and recreate MongoDB Atlas from scratch
+- **MONGODB_QUICK_REFERENCE.md** - Quick 5-minute setup checklist for MongoDB Atlas
 - **MONGODB_CONNECTION_REPORT.md** - Comprehensive guide for MongoDB connection issues, troubleshooting, and fixes
+- **MONGODB_DIAGNOSTIC_SETUP.md** - Diagnostic logging setup for debugging MongoDB connections
 - **backend/RUN_BACKEND.md** - Backend setup and running instructions
 - **backend/SETUP_EMAIL.md** - Email service configuration guide
 

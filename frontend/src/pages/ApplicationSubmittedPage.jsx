@@ -95,9 +95,9 @@ const ApplicationSubmittedPage = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Account Name:</span>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-gray-800">CardX Academia & Travel Tours Ltd</span>
+                      <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                       <button
-                        onClick={() => copyToClipboard('CardX Academia & Travel Tours Ltd')}
+                        onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
                         className="text-blue-500 hover:text-blue-600"
                         title="Copy to clipboard"
                       >
@@ -106,20 +106,21 @@ const ApplicationSubmittedPage = () => {
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Bank Name:</span>
-                    <span className="font-semibold text-gray-800">[To be provided]</span>
-                  </div>
-                  <div className="flex justify-between items-center">
                     <span className="text-gray-600">Account Number:</span>
-                    <span className="font-semibold text-gray-800">[To be provided]</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-gray-800 font-mono">4002212860747</span>
+                      <button
+                        onClick={() => copyToClipboard('4002212860747')}
+                        className="text-blue-500 hover:text-blue-600"
+                        title="Copy to clipboard"
+                      >
+                        <Copy size={16} />
+                      </button>
+                    </div>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Currency:</span>
-                    <span className="font-semibold text-gray-800">USD</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600">SWIFT Code:</span>
-                    <span className="font-semibold text-gray-800">[To be provided]</span>
+                    <span className="font-semibold text-gray-800">USD (US Dollars)</span>
                   </div>
                 </div>
               </div>

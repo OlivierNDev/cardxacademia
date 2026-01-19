@@ -265,14 +265,25 @@ const IsraelTourApplicationPage = () => {
                   <p className="mb-4">You may complete your payment using any of the options below:</p>
                   
                   <div className="bg-white rounded-lg p-5 mb-4 border border-green-200">
-                    <h5 className="font-bold text-green-900 mb-2">Option 1: Bank Transfer</h5>
-                    <div className="space-y-1 text-sm">
-                      <p><span className="font-semibold">Account Name:</span> Cardx Academia</p>
-                      <p><span className="font-semibold">Account Number:</span> XXXXXXXXXX</p>
-                      <p><span className="font-semibold">Bank Name:</span> [Bank Name]</p>
-                      <p><span className="font-semibold">Reference:</span> Your Full Name – Israel Pilgrimage</p>
+                    <h5 className="font-bold text-green-900 mb-3">Option 1: Bank Transfer (USD)</h5>
+                    <div className="space-y-2 text-sm bg-gray-50 rounded p-4 mb-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-700">Account Name:</span>
+                        <span className="font-mono text-gray-800">Cardx Academia & Travel Tours Ltd</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-700">Account Number:</span>
+                        <span className="font-mono text-gray-800 font-bold">4002212860747</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-700">Currency:</span>
+                        <span className="text-gray-800">USD (US Dollars)</span>
+                      </div>
                     </div>
-                    <p className="mt-3 text-sm">
+                    <p className="text-sm text-gray-600 mb-2">
+                      <span className="font-semibold">Reference:</span> Your Full Name – Israel Pilgrimage
+                    </p>
+                    <p className="mt-3 text-sm text-gray-700">
                       After payment, please email your proof of payment to<br />
                       <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
                         📧 info@cardxacademia.com
