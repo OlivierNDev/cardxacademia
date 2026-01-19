@@ -26,7 +26,8 @@ import {
   Building2,
   Loader2,
   CheckCircle2,
-  XCircle
+  XCircle,
+  Copy
 } from 'lucide-react';
 import { pilgrimageAPI } from '@/services/api';
 
@@ -86,6 +87,11 @@ const IsraelTourApplicationPage = () => {
   const [error, setError] = useState(null);
   const [bookingId, setBookingId] = useState(null);
   const [errors, setErrors] = useState({});
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert('Copied to clipboard!');
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -264,24 +270,42 @@ const IsraelTourApplicationPage = () => {
                   <h4 className="text-xl font-bold text-green-900 mb-4">💳 Payment Options</h4>
                   <p className="mb-4">You may complete your payment using any of the options below:</p>
                   
-                  <div className="bg-white rounded-lg p-5 mb-4 border border-green-200">
-                    <h5 className="font-bold text-green-900 mb-3">Option 1: Bank Transfer (USD)</h5>
-                    <div className="space-y-2 text-sm bg-gray-50 rounded p-4 mb-3">
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold text-gray-700">Account Name:</span>
-                        <span className="font-mono text-gray-800">Cardx Academia & Travel Tours Ltd</span>
+                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-green-300">
+                    <h5 className="font-bold text-green-900 mb-4 text-lg">Option 1: Bank Transfer (USD)</h5>
+                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Name:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
+                          <button
+                            onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold text-gray-700">Account Number:</span>
-                        <span className="font-mono text-gray-800 font-bold">4002212860747</span>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Number:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-gray-800 font-bold text-lg">4002212860747</span>
+                          <button
+                            onClick={() => copyToClipboard('4002212860747')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold text-gray-700">Currency:</span>
-                        <span className="text-gray-800">USD (US Dollars)</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-bold text-gray-700">Currency:</span>
+                        <span className="text-gray-800 font-semibold">USD (US Dollars)</span>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">
-                      <span className="font-semibold">Reference:</span> Your Full Name – Israel Pilgrimage
+                    <p className="text-sm text-gray-600 mb-3 bg-yellow-50 p-3 rounded border border-yellow-200">
+                      <span className="font-semibold">Payment Reference:</span> Your Full Name – Israel Pilgrimage
                     </p>
                     <p className="mt-3 text-sm text-gray-700">
                       After payment, please email your proof of payment to<br />
