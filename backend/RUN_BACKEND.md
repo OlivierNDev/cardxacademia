@@ -39,7 +39,8 @@ CORS_ORIGINS=http://localhost:3000
 # Resend Email Service
 RESEND_API_KEY=re_avH2qdHB_BdiasBpMqkKYJDhgax3SMHv1
 FROM_EMAIL=CardX Academia <noreply@cardxacademia.com>
-ADMIN_EMAIL=olivier.niyo250@gmail.com
+ADMIN_EMAIL=info@cardxacademia.com
+REPLY_TO_EMAIL=info@cardxacademia.com
 ```
 
 **Note:** If using MongoDB Atlas (cloud), update `MONGO_URL` with your Atlas connection string.

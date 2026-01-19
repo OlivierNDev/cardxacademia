@@ -16,6 +16,8 @@ class EmailService:
         self.api_key = os.environ.get('RESEND_API_KEY')
         self.from_email = os.environ.get('FROM_EMAIL', 'CardX Academia <noreply@cardxacademia.com>')
         self.admin_email = os.environ.get('ADMIN_EMAIL')
+        # Reply-to email for customer emails (defaults to info@cardxacademia.com)
+        self.reply_to_email = os.environ.get('REPLY_TO_EMAIL', 'info@cardxacademia.com')
         
         if not self.admin_email:
             logger.warning("ADMIN_EMAIL not found in environment variables. Admin notifications will be disabled.")
@@ -280,7 +282,7 @@ class EmailService:
             to=customer_email,
             subject=subject,
             html_content=html_content,
-            reply_to=self.admin_email
+            reply_to=self.reply_to_email
         )
     
     def send_admin_notification(self, appointment_data: Dict) -> bool:
@@ -580,7 +582,7 @@ class EmailService:
             to=customer_email,
             subject=subject,
             html_content=html_content,
-            reply_to=self.admin_email
+            reply_to=self.reply_to_email
         )
     
     def send_pilgrimage_admin_notification(self, booking_data: Dict) -> bool:

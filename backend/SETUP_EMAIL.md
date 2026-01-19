@@ -20,6 +20,13 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 RESEND_API_KEY=your_resend_api_key_here
 FROM_EMAIL=CardX Academia <noreply@cardxacademia.com>
 ADMIN_EMAIL=info@cardxacademia.com
+REPLY_TO_EMAIL=info@cardxacademia.com
+```
+
+**Email Configuration:**
+- `FROM_EMAIL`: The "from" address shown in emails (noreply address)
+- `ADMIN_EMAIL`: Email address for admin notifications
+- `REPLY_TO_EMAIL`: The "reply-to" address (defaults to `info@cardxacademia.com` if not set)
 ```
 
 ### 2. Install Dependencies
@@ -54,7 +61,13 @@ Once your domain is verified, update the `.env` file:
 ```env
 FROM_EMAIL=CardX Academia <noreply@cardxacademia.com>
 ADMIN_EMAIL=info@cardxacademia.com
+REPLY_TO_EMAIL=info@cardxacademia.com
 ```
+
+**Note:** 
+- `FROM_EMAIL`: The "from" address shown in emails (noreply address)
+- `ADMIN_EMAIL`: Email address for admin notifications
+- `REPLY_TO_EMAIL`: The "reply-to" address (defaults to `info@cardxacademia.com` if not set)
 
 ### 5. Test the Email Service
 
