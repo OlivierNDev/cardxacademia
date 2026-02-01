@@ -19,9 +19,9 @@ const TestimonialsSection = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const videoRefs = useRef({});
 
-  // Get all video and text testimonials
-  const videoTestimonials = testimonials.filter(t => t.type === 'video');
-  const textTestimonials = testimonials.filter(t => t.type === 'text');
+  // Get all video and text testimonials (exclude hidden ones)
+  const videoTestimonials = testimonials.filter(t => t.type === 'video' && !t.hidden);
+  const textTestimonials = testimonials.filter(t => t.type === 'text' && !t.hidden);
 
   const maxVideoSlides = Math.max(1, Math.ceil(videoTestimonials.length / slidesPerView));
 

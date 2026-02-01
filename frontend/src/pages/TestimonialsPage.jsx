@@ -49,8 +49,8 @@ const TestimonialsPage = () => {
     }
   };
 
-  const videoTestimonials = testimonials.filter(t => t.type === 'video');
-  const textTestimonials = testimonials.filter(t => t.type === 'text');
+  const videoTestimonials = testimonials.filter(t => t.type === 'video' && !t.hidden);
+  const textTestimonials = testimonials.filter(t => t.type === 'text' && !t.hidden);
 
   return (
     <div className="min-h-screen bg-gray-50">
