@@ -179,8 +179,7 @@ export const testimonials = [
     videoUrl: '/videos/Christine.mp4', // Local video file
     thumbnail: '',
     instagramEmbed: false,
-    scholarship: true,
-    hidden: true // Temporarily hidden
+    scholarship: true
   },
   {
     id: 5,
@@ -192,8 +191,7 @@ export const testimonials = [
     videoUrl: '/videos/Theogene.mp4', // Local video file
     thumbnail: '', // Will use video poster
     scholarship: true, // Indicates they received a scholarship
-    instagramEmbed: false, // Using local video file
-    hidden: true // Temporarily hidden
+    instagramEmbed: false // Using local video file
   },
   {
     id: 6,
@@ -205,8 +203,7 @@ export const testimonials = [
     videoUrl: '/videos/Mukamisha.mp4',
     thumbnail: '',
     instagramEmbed: false,
-    scholarship: true,
-    hidden: true // Temporarily hidden
+    scholarship: true
   },
   {
     id: 7,
