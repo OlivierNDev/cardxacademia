@@ -12,7 +12,7 @@ export const navLinks = [
       { name: 'Visitor Visa', href: '/visa/visitor' },
     ]
   },
-  { name: 'Israel Pilgrimage', href: '/israel-pilgrimage-2025' },
+  { name: 'Israel Pilgrimage', href: '/israel-pilgrimage-2026' },
   { name: 'Testimonials', href: '/testimonials' },
   { name: 'Contact Us', href: '/contact' },
   { name: 'About', href: '/about' },

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AppointmentPage from "./pages/AppointmentPage";
 import ServicesPage from "./pages/ServicesPage";
@@ -29,7 +29,8 @@ function App() {
           <Route path="/visa/visitor" element={<VisitorVisaPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/israel-pilgrimage-2025" element={<IsraelPilgrimagePage />} />
+          <Route path="/israel-pilgrimage-2026" element={<IsraelPilgrimagePage />} />
+          <Route path="/israel-pilgrimage-2025" element={<Navigate to="/israel-pilgrimage-2026" replace />} />
           <Route path="/apply-israel-tour" element={<IsraelTourApplicationPage />} />
           <Route path="/application-submitted" element={<ApplicationSubmittedPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />

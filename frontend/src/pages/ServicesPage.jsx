@@ -123,14 +123,14 @@ const ServicesPage = () => {
                   Holy Land Pilgrimage to Israel
                 </h3>
                 <p className="text-gray-600 mb-3">
-                  March 29 - April 5, 2026 • $2,900 USD
+                  April 29 - May 6, 2026 • $2,900 USD
                 </p>
                 <p className="text-gray-600 text-sm">
                   A spiritual journey through the land of the Bible. Walk where Jesus walked.
                 </p>
               </div>
               <div className="flex gap-3">
-                <Link to="/israel-pilgrimage-2025">
+                <Link to="/israel-pilgrimage-2026">
                   <Button className="bg-white border-2 border-blue-500 text-blue-500 hover:bg-blue-50">
                     Learn More
                   </Button>

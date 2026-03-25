@@ -93,8 +93,8 @@ const SearchModal = ({ isOpen, onClose }) => {
       'student visa': { title: 'Student Visa', href: '/visa/student', icon: 'graduation-cap' },
       'work visa': { title: 'Work Visa', href: '/visa/work', icon: 'briefcase' },
       'visitor visa': { title: 'Visitor Visa', href: '/visa/visitor', icon: 'map-pin' },
-      'israel': { title: 'Israel Pilgrimage', href: '/israel-pilgrimage-2025', icon: 'map-pin' },
-      'pilgrimage': { title: 'Israel Pilgrimage', href: '/israel-pilgrimage-2025', icon: 'map-pin' },
+      'israel': { title: 'Israel Pilgrimage', href: '/israel-pilgrimage-2026', icon: 'map-pin' },
+      'pilgrimage': { title: 'Israel Pilgrimage', href: '/israel-pilgrimage-2026', icon: 'map-pin' },
       'testimonials': { title: 'Testimonials', href: '/testimonials', icon: 'users' },
       'services': { title: 'Our Services', href: '/services', icon: 'briefcase' },
     };

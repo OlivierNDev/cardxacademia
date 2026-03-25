@@ -21,7 +21,7 @@ const IsraelPilgrimageBanner = () => {
                 Holy Land Pilgrimage to Israel
               </h2>
               <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-3">
-                <span>March 29 - April 5, 2026</span>
+                <span>April 29 - May 6, 2026</span>
                 <span className="hidden sm:inline">•</span>
                 <span className="text-lg font-semibold text-gray-800">$2,900 USD</span>
               </div>
@@ -31,7 +31,7 @@ const IsraelPilgrimageBanner = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link 
-                to="/israel-pilgrimage-2025"
+                to="/israel-pilgrimage-2026"
                 className="bg-white border-2 border-blue-500 text-blue-500 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all text-center"
               >
                 Learn More

@@ -15,12 +15,12 @@ const IsraelPilgrimagePage = () => {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [registrationClosed, setRegistrationClosed] = useState(false);
 
-  // Countdown to March 15, 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
+  // Countdown to April 16, 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
   useEffect(() => {
     const updateCountdown = () => {
-      // March 15, 2026 23:59:59 Kigali time (UTC+2)
+      // April 16, 2026 23:59:59 Kigali time (UTC+2)
       // Create date in UTC and convert to Kigali time
-      const deadlineUTC = new Date('2026-03-15T21:59:59Z'); // 23:59:59 Kigali = 21:59:59 UTC
+      const deadlineUTC = new Date('2026-04-16T21:59:59Z'); // 23:59:59 Kigali = 21:59:59 UTC
       
       // Get current time in UTC
       const nowUTC = new Date();
@@ -93,8 +93,8 @@ const IsraelPilgrimagePage = () => {
             <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4">Travel Dates</h3>
               <div className="space-y-2 text-gray-700">
-                <p><span className="font-semibold">Departure:</span> March 29, 2026</p>
-                <p><span className="font-semibold">Return:</span> April 5, 2026</p>
+                <p><span className="font-semibold">Departure:</span> April 29, 2026</p>
+                <p><span className="font-semibold">Return:</span> May 6, 2026</p>
                 <p><span className="font-semibold">Duration:</span> 8 Days / 7 Nights</p>
               </div>
             </div>
@@ -145,7 +145,7 @@ const IsraelPilgrimagePage = () => {
                     <p className="text-sm text-gray-600">Seconds</p>
                   </div>
                 </div>
-                <p className="text-center text-gray-600 mt-4">Deadline: March 15, 2026 at 23:59 (Kigali time)</p>
+                <p className="text-center text-gray-600 mt-4">Deadline: April 16, 2026 at 23:59 (Kigali time)</p>
               </div>
             )}
           </div>
@@ -231,7 +231,7 @@ const IsraelPilgrimagePage = () => {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">Registration Deadline</h3>
-              <p className="text-gray-600">March 15, 2026</p>
+              <p className="text-gray-600">April 16, 2026</p>
             </div>
           </div>
         </div>

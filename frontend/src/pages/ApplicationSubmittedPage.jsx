@@ -184,7 +184,7 @@ const ApplicationSubmittedPage = () => {
             We look forward to welcoming you on this life-changing spiritual journey.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/israel-pilgrimage-2025">
+            <Link to="/israel-pilgrimage-2026">
               <Button 
                 size="lg" 
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-6 text-lg"

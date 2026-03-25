@@ -179,7 +179,7 @@ const IsraelTourApplicationPage = () => {
           alternatePhone: formData.alternatePhone || null,
         },
         booking: {
-          tourDates: "March 29, 2026 – April 5, 2026",
+          tourDates: "April 29, 2026 – May 6, 2026",
           tourCost: "USD $2,900",
           churchName: formData.churchName || null,
           churchAddress: formData.churchAddress || null,
@@ -239,10 +239,10 @@ const IsraelTourApplicationPage = () => {
             Holy Land Pilgrimage Application
           </h1>
           <p className="text-gray-600 text-lg">
-            March 29, 2026 – April 5, 2026
+            April 29, 2026 – May 6, 2026
           </p>
           <p className="text-gray-500 text-sm mt-2">
-            Registration Deadline: March 15, 2026
+            Registration Deadline: April 16, 2026
           </p>
         </div>
       </section>
@@ -418,7 +418,7 @@ const IsraelTourApplicationPage = () => {
           <div className="max-w-4xl mx-auto px-4">
             <div className="bg-white rounded-lg shadow-sm p-8 mb-6">
               <p className="text-gray-600 mb-6">
-                Please fill out all required fields. Registration deadline: <strong>March 15, 2026</strong>
+                Please fill out all required fields. Registration deadline: <strong>April 16, 2026</strong>
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-8">
