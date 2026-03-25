@@ -454,7 +454,7 @@ async def get_status_checks():
 async def create_appointment(appointment_data: AppointmentCreate):
     """Create a new appointment and send confirmation emails"""
     try:
-        db_available = db is not None
+        db_available = (db is not None) and (not EMAIL_ONLY_MODE)
         if not db_available and not EMAIL_ONLY_MODE:
             raise HTTPException(
                 status_code=503,
@@ -701,7 +701,7 @@ async def cancel_appointment(appointment_id: str):
 async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
     """Create a new Israel Pilgrimage booking and send confirmation emails"""
     try:
-        db_available = db is not None
+        db_available = (db is not None) and (not EMAIL_ONLY_MODE)
         if not db_available and not EMAIL_ONLY_MODE:
             raise HTTPException(
                 status_code=503,
