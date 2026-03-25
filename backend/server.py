@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 client = None
 db = None
 db_name = os.environ.get('DB_NAME', 'cardxacademia')
+EMAIL_ONLY_MODE = os.environ.get('EMAIL_ONLY_MODE', 'false').strip().lower() in ('1', 'true', 'yes', 'on')
 
 def validate_mongo_url(url):
     """Validate MongoDB connection string format"""
@@ -349,7 +350,10 @@ async def health_check():
         }
         
         # Check MongoDB connection
-        if db is None:
+        if EMAIL_ONLY_MODE:
+            health_status["database"] = "disabled_email_only_mode"
+            health_status["message"] = "Running in EMAIL_ONLY_MODE; MongoDB is optional."
+        elif db is None:
             health_status["database"] = "not_connected"
             health_status["status"] = "degraded"
             health_status["message"] = "MongoDB connection not established. Retrying in background..."
@@ -450,25 +454,27 @@ async def get_status_checks():
 async def create_appointment(appointment_data: AppointmentCreate):
     """Create a new appointment and send confirmation emails"""
     try:
-        if db is None:
+        db_available = db is not None
+        if not db_available and not EMAIL_ONLY_MODE:
             raise HTTPException(
                 status_code=503,
                 detail="Database connection unavailable. Please try again in a few moments."
             )
         
-        # Check for conflicting appointments
+        # Check for conflicting appointments (skip in email-only mode)
         appointment_date_str = appointment_data.appointment.date.isoformat()
-        existing = await db.appointments.find_one({
-            "appointment.date": appointment_date_str,
-            "appointment.time": appointment_data.appointment.time,
-            "status": {"$in": ["pending", "confirmed"]}
-        })
-        
-        if existing:
-            raise HTTPException(
-                status_code=400,
-                detail="This time slot is already booked. Please choose another time."
-            )
+        if db_available:
+            existing = await db.appointments.find_one({
+                "appointment.date": appointment_date_str,
+                "appointment.time": appointment_data.appointment.time,
+                "status": {"$in": ["pending", "confirmed"]}
+            })
+            
+            if existing:
+                raise HTTPException(
+                    status_code=400,
+                    detail="This time slot is already booked. Please choose another time."
+                )
         
         # Create appointment object
         appointment = Appointment(
@@ -484,8 +490,11 @@ async def create_appointment(appointment_data: AppointmentCreate):
         doc['updated_at'] = doc['updated_at'].isoformat()
         doc['timezone'] = 'Africa/Kigali'  # Store timezone info
         
-        # Save to database
-        result = await db.appointments.insert_one(doc)
+        # Save to database only when available
+        if db_available:
+            await db.appointments.insert_one(doc)
+        else:
+            logger.info("EMAIL_ONLY_MODE active or DB unavailable: skipping appointment persistence")
         
         # Send emails
         email_sent = False
@@ -503,17 +512,19 @@ async def create_appointment(appointment_data: AppointmentCreate):
             if customer_email_sent and admin_email_sent:
                 email_sent = True
                 # Update email_sent status
-                await db.appointments.update_one(
-                    {"id": appointment.id},
-                    {"$set": {"email_sent": True}}
-                )
+                if db_available:
+                    await db.appointments.update_one(
+                        {"id": appointment.id},
+                        {"$set": {"email_sent": True}}
+                    )
                 logger.info(f"✅ Both emails sent successfully for appointment {appointment.id}")
             elif customer_email_sent:
                 email_sent = True
-                await db.appointments.update_one(
-                    {"id": appointment.id},
-                    {"$set": {"email_sent": True}}
-                )
+                if db_available:
+                    await db.appointments.update_one(
+                        {"id": appointment.id},
+                        {"$set": {"email_sent": True}}
+                    )
                 logger.warning(f"⚠️ Customer email sent but admin email failed for appointment {appointment.id}")
             elif admin_email_sent:
                 logger.warning(f"⚠️ Admin email sent but customer email failed for appointment {appointment.id}")
@@ -690,7 +701,8 @@ async def cancel_appointment(appointment_id: str):
 async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
     """Create a new Israel Pilgrimage booking and send confirmation emails"""
     try:
-        if db is None:
+        db_available = db is not None
+        if not db_available and not EMAIL_ONLY_MODE:
             raise HTTPException(
                 status_code=503,
                 detail="Database connection unavailable. Please try again in a few moments."
@@ -708,8 +720,11 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
         doc['updated_at'] = doc['updated_at'].isoformat()
         doc['timezone'] = 'Africa/Kigali'
         
-        # Save to database
-        result = await db.pilgrimage_bookings.insert_one(doc)
+        # Save to database only when available
+        if db_available:
+            await db.pilgrimage_bookings.insert_one(doc)
+        else:
+            logger.info("EMAIL_ONLY_MODE active or DB unavailable: skipping pilgrimage booking persistence")
         
         # Send emails
         email_sent = False
@@ -726,17 +741,19 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
             
             if customer_email_sent and admin_email_sent:
                 email_sent = True
-                await db.pilgrimage_bookings.update_one(
-                    {"id": booking.id},
-                    {"$set": {"email_sent": True}}
-                )
+                if db_available:
+                    await db.pilgrimage_bookings.update_one(
+                        {"id": booking.id},
+                        {"$set": {"email_sent": True}}
+                    )
                 logger.info(f"✅ Both emails sent successfully for pilgrimage booking {booking.id}")
             elif customer_email_sent:
                 email_sent = True
-                await db.pilgrimage_bookings.update_one(
-                    {"id": booking.id},
-                    {"$set": {"email_sent": True}}
-                )
+                if db_available:
+                    await db.pilgrimage_bookings.update_one(
+                        {"id": booking.id},
+                        {"$set": {"email_sent": True}}
+                    )
                 logger.warning(f"⚠️ Customer email sent but admin email failed for pilgrimage booking {booking.id}")
             elif admin_email_sent:
                 logger.warning(f"⚠️ Admin email sent but customer email failed for pilgrimage booking {booking.id}")
@@ -797,6 +814,7 @@ if mongo_url_env != 'NOT SET' and 'mongodb+srv' in mongo_url_env:
 else:
     logger.info(f"📦 MongoDB URL: {mongo_url_env}")
 logger.info(f"📦 Database Name: {os.environ.get('DB_NAME', 'cardxacademia')}")
+logger.info(f"📦 EMAIL_ONLY_MODE: {EMAIL_ONLY_MODE}")
 logger.info(f"📦 CORS Origins: {cors_origins}")
 logger.info(f"📦 Python Version: {os.sys.version}")
 
@@ -804,6 +822,9 @@ logger.info(f"📦 Python Version: {os.sys.version}")
 async def startup_db_client():
     """Initialize MongoDB connection on app startup"""
     try:
+        if EMAIL_ONLY_MODE:
+            logger.info("📧 EMAIL_ONLY_MODE is enabled. Skipping MongoDB startup connection.")
+            return
         logger.info("🔄 Initializing MongoDB connection...")
         success = await connect_to_mongodb(max_retries=3, retry_delay=2)
         

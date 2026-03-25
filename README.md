@@ -42,6 +42,7 @@ uvicorn server:app --host 127.0.0.1 --port 8000
 - `MONGO_URL` - MongoDB Atlas connection string
 - `CORS_ORIGINS` - Allowed CORS origins (comma-separated)
 - `RESEND_API_KEY` - Resend email service API key
+- `EMAIL_ONLY_MODE` - Set to `true` to allow bookings to be submitted and emailed without MongoDB persistence
 - `PORT` - Server port (automatically set by Render)
 
 ### Frontend (Vercel)
