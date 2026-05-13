@@ -179,7 +179,7 @@ const IsraelTourApplicationPage = () => {
           alternatePhone: formData.alternatePhone || null,
         },
         booking: {
-          tourDates: "April 29, 2026 – May 6, 2026",
+          tourDates: "July 18, 2026 – July 25, 2026",
           tourCost: "USD $2,900",
           churchName: formData.churchName || null,
           churchAddress: formData.churchAddress || null,
@@ -239,7 +239,7 @@ const IsraelTourApplicationPage = () => {
             Holy Land Pilgrimage Application
           </h1>
           <p className="text-gray-600 text-lg">
-            April 29, 2026 – May 6, 2026
+            July 18, 2026 – July 25, 2026
           </p>
           <p className="text-gray-500 text-sm mt-2">
             Registration Deadline: 1 July 2026

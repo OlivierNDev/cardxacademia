@@ -123,7 +123,7 @@ const ServicesPage = () => {
                   Holy Land Pilgrimage to Israel
                 </h3>
                 <p className="text-gray-600 mb-3">
-                  April 29 - May 6, 2026 • $2,900 USD
+                  July 18 - July 25, 2026 • $2,900 USD
                 </p>
                 <p className="text-gray-600 text-sm">
                   A spiritual journey through the land of the Bible. Walk where Jesus walked.

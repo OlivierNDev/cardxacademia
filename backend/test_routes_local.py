@@ -48,7 +48,7 @@ def main():
             "phone": "+250788123456"
         },
         "booking": {
-            "tourDates": "March 29, 2026 – April 5, 2026",
+            "tourDates": "July 18, 2026 – July 25, 2026",
             "tourCost": "USD $2,900"
         }
     }

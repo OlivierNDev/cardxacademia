@@ -299,7 +299,7 @@ class PilgrimageCustomerInfo(BaseModel):
     alternatePhone: Optional[str] = None
 
 class PilgrimageBookingInfo(BaseModel):
-    tourDates: str = "March 29, 2026 – April 5, 2026"
+    tourDates: str = "July 18, 2026 – July 25, 2026"
     tourCost: str = "USD $2,900"
     churchName: Optional[str] = None
     churchAddress: Optional[str] = None

@@ -92,8 +92,8 @@ const IsraelPilgrimagePage = () => {
             <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4">Travel Dates</h3>
               <div className="space-y-2 text-gray-700">
-                <p><span className="font-semibold">Departure:</span> April 29, 2026</p>
-                <p><span className="font-semibold">Return:</span> May 6, 2026</p>
+                <p><span className="font-semibold">Departure:</span> July 18, 2026</p>
+                <p><span className="font-semibold">Return:</span> July 25, 2026</p>
                 <p><span className="font-semibold">Duration:</span> 8 Days / 7 Nights</p>
               </div>
             </div>

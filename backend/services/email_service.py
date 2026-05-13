@@ -419,7 +419,7 @@ class EmailService:
         """Send confirmation email to customer after pilgrimage booking"""
         customer_name = booking_data.get('customer', {}).get('fullName', 'Valued Pilgrim')
         customer_email = booking_data.get('customer', {}).get('email')
-        tour_dates = booking_data.get('booking', {}).get('tourDates', 'March 29, 2026 – April 5, 2026')
+        tour_dates = booking_data.get('booking', {}).get('tourDates', 'July 18, 2026 – July 25, 2026')
         tour_cost = booking_data.get('booking', {}).get('tourCost', 'USD $2,900')
         booking_id = booking_data.get('id', 'Unknown')
         
@@ -600,7 +600,7 @@ class EmailService:
         passport_expiry = booking_data.get('customer', {}).get('passportExpiryDate', 'Not provided')
         
         booking = booking_data.get('booking', {})
-        tour_dates = booking.get('tourDates', 'March 29, 2026 – April 5, 2026')
+        tour_dates = booking.get('tourDates', 'July 18, 2026 – July 25, 2026')
         tour_cost = booking.get('tourCost', 'USD $2,900')
         church_name = booking.get('churchName', 'Not provided')
         emergency_contact = booking.get('emergencyContactName', 'Not provided')
