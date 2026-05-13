@@ -15,12 +15,11 @@ const IsraelPilgrimagePage = () => {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [registrationClosed, setRegistrationClosed] = useState(false);
 
-  // Countdown to April 16, 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
+  // Countdown to 1 July 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
   useEffect(() => {
     const updateCountdown = () => {
-      // April 16, 2026 23:59:59 Kigali time (UTC+2)
-      // Create date in UTC and convert to Kigali time
-      const deadlineUTC = new Date('2026-04-16T21:59:59Z'); // 23:59:59 Kigali = 21:59:59 UTC
+      // 1 July 2026 23:59:59 Kigali time (UTC+2)
+      const deadlineUTC = new Date('2026-07-01T21:59:59Z'); // 23:59:59 Kigali = 21:59:59 UTC
       
       // Get current time in UTC
       const nowUTC = new Date();
@@ -145,7 +144,7 @@ const IsraelPilgrimagePage = () => {
                     <p className="text-sm text-gray-600">Seconds</p>
                   </div>
                 </div>
-                <p className="text-center text-gray-600 mt-4">Deadline: April 16, 2026 at 23:59 (Kigali time)</p>
+                <p className="text-center text-gray-600 mt-4">Deadline: 1 July 2026 at 23:59 (Kigali time)</p>
               </div>
             )}
           </div>
@@ -231,7 +230,7 @@ const IsraelPilgrimagePage = () => {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">Registration Deadline</h3>
-              <p className="text-gray-600">April 16, 2026</p>
+              <p className="text-gray-600">1 July 2026</p>
             </div>
           </div>
         </div>

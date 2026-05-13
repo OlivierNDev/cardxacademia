@@ -553,7 +553,7 @@ class EmailService:
         <p style="margin: 8px 0;">1. Our team will review your application and contact you within 2-3 business days.</p>
         <p style="margin: 8px 0;">2. You will receive further instructions regarding payment and required documents.</p>
         <p style="margin: 8px 0;">3. Please ensure your passport is valid for at least 6 months from the travel date.</p>
-        <p style="margin: 8px 0;">4. Registration deadline: <strong>March 15, 2026</strong></p>
+        <p style="margin: 8px 0;">4. Registration deadline: <strong>1 July 2026</strong></p>
       </div>
       
       <div class="contact-info">
