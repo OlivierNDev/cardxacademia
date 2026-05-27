@@ -21,8 +21,10 @@ const TestimonialsSection = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const videoRefs = useRef({});
 
-  // Get all video and text testimonials (exclude hidden ones)
-  const videoTestimonials = testimonials.filter(t => t.type === 'video' && !t.hidden);
+  // Get all video, photo, and text testimonials (exclude hidden ones)
+  const videoTestimonials = testimonials.filter(
+    t => (t.type === 'video' || t.type === 'photo') && !t.hidden
+  );
   const textTestimonials = testimonials.filter(t => t.type === 'text' && !t.hidden);
 
   const maxVideoSlides = Math.max(1, Math.ceil(videoTestimonials.length / slidesPerView));
@@ -97,6 +99,7 @@ const TestimonialsSection = () => {
     );
     
     visibleVideos.forEach((testimonial) => {
+      if (testimonial.type === 'photo') return;
       const video = videoRefs.current[testimonial.id];
       if (video && testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl)) {
         video.muted = true;
@@ -142,8 +145,21 @@ const TestimonialsSection = () => {
                       <div className="group">
                         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all">
                           {/* Video: 9:16, max-h on mobile so it fits on phone screens */}
-                          <div className="relative aspect-[9/16] max-h-[50vh] sm:max-h-none bg-black w-full">
-                            {testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
+                          <div className={`relative ${testimonial.type === 'photo' ? 'aspect-[4/3]' : 'aspect-[9/16] max-h-[50vh] sm:max-h-none'} bg-black w-full`}>
+                            {testimonial.type === 'photo' && testimonial.image ? (
+                              <>
+                                <img
+                                  src={testimonial.image}
+                                  alt={`${testimonial.name} - ${testimonial.country}`}
+                                  className="w-full h-full object-cover"
+                                />
+                                <div className="absolute top-3 left-3 pointer-events-none">
+                                  <div className="bg-green-600 text-white px-2 py-1 rounded text-xs font-semibold">
+                                    Photo
+                                  </div>
+                                </div>
+                              </>
+                            ) : testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
                               <>
                                 <video
                                   ref={(el) => {

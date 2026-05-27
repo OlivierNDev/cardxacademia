@@ -475,6 +475,50 @@ export const testimonials = [
     thumbnail: '',
     instagramEmbed: false,
     scholarship: true
+  },
+  {
+    id: 33,
+    country: 'Canada',
+    name: 'Kenny Ishimwe',
+    image: '',
+    testimonial: 'We\'re proud to celebrate another successful outcome at Cardx Academia. One of our valued applicants has officially received his Canadian student visa and is now set to continue his studies in Canada. In this testimony, Kenny shares how Cardx Academia supported him through the visa process.',
+    type: 'video',
+    videoUrl: '/videos/Kenny_Testimony.mp4',
+    thumbnail: '',
+    instagramEmbed: false
+  },
+  {
+    id: 34,
+    country: 'Canada',
+    name: 'Kenny Ishimwe',
+    image: '',
+    testimonial: 'Kenny Ishimwe is on his way to Canada. This moment at Kanombe captures his departure as he begins the next chapter of his study-abroad journey with support from Cardx Academia.',
+    type: 'video',
+    videoUrl: '/videos/KANOMBE.mp4',
+    thumbnail: '',
+    instagramEmbed: false
+  },
+  {
+    id: 35,
+    country: 'Canada',
+    name: 'Kenny Ishimwe',
+    image: '/images/testimonials/kenny-ottawa-1.jpg',
+    testimonial: 'Our applicant has now safely arrived in Canada. As part of our commitment to full support, we were pleased to welcome and pick him up directly from the airport in Ottawa. At Cardx Academia, we don\'t just process applications—we walk the journey with you.',
+    type: 'photo',
+    videoUrl: null,
+    thumbnail: null,
+    instagramEmbed: false
+  },
+  {
+    id: 36,
+    country: 'Canada',
+    name: 'Kenny Ishimwe',
+    image: '/images/testimonials/kenny-ottawa-2.jpg',
+    testimonial: 'Kenny Ishimwe was warmly received by our team in Ottawa, Canada—one of the full-support services we provide beyond visa processing, including airport pickup and arrival assistance for our students.',
+    type: 'photo',
+    videoUrl: null,
+    thumbnail: null,
+    instagramEmbed: false
   }
 ];
 

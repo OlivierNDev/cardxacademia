@@ -100,11 +100,12 @@ const Footer = () => {
       <div className="border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
-            Copyright ©2024 Education Consultant | Developed by ZeroX, Inc.
+            Copyright ©2026 Education Consultant | Developed by ZeroX, Inc.
           </p>
           <div className="flex gap-6 text-sm">
             <a href="/privacy" className="text-gray-400 hover:text-teal-400 transition-colors">Privacy</a>
             <a href="/terms" className="text-gray-400 hover:text-teal-400 transition-colors">Terms Of Policy</a>
+            <a href="/sitemap" className="text-gray-400 hover:text-teal-400 transition-colors">Site Map</a>
           </div>
         </div>
       </div>

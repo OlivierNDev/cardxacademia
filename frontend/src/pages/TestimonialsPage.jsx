@@ -52,7 +52,9 @@ const TestimonialsPage = () => {
     }
   };
 
-  const videoTestimonials = testimonials.filter(t => t.type === 'video' && !t.hidden);
+  const videoTestimonials = testimonials.filter(
+    t => (t.type === 'video' || t.type === 'photo') && !t.hidden
+  );
   const textTestimonials = testimonials.filter(t => t.type === 'text' && !t.hidden);
 
   return (
@@ -88,13 +90,13 @@ const TestimonialsPage = () => {
           <div className="max-w-7xl mx-auto px-3 sm:px-4">
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
-                Video Testimonials
+                Video & Photo Stories
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto mb-2 text-sm sm:text-base px-2">
-                Watch real stories from our clients who have successfully achieved their dreams with our support
+                Watch and view real stories from our clients who have successfully achieved their dreams with our support
               </p>
               <p className="text-xs sm:text-sm text-gray-500">
-                Showing {videoTestimonials.length} video testimonials
+                Showing {videoTestimonials.length} stories
               </p>
             </div>
 
@@ -106,8 +108,21 @@ const TestimonialsPage = () => {
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow group flex flex-col"
                 >
                   {/* Video: 9:16, max-h on mobile so it fits on screen */}
-                  <div className="relative aspect-[9/16] max-h-[50vh] sm:max-h-none bg-black w-full flex-shrink-0">
-                    {testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
+                  <div className={`relative ${testimonial.type === 'photo' ? 'aspect-[4/3]' : 'aspect-[9/16] max-h-[50vh] sm:max-h-none'} bg-black w-full flex-shrink-0`}>
+                    {testimonial.type === 'photo' && testimonial.image ? (
+                      <>
+                        <img
+                          src={testimonial.image}
+                          alt={`${testimonial.name} - ${testimonial.country}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-4 left-4 pointer-events-none">
+                          <div className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            Photo
+                          </div>
+                        </div>
+                      </>
+                    ) : testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
                       <>
                         <video
                           ref={(el) => {

@@ -1,6 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { services } from '../data/mockData';
 
 const AirTicketSection = () => {
+  const airTicketingService = services.find((service) => service.icon === 'plane');
+  const sectionTitle = airTicketingService?.title || 'Affordable Flights Worldwide';
+  const sectionDescription =
+    airTicketingService?.description ||
+    'Book the cheapest and most affordable flights to destinations across the globe with our reliable air ticketing services.';
+
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4">
@@ -22,17 +30,17 @@ const AirTicketSection = () => {
           {/* Content */}
           <div>
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-6 leading-tight">
-              Best Air Ticket Booking: Affordable Flights Worldwide
+              {sectionTitle}
             </h2>
             <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-              Book the cheapest and most affordable flights to destinations across the globe with our reliable air ticketing services. We guarantee the best deals, ensuring smooth travel for students and families. Your journey begins with us!
+              {sectionDescription} We guarantee the best deals, ensuring smooth travel for students and families. Your journey begins with us!
             </p>
-            <a 
-              href="/booking"
+            <Link
+              to="/appointment"
               className="inline-block bg-teal-500 hover:bg-teal-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg hover:-translate-y-1 uppercase tracking-wide"
             >
               Book Now
-            </a>
+            </Link>
           </div>
         </div>
       </div>

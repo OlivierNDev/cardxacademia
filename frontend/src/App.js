@@ -14,6 +14,9 @@ import IsraelPilgrimagePage from "./pages/IsraelPilgrimagePage";
 import IsraelTourApplicationPage from "./pages/IsraelTourApplicationPage";
 import ApplicationSubmittedPage from "./pages/ApplicationSubmittedPage";
 import TestimonialsPage from "./pages/TestimonialsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
+import SitemapPage from "./pages/SitemapPage";
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
           <Route path="/apply-israel-tour" element={<IsraelTourApplicationPage />} />
           <Route path="/application-submitted" element={<ApplicationSubmittedPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/sitemap" element={<SitemapPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </BrowserRouter>

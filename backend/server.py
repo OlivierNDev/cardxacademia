@@ -500,26 +500,6 @@ async def create_appointment(appointment_data: AppointmentCreate):
         email_sent = False
         try:
             logger.info(f"📧 Starting email sending process for appointment {appointment.id}")
-            appointment_queue = []
-            queue_position = None
-            total_appointments = 1
-            if db_available:
-                appointment_queue = await db.appointments.find(
-                    {},
-                    {
-                        "_id": 0,
-                        "id": 1,
-                        "created_at": 1,
-                        "customer.name": 1,
-                        "customer.email": 1,
-                        "customer.phone": 1,
-                    }
-                ).sort("created_at", -1).to_list(200)
-                total_appointments = len(appointment_queue)
-                for idx, item in enumerate(appointment_queue, start=1):
-                    if item.get("id") == appointment.id:
-                        queue_position = idx
-                        break
             
             # Send confirmation to customer
             logger.info(f"📧 Sending confirmation email to customer: {appointment_data.customer.email}")
@@ -527,12 +507,7 @@ async def create_appointment(appointment_data: AppointmentCreate):
             
             # Send notification to admin
             logger.info(f"📧 Sending admin notification email")
-            admin_email_sent = email_service.send_admin_notification(
-                doc,
-                queue_entries=appointment_queue,
-                queue_position=queue_position,
-                total_count=total_appointments
-            )
+            admin_email_sent = email_service.send_admin_notification(doc)
             
             if customer_email_sent and admin_email_sent:
                 email_sent = True
@@ -755,27 +730,6 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
         email_sent = False
         try:
             logger.info(f"📧 Starting email sending process for pilgrimage booking {booking.id}")
-            pilgrimage_queue = []
-            queue_position = None
-            total_bookings = 1
-            if db_available:
-                pilgrimage_queue = await db.pilgrimage_bookings.find(
-                    {},
-                    {
-                        "_id": 0,
-                        "id": 1,
-                        "created_at": 1,
-                        "customer.fullName": 1,
-                        "customer.email": 1,
-                        "booking.emergencyContactName": 1,
-                        "booking.emergencyContactPhone": 1,
-                    }
-                ).sort("created_at", -1).to_list(500)
-                total_bookings = len(pilgrimage_queue)
-                for idx, item in enumerate(pilgrimage_queue, start=1):
-                    if item.get("id") == booking.id:
-                        queue_position = idx
-                        break
             
             # Send confirmation to customer
             logger.info(f"📧 Sending confirmation email to customer: {booking_data.customer.email}")
@@ -783,12 +737,7 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
             
             # Send notification to admin
             logger.info(f"📧 Sending admin notification email for pilgrimage booking")
-            admin_email_sent = email_service.send_pilgrimage_admin_notification(
-                doc,
-                queue_entries=pilgrimage_queue,
-                queue_position=queue_position,
-                total_count=total_bookings
-            )
+            admin_email_sent = email_service.send_pilgrimage_admin_notification(doc)
             
             if customer_email_sent and admin_email_sent:
                 email_sent = True
