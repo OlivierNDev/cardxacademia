@@ -4,7 +4,7 @@ Handles sending emails for appointments, confirmations, and notifications
 """
 import os
 import logging
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 import resend
 from datetime import datetime
 
@@ -81,6 +81,46 @@ class EmailService:
             import traceback
             logger.error(f"Traceback: {traceback.format_exc()}")
             return False
+
+    def _format_created_at(self, created_at_value) -> str:
+        """Format created_at safely for queue display."""
+        try:
+            if isinstance(created_at_value, str):
+                dt = datetime.fromisoformat(created_at_value.replace('Z', '+00:00'))
+            else:
+                dt = created_at_value
+            return dt.strftime('%Y-%m-%d %I:%M %p')
+        except Exception:
+            return "Unknown time"
+
+    def _build_queue_rows_html(self, queue_entries: List[Dict], kind: str) -> str:
+        """Build minimal queue rows HTML for admin notifications."""
+        rows = []
+        for index, item in enumerate(queue_entries, start=1):
+            customer = item.get("customer", {}) if isinstance(item, dict) else {}
+            booking = item.get("booking", {}) if isinstance(item, dict) else {}
+            if kind == "pilgrimage":
+                name = customer.get("fullName", "Unknown")
+                email = customer.get("email", "Not provided")
+                emergency = booking.get("emergencyContactName", "Not provided")
+            else:
+                name = customer.get("name", "Unknown")
+                email = customer.get("email", "Not provided")
+                emergency = customer.get("phone", "Not provided")
+
+            created_at = self._format_created_at(item.get("created_at"))
+            rows.append(
+                f"""
+                <tr>
+                  <td style="padding:8px;border-bottom:1px solid #eee;">{index}</td>
+                  <td style="padding:8px;border-bottom:1px solid #eee;">{name}</td>
+                  <td style="padding:8px;border-bottom:1px solid #eee;">{email}</td>
+                  <td style="padding:8px;border-bottom:1px solid #eee;">{emergency}</td>
+                  <td style="padding:8px;border-bottom:1px solid #eee;">{created_at}</td>
+                </tr>
+                """
+            )
+        return "".join(rows)
     
     def send_appointment_confirmation(self, appointment_data: Dict) -> bool:
         """Send confirmation email to customer after appointment booking"""
@@ -285,7 +325,13 @@ class EmailService:
             reply_to=self.reply_to_email
         )
     
-    def send_admin_notification(self, appointment_data: Dict) -> bool:
+    def send_admin_notification(
+        self,
+        appointment_data: Dict,
+        queue_entries: Optional[List[Dict]] = None,
+        queue_position: Optional[int] = None,
+        total_count: Optional[int] = None
+    ) -> bool:
         """Send notification email to admin about new appointment booking"""
         if not self.admin_email:
             logger.warning("ADMIN_EMAIL not configured. Skipping admin notification.")
@@ -318,6 +364,11 @@ class EmailService:
         except:
             formatted_date = str(appointment_date)
         
+        queue_entries = queue_entries or []
+        queue_rows = self._build_queue_rows_html(queue_entries, "appointment") if queue_entries else ""
+        queue_position_display = queue_position if queue_position is not None else "N/A"
+        total_count_display = total_count if total_count is not None else "N/A"
+
         html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -364,6 +415,18 @@ class EmailService:
       color: #666;
       font-size: 12px;
     }}
+    table {{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }}
+    th {{
+      text-align: left;
+      background: #f3f4f6;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }}
   </style>
 </head>
 <body>
@@ -392,6 +455,29 @@ class EmailService:
       <div class="info-row"><span class="label">Location:</span> {location if appointment_type == 'in_person' else 'Virtual Meeting'}</div>
       <div class="info-row"><span class="label">Consultant:</span> {worker}</div>
       <div class="info-row"><span class="label">Notes:</span> {notes}</div>
+    </div>
+
+    <div class="info-section">
+      <h3 style="margin-top: 0; color: #14B8A6;">Queue Update</h3>
+      <div class="info-row"><span class="label">New Registration #:</span> {queue_position_display}</div>
+      <div class="info-row"><span class="label">Total Applications:</span> {total_count_display}</div>
+      <p style="margin: 10px 0 6px;"><strong>Recent Queue (Minimal):</strong></p>
+      {f'''
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          {queue_rows}
+        </tbody>
+      </table>
+      ''' if queue_rows else '<p style="margin:8px 0;">Queue data unavailable (database not connected).</p>'}
     </div>
     
     <p style="margin-top: 20px;"><strong>Action Required:</strong> Please confirm this appointment in your system.</p>
@@ -585,7 +671,13 @@ class EmailService:
             reply_to=self.reply_to_email
         )
     
-    def send_pilgrimage_admin_notification(self, booking_data: Dict) -> bool:
+    def send_pilgrimage_admin_notification(
+        self,
+        booking_data: Dict,
+        queue_entries: Optional[List[Dict]] = None,
+        queue_position: Optional[int] = None,
+        total_count: Optional[int] = None
+    ) -> bool:
         """Send notification email to admin about new pilgrimage booking"""
         if not self.admin_email:
             logger.warning("ADMIN_EMAIL not configured. Skipping admin notification.")
@@ -621,6 +713,11 @@ class EmailService:
         except:
             formatted_date = datetime.now().strftime('%B %d, %Y at %I:%M %p')
         
+        queue_entries = queue_entries or []
+        queue_rows = self._build_queue_rows_html(queue_entries, "pilgrimage") if queue_entries else ""
+        queue_position_display = queue_position if queue_position is not None else "N/A"
+        total_count_display = total_count if total_count is not None else "N/A"
+
         html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -667,6 +764,18 @@ class EmailService:
       color: #666;
       font-size: 12px;
     }}
+    table {{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }}
+    th {{
+      text-align: left;
+      background: #f3f4f6;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }}
   </style>
 </head>
 <body>
@@ -699,6 +808,29 @@ class EmailService:
       <div class="info-row"><span class="label">Dietary Requirements:</span> {dietary_requirements}</div>
       <div class="info-row"><span class="label">Special Requests:</span> {special_requests}</div>
       <div class="info-row"><span class="label">Booking Date:</span> {formatted_date}</div>
+    </div>
+
+    <div class="info-section">
+      <h3 style="margin-top: 0; color: #2563EB;">Queue Update</h3>
+      <div class="info-row"><span class="label">New Registration #:</span> {queue_position_display}</div>
+      <div class="info-row"><span class="label">Total Applications:</span> {total_count_display}</div>
+      <p style="margin: 10px 0 6px;"><strong>Recent Queue (Minimal):</strong></p>
+      {f'''
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Emergency Contact</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          {queue_rows}
+        </tbody>
+      </table>
+      ''' if queue_rows else '<p style="margin:8px 0;">Queue data unavailable (database not connected).</p>'}
     </div>
     
     <p style="margin-top: 20px;"><strong>Action Required:</strong> Please review this booking and follow up with the customer regarding payment and required documents.</p>

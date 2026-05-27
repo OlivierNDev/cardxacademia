@@ -218,7 +218,7 @@ export const testimonials = [
   {
     id: 8,
     country: 'Canada',
-    name: 'Marie Claire Mukamana',
+    name: 'Marie Claire Umutoni',
     image: '',
     testimonial: 'I am extremely grateful to Cardx Academia for helping me obtain my Canadian student visa. The process seemed overwhelming at first, but their team broke it down into manageable steps and supported me every step of the way. They also helped me find affordable flights and prepare all necessary documents. Highly recommended!',
     type: 'text',
@@ -300,7 +300,7 @@ export const testimonials = [
   {
     id: 16,
     country: 'Canada',
-    name: 'Ange Mukamana',
+    name: 'Ange Nyiramana',
     image: '',
     testimonial: 'Cardx Academia made my Canadian study permit application process incredibly smooth. They provided step-by-step guidance, helped me prepare all required documents, and followed up with IRCC on my behalf. Their support was invaluable, and I am now pursuing my studies in Toronto. Thank you for making my dream come true!',
     type: 'text',
@@ -342,7 +342,7 @@ export const testimonials = [
   {
     id: 20,
     country: 'Italy',
-    name: 'Claudine Mukamana',
+    name: 'Claudine Mukeshimana',
     image: '',
     testimonial: 'Cardx Academia assisted me with my Italian student visa application. They were patient, thorough, and always available to answer my questions. They helped me prepare all documents in Italian and English, which was crucial for my application. I am now studying art history in Florence and loving it!',
     type: 'text',
@@ -383,7 +383,7 @@ export const testimonials = [
   {
     id: 24,
     country: 'Canada',
-    name: 'Rachel Mukamana',
+    name: 'Rachel Uwase',
     image: '',
     testimonial: 'Cardx Academia helped me secure my Canadian work permit and assisted with my Express Entry application. Their knowledge of Canadian immigration policies is excellent. They provided personalized guidance and ensured all my documents were properly prepared. I am now working in Vancouver and grateful for their support.',
     type: 'text',
@@ -424,7 +424,7 @@ export const testimonials = [
   {
     id: 28,
     country: 'Germany',
-    name: 'Josiane Mukamana',
+    name: 'Josiane Ingabire',
     image: '',
     testimonial: 'Cardx Academia assisted me with my German student visa and helped me secure a scholarship. Their team was professional, thorough, and always available. They made the complex German visa process manageable. I am now studying engineering in Munich and grateful for their excellent support.',
     type: 'text',
@@ -451,6 +451,30 @@ export const testimonials = [
     type: 'text',
     videoUrl: null,
     thumbnail: null
+  },
+  {
+    id: 31,
+    country: 'Israel',
+    name: 'Hallelujah Amen',
+    image: '',
+    testimonial: 'HALLELUJAH AMEN has officially secured a Master\'s scholarship to study in Israel. We are proud of this milestone and honored to have supported her journey from application to visa processing.',
+    type: 'video',
+    videoUrl: '/videos/Amen_Testimony1.mp4',
+    thumbnail: '',
+    instagramEmbed: false,
+    scholarship: true
+  },
+  {
+    id: 32,
+    country: 'Israel',
+    name: 'Hallelujah Amen',
+    image: '',
+    testimonial: 'Amen has now arrived safely in Tel Aviv and was warmly received by our team in Israel. This marks the successful final step of her study-abroad journey.',
+    type: 'video',
+    videoUrl: '/videos/AMEN_arrival.MOV',
+    thumbnail: '',
+    instagramEmbed: false,
+    scholarship: true
   }
 ];
 

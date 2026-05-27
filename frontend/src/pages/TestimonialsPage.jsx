@@ -7,6 +7,9 @@ import ScrollToTop from '../components/ScrollToTop';
 import { testimonials } from '../data/mockData';
 import { Play, Pause, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 
+const GOOGLE_REVIEW_URL = 'https://maps.app.goo.gl/pFDNUAh8Gszw2ecK6';
+const isPlayableLocalVideo = (url) => /\.(mp4|mov|webm)$/i.test(url || '');
+
 const TestimonialsPage = () => {
   const videoRefs = useRef({});
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
@@ -66,6 +69,16 @@ const TestimonialsPage = () => {
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-2">
             Hear directly from our clients about their successful journeys with Cardx Academia
           </p>
+          <div className="mt-6">
+            <a
+              href={GOOGLE_REVIEW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 px-5 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Leave a Review on Google
+            </a>
+          </div>
         </div>
       </section>
 
@@ -94,7 +107,7 @@ const TestimonialsPage = () => {
                 >
                   {/* Video: 9:16, max-h on mobile so it fits on screen */}
                   <div className="relative aspect-[9/16] max-h-[50vh] sm:max-h-none bg-black w-full flex-shrink-0">
-                    {testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4') ? (
+                    {testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
                       <>
                         <video
                           ref={(el) => {
@@ -295,6 +308,14 @@ const TestimonialsPage = () => {
                 Contact Us
               </button>
             </Link>
+            <a
+              href={GOOGLE_REVIEW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto border-2 border-white text-white hover:bg-white/10 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all"
+            >
+              Leave a Google Review
+            </a>
           </div>
         </div>
       </section>

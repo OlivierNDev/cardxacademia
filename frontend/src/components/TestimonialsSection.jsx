@@ -12,6 +12,8 @@ const getSlidesPerView = () => {
   return 3;
 };
 
+const isPlayableLocalVideo = (url) => /\.(mp4|mov|webm)$/i.test(url || '');
+
 const TestimonialsSection = () => {
   const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView);
   const [videoSliderIndex, setVideoSliderIndex] = useState(0);
@@ -96,7 +98,7 @@ const TestimonialsSection = () => {
     
     visibleVideos.forEach((testimonial) => {
       const video = videoRefs.current[testimonial.id];
-      if (video && testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4')) {
+      if (video && testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl)) {
         video.muted = true;
         video.play().catch(() => {
           // Auto-play was prevented, that's okay
@@ -141,7 +143,7 @@ const TestimonialsSection = () => {
                         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all">
                           {/* Video: 9:16, max-h on mobile so it fits on phone screens */}
                           <div className="relative aspect-[9/16] max-h-[50vh] sm:max-h-none bg-black w-full">
-                            {testimonial.videoUrl && testimonial.videoUrl.endsWith('.mp4') ? (
+                            {testimonial.videoUrl && isPlayableLocalVideo(testimonial.videoUrl) ? (
                               <>
                                 <video
                                   ref={(el) => {
