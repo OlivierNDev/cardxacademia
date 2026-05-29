@@ -8,10 +8,13 @@ import { Button } from '@/components/ui/button';
 import { 
   ArrowRight,
   CheckCircle2,
-  XCircle
+  XCircle,
+  MapPin
 } from 'lucide-react';
+import { contactInfo } from '../data/mockData';
 
 const IsraelPilgrimagePage = () => {
+  const { rwanda, burundi } = contactInfo.offices;
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [registrationClosed, setRegistrationClosed] = useState(false);
 
@@ -226,7 +229,7 @@ const IsraelPilgrimagePage = () => {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">How to Register</h3>
-              <p className="text-gray-600">Registration is done at the CardX Academia & Travel Tours office</p>
+              <p className="text-gray-600">Registration is done at the CardX Academia & Travel Tours office in Kigali or our Bujumbura branch</p>
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">Registration Deadline</h3>
@@ -242,12 +245,23 @@ const IsraelPilgrimagePage = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
             Contact Information
           </h2>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <a href="tel:+250788603451" className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-md transition-shadow border border-gray-200">
-              <p className="text-gray-600 mb-2 text-sm font-semibold">Phone</p>
-              <p className="font-semibold text-gray-800">+250 788 603 451</p>
-              <p className="font-semibold text-gray-800 mt-1">+250 787 420 838</p>
-            </a>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-8">
+            <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+              <p className="text-gray-600 mb-2 text-sm font-semibold">Phone – {rwanda.label}</p>
+              {rwanda.phones.map((phone) => (
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block font-semibold text-gray-800 hover:text-blue-600">
+                  {phone.display}
+                </a>
+              ))}
+            </div>
+            <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+              <p className="text-gray-600 mb-2 text-sm font-semibold">Phone – {burundi.label}</p>
+              {burundi.phones.map((phone) => (
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block font-semibold text-gray-800 hover:text-blue-600">
+                  {phone.display}
+                </a>
+              ))}
+            </div>
             <a href="mailto:tours@cardxacademia.com" className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-md transition-shadow border border-gray-200">
               <p className="text-gray-600 mb-2 text-sm font-semibold">Email</p>
               <p className="font-semibold text-gray-800 text-sm">tours@cardxacademia.com</p>
@@ -257,6 +271,26 @@ const IsraelPilgrimagePage = () => {
               <p className="text-gray-600 mb-2 text-sm font-semibold">Website</p>
               <p className="font-semibold text-gray-800">www.cardxacademia.com</p>
             </a>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
+              <div className="flex items-start gap-3">
+                <MapPin className="text-blue-500 flex-shrink-0 mt-1" size={20} />
+                <div>
+                  <p className="font-semibold text-gray-800 mb-1">{rwanda.label}</p>
+                  <p className="text-gray-600 text-sm">{rwanda.address}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-6 border border-orange-100">
+              <div className="flex items-start gap-3">
+                <MapPin className="text-orange-500 flex-shrink-0 mt-1" size={20} />
+                <div>
+                  <p className="font-semibold text-gray-800 mb-1">{burundi.label}</p>
+                  <p className="text-gray-600 text-sm">{burundi.address}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

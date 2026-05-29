@@ -2,6 +2,8 @@ import React from 'react';
 import { contactInfo } from '../data/mockData';
 
 const TopBar = () => {
+  const { rwanda, burundi } = contactInfo.offices;
+
   return (
     <div className="bg-white py-2 px-4 border-b border-gray-100">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center text-sm">
@@ -9,11 +11,18 @@ const TopBar = () => {
           <a href={`mailto:${contactInfo.email}`} className="text-gray-600 hover:text-blue-500 transition-colors">
             <span>{contactInfo.email}</span>
           </a>
-          <a href={`tel:${contactInfo.phone}`} className="text-gray-600 hover:text-blue-500 transition-colors">
-            <span>{contactInfo.phone}</span>
-          </a>
-          <div className="hidden md:block text-gray-600">
-            <span>{contactInfo.address}</span>
+          {rwanda.phones.map((phone) => (
+            <a key={phone.tel} href={`tel:${phone.tel}`} className="text-gray-600 hover:text-blue-500 transition-colors">
+              <span>{phone.display}</span>
+            </a>
+          ))}
+          {burundi.phones.map((phone) => (
+            <a key={phone.tel} href={`tel:${phone.tel}`} className="text-gray-600 hover:text-blue-500 transition-colors">
+              <span>{phone.display}</span>
+            </a>
+          ))}
+          <div className="hidden lg:block text-gray-600">
+            <span>Kigali, Rwanda & Bujumbura, Burundi</span>
           </div>
         </div>
         <div className="flex items-center gap-3">

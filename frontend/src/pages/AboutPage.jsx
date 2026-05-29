@@ -36,7 +36,7 @@ const AboutPage = () => {
               Empowering Global Education Dreams
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Cardx Academia and Travel Tours is a leading educational consulting firm dedicated to helping students and professionals achieve their dreams of studying and working abroad. Based in Kigali, Rwanda, we have established ourselves as a trusted partner for thousands of students seeking international education opportunities.
+              Cardx Academia and Travel Tours is a leading educational consulting firm dedicated to helping students and professionals achieve their dreams of studying and working abroad. Based in Kigali, Rwanda, with a branch in Bujumbura, Burundi, we have established ourselves as a trusted partner for thousands of students seeking international education opportunities.
             </p>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
               Our mission is to provide comprehensive, personalized support throughout every step of your journey—from university selection and admission to visa applications and travel arrangements. We believe that education knows no boundaries, and we're committed to making global opportunities accessible to everyone.

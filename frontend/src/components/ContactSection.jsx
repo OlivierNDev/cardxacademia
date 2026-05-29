@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { contactInfo } from '../data/mockData';
 
 const ContactSection = () => {
+  const { rwanda, burundi } = contactInfo.offices;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,16 +48,33 @@ const ContactSection = () => {
                 <span className="text-sm font-semibold text-gray-700">Email:</span>
                 <span className="text-lg ml-2">{contactInfo.email}</span>
               </a>
-              <a 
-                href={`tel:${contactInfo.phone}`}
-                className="block text-blue-600 hover:text-blue-700 transition-colors p-3 border border-gray-200 rounded-lg hover:bg-blue-50"
-              >
-                <span className="text-sm font-semibold text-gray-700">Phone:</span>
-                <span className="text-lg ml-2">{contactInfo.phone}</span>
-              </a>
-              <div className="text-gray-600 p-3 border border-gray-200 rounded-lg">
-                <span className="text-sm font-semibold text-gray-700">Address:</span>
-                <span className="text-lg ml-2">{contactInfo.address}</span>
+
+              <div className="p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-semibold text-gray-700 block mb-2">{rwanda.label}</span>
+                {rwanda.phones.map((phone) => (
+                  <a
+                    key={phone.tel}
+                    href={`tel:${phone.tel}`}
+                    className="block text-blue-600 hover:text-blue-700 transition-colors mb-1"
+                  >
+                    {phone.display}
+                  </a>
+                ))}
+                <p className="text-gray-600 mt-2">{rwanda.address}</p>
+              </div>
+
+              <div className="p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-semibold text-gray-700 block mb-2">{burundi.label}</span>
+                {burundi.phones.map((phone) => (
+                  <a
+                    key={phone.tel}
+                    href={`tel:${phone.tel}`}
+                    className="block text-blue-600 hover:text-blue-700 transition-colors mb-1"
+                  >
+                    {phone.display}
+                  </a>
+                ))}
+                <p className="text-gray-600 mt-2">{burundi.address}</p>
               </div>
             </div>
           </div>

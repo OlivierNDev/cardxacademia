@@ -12,10 +12,13 @@ import {
   Phone,
   ArrowRight,
   Copy,
-  CreditCard
+  CreditCard,
+  MapPin
 } from 'lucide-react';
+import { contactInfo } from '../data/mockData';
 
 const ApplicationSubmittedPage = () => {
+  const { rwanda, burundi } = contactInfo.offices;
   // Get application data from sessionStorage
   const applicationData = JSON.parse(sessionStorage.getItem('israelTourApplication') || '{}');
 
@@ -233,10 +236,21 @@ const ApplicationSubmittedPage = () => {
 
                 <div className="bg-green-50 rounded-lg p-6 border border-green-200">
                   <h3 className="font-bold text-gray-800 mb-2">Office Payment</h3>
-                  <p className="text-gray-700 text-sm">
-                    You may also bring your payment directly to our office in Rwanda or our new branch in Burundi.
-                    Please come with your booking confirmation details.
+                  <p className="text-gray-700 text-sm mb-4">
+                    You may also bring your payment directly to one of our offices. Please come with your booking confirmation details.
                   </p>
+                  <div className="space-y-3 text-sm">
+                    <div className="bg-white rounded-lg p-4 border border-green-100">
+                      <p className="font-semibold text-gray-800 mb-1">{rwanda.label}</p>
+                      <p className="text-gray-600">{rwanda.address}</p>
+                      <p className="text-gray-500 mt-1">{rwanda.phones.map((p) => p.display).join(' · ')}</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-green-100">
+                      <p className="font-semibold text-gray-800 mb-1">{burundi.label}</p>
+                      <p className="text-gray-600">{burundi.address}</p>
+                      <p className="text-gray-500 mt-1">{burundi.phones.map((p) => p.display).join(' · ')}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -272,19 +286,40 @@ const ApplicationSubmittedPage = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             Need Help? Contact Us
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
             <a href="mailto:tours@cardxacademia.com" className="bg-blue-50 rounded-lg p-6 hover:shadow-md transition-shadow">
               <Mail className="text-blue-500 mb-3" size={32} />
               <h3 className="font-bold text-gray-800 mb-2">Email</h3>
               <p className="text-gray-600 text-sm mb-1">tours@cardxacademia.com</p>
               <p className="text-gray-600 text-sm">cardxtraveltours@gmail.com</p>
             </a>
-            <a href="tel:+250788603451" className="bg-orange-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+            <div className="bg-orange-50 rounded-lg p-6">
               <Phone className="text-orange-500 mb-3" size={32} />
-              <h3 className="font-bold text-gray-800 mb-2">Phone</h3>
-              <p className="text-gray-600">+250 788 603 451</p>
-              <p className="text-gray-600">+250 787 420 838</p>
-            </a>
+              <h3 className="font-bold text-gray-800 mb-2">Phone – {rwanda.label}</h3>
+              {rwanda.phones.map((phone) => (
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-orange-600">
+                  {phone.display}
+                </a>
+              ))}
+              <h3 className="font-bold text-gray-800 mb-2 mt-4">Phone – {burundi.label}</h3>
+              {burundi.phones.map((phone) => (
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-orange-600">
+                  {phone.display}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <MapPin className="text-blue-500 mb-3" size={28} />
+              <h3 className="font-bold text-gray-800 mb-2">{rwanda.label}</h3>
+              <p className="text-gray-600 text-sm">{rwanda.address}</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <MapPin className="text-orange-500 mb-3" size={28} />
+              <h3 className="font-bold text-gray-800 mb-2">{burundi.label}</h3>
+              <p className="text-gray-600 text-sm">{burundi.address}</p>
+            </div>
           </div>
         </div>
       </section>

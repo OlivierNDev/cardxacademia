@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { contactInfo } from '../data/mockData';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -72,18 +73,21 @@ const ContactPage = () => {
     }, 1000);
   };
 
-  const contactInfo = [
+  const { rwanda, burundi } = contactInfo.offices;
+
+  const contactInfoItems = [
     {
       title: 'Email',
-      value: 'info@cardxacademia.com',
-      link: 'mailto:info@cardxacademia.com'
+      value: contactInfo.email,
+      link: `mailto:${contactInfo.email}`
     },
-    {
+    ...rwanda.phones.map((phone) => ({
       title: 'Phone',
-      value: '+250 787 420 838',
-      link: 'tel:+250787420838',
-      country: '🇷🇼'
-    },
+      value: phone.display,
+      link: `tel:${phone.tel}`,
+      country: rwanda.country,
+      branch: rwanda.label,
+    })),
     {
       title: 'Phone',
       value: '+1 (343) 999-2932',
@@ -96,10 +100,24 @@ const ContactPage = () => {
       link: 'tel:+972534810764',
       country: '🇮🇱'
     },
+    ...burundi.phones.map((phone) => ({
+      title: 'Phone',
+      value: phone.display,
+      link: `tel:${phone.tel}`,
+      country: burundi.country,
+      branch: burundi.label,
+    })),
     {
       title: 'Address',
-      value: 'Town Center Building (TCB), 1st Floor, Door F1B-013D, Kigali City',
-      link: '#'
+      value: rwanda.address,
+      link: '#',
+      branch: rwanda.label,
+    },
+    {
+      title: 'Address',
+      value: burundi.address,
+      link: '#',
+      branch: burundi.label,
     }
   ];
 
@@ -134,13 +152,15 @@ const ContactPage = () => {
               </p>
 
               <div className="space-y-4 mb-8">
-                {contactInfo.map((info, index) => (
+                {contactInfoItems.map((info, index) => (
                   <a
                     key={index}
                     href={info.link}
                     className="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-100"
                   >
-                    <h3 className="font-semibold text-gray-800 mb-1">{info.title}</h3>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      {info.branch ? `${info.title} – ${info.branch}` : info.title}
+                    </h3>
                     <p className="text-gray-600 flex items-center gap-2">
                       {info.country && <span>{info.country}</span>}
                       <span>{info.value}</span>
@@ -257,20 +277,27 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Map Section Placeholder */}
+      {/* Office Locations */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Visit Our Office
+            Visit Our Offices
           </h2>
-          <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-gray-600 font-medium mb-1">
-                Town Center Building (TCB)
-              </p>
-              <p className="text-gray-500 text-sm">
-                1st Floor, Door F1B-013D, Kigali City
-              </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-gray-800 font-semibold mb-2">{rwanda.label}</p>
+                <p className="text-gray-600 font-medium mb-1">Town Center Building (TCB)</p>
+                <p className="text-gray-500 text-sm">1st Floor, Door F1B-013D, Kigali City</p>
+              </div>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-gray-800 font-semibold mb-2">{burundi.label}</p>
+                <p className="text-gray-600 font-medium mb-1">Bujumbura, Rohero II</p>
+                <p className="text-gray-500 text-sm">White stone building/Bureau numéro 11</p>
+                <p className="text-gray-500 text-sm mt-2">{burundi.phones[0].display} · {burundi.phones[1].display}</p>
+              </div>
             </div>
           </div>
         </div>

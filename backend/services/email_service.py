@@ -261,7 +261,10 @@ class EmailService:
         <p><strong>Need to reschedule or cancel?</strong></p>
         <p>Please contact us at:</p>
         <p>📧 Email: <a href="mailto:info@cardxacademia.com" style="color: #14B8A6;">info@cardxacademia.com</a></p>
-        <p>📞 Phone: <a href="tel:+250788603451" style="color: #14B8A6;">+250 788 603 451</a></p>
+        <p>📞 Phone (Rwanda): <a href="tel:+250788603451" style="color: #14B8A6;">+250 788 603 451</a>, <a href="tel:+250787420838" style="color: #14B8A6;">+250 787 420 838</a></p>
+        <p>📞 Phone (Burundi): <a href="tel:+25766314249" style="color: #14B8A6;">+257 663 142 49</a>, <a href="tel:+25769909533" style="color: #14B8A6;">+257 699 095 33</a></p>
+        <p>📍 Rwanda Office: 1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City</p>
+        <p>📍 Burundi Branch: Bujumbura, Rohero II, White stone building/Bureau numéro 11</p>
       </div>
       
       <p style="margin-top: 25px;">We look forward to meeting you and helping you achieve your goals!</p>
@@ -560,8 +563,10 @@ class EmailService:
         <p><strong>Questions or need assistance?</strong></p>
         <p>Please contact us at:</p>
         <p>📧 Email: <a href="mailto:tours@cardxacademia.com" style="color: #2563EB;">tours@cardxacademia.com</a></p>
-        <p>📞 Phone: <a href="tel:+250788603451" style="color: #2563EB;">+250 788 603 451</a></p>
-        <p>📍 Office: 1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City</p>
+        <p>📞 Phone (Rwanda): <a href="tel:+250788603451" style="color: #2563EB;">+250 788 603 451</a>, <a href="tel:+250787420838" style="color: #2563EB;">+250 787 420 838</a></p>
+        <p>📞 Phone (Burundi): <a href="tel:+25766314249" style="color: #2563EB;">+257 663 142 49</a>, <a href="tel:+25769909533" style="color: #2563EB;">+257 699 095 33</a></p>
+        <p>📍 Rwanda Office: 1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City</p>
+        <p>📍 Burundi Branch: Bujumbura, Rohero II, White stone building/Bureau numéro 11</p>
       </div>
       
       <p style="margin-top: 25px;">We look forward to accompanying you on this spiritual journey to the Holy Land!</p>

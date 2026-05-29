@@ -18,6 +18,7 @@ import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { format } from 'date-fns';
+import { officeLocations } from '../data/mockData';
 
 const AppointmentPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -54,7 +55,7 @@ const AppointmentPage = () => {
     email: '',
     phone: '',
     appointmentType: 'in_person',
-    location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
+    location: officeLocations[0].value,
     worker: 'any',
     serviceType: 'visa_consultation',
     duration: 30,
@@ -187,7 +188,7 @@ const AppointmentPage = () => {
         email: '',
         phone: '',
         appointmentType: 'in_person',
-        location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
+        location: officeLocations[0].value,
         worker: 'any',
         serviceType: 'visa_consultation',
         duration: 30,
@@ -339,14 +340,22 @@ const AppointmentPage = () => {
 
                 {formData.appointmentType === 'in_person' && (
                   <div className="mt-4">
-                    <Label htmlFor="location">Location</Label>
-                    <Input
-                      id="location"
+                    <Label htmlFor="location">Office Location</Label>
+                    <Select
                       value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
-                      placeholder="Meeting location"
-                      className="mt-1"
-                    />
+                      onValueChange={(value) => handleInputChange('location', value)}
+                    >
+                      <SelectTrigger id="location" className="mt-1">
+                        <SelectValue placeholder="Select office location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {officeLocations.map((office) => (
+                          <SelectItem key={office.value} value={office.value}>
+                            {office.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 )}
               </div>
@@ -518,7 +527,7 @@ const AppointmentPage = () => {
                         email: '',
                         phone: '',
                         appointmentType: 'in_person',
-                        location: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
+                        location: officeLocations[0].value,
                         worker: 'any',
                         serviceType: 'visa_consultation',
                         duration: 30,

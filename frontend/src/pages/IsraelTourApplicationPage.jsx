@@ -30,8 +30,10 @@ import {
   Copy
 } from 'lucide-react';
 import { pilgrimageAPI } from '@/services/api';
+import { contactInfo } from '../data/mockData';
 
 const IsraelTourApplicationPage = () => {
+  const { rwanda, burundi } = contactInfo.offices;
   const navigate = useNavigate();
   
   // Scroll to top when page loads
@@ -436,10 +438,21 @@ const IsraelTourApplicationPage = () => {
 
                   <div className="bg-white rounded-lg p-5 border border-green-200">
                     <h5 className="font-bold text-green-900 mb-2">Option 3: Office Payment</h5>
-                    <p className="text-sm">
-                      You may also bring your payment directly to our office in Rwanda or our new branch in Burundi.<br />
-                      Please come with your booking confirmation details.
+                    <p className="text-sm mb-4">
+                      You may also bring your payment directly to one of our offices. Please come with your booking confirmation details.
                     </p>
+                    <div className="space-y-3 text-sm">
+                      <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                        <p className="font-semibold text-green-900 mb-1">{rwanda.label}</p>
+                        <p className="text-gray-700">{rwanda.address}</p>
+                        <p className="text-gray-600 mt-1">{rwanda.phones.map((p) => p.display).join(' · ')}</p>
+                      </div>
+                      <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                        <p className="font-semibold text-green-900 mb-1">{burundi.label}</p>
+                        <p className="text-gray-700">{burundi.address}</p>
+                        <p className="text-gray-600 mt-1">{burundi.phones.map((p) => p.display).join(' · ')}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -803,7 +816,7 @@ const IsraelTourApplicationPage = () => {
                   </div>
                 </div>
                 <p className="text-sm text-gray-500 mt-2">
-                  Note: Registration is done at the CardX Academia & Travel Tours office. Church information is optional.
+                  Note: Registration is done at the CardX Academia & Travel Tours office in Kigali or our Bujumbura branch. Church information is optional.
                 </p>
               </div>
 

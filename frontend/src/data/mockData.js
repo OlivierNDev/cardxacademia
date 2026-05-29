@@ -522,10 +522,47 @@ export const testimonials = [
   }
 ];
 
+export const offices = {
+  rwanda: {
+    label: 'Rwanda Office (Kigali)',
+    country: '🇷🇼',
+    address: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City',
+    addressLines: [
+      '1st Floor, Door F1B-013D,',
+      'Town Center Building (TCB),',
+      'Kigali City.',
+    ],
+    phones: [
+      { display: '+250 788 603 451', tel: '+250788603451' },
+      { display: '+250 787 420 838', tel: '+250787420838' },
+    ],
+  },
+  burundi: {
+    label: 'Burundi Branch (Bujumbura)',
+    country: '🇧🇮',
+    address: 'Bujumbura, Rohero II, White stone building/Bureau numéro 11',
+    addressLines: [
+      'Bujumbura, Rohero II,',
+      'White stone building/Bureau numéro 11',
+    ],
+    phones: [
+      { display: '+257 663 142 49', tel: '+25766314249' },
+      { display: '+257 699 095 33', tel: '+25769909533' },
+    ],
+  },
+};
+
+export const officeLocations = [
+  { value: offices.rwanda.address, label: `${offices.rwanda.label} – ${offices.rwanda.address}` },
+  { value: offices.burundi.address, label: `${offices.burundi.label} – ${offices.burundi.address}` },
+];
+
 export const contactInfo = {
   email: 'info@cardxacademia.com',
   phone: '+250788603451',
-  address: '1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City.'
+  phoneDisplay: '+250 788 603 451',
+  address: offices.rwanda.address + '.',
+  offices,
 };
 
 export const footerLinks = [

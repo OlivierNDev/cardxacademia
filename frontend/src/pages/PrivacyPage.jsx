@@ -95,7 +95,13 @@ const PrivacyPage = () => {
             <p>
               Email: <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline">info@cardxacademia.com</a>
               <br />
-              Phone: <a href="tel:+250788603451" className="text-blue-600 hover:underline">+250 788 603 451</a>
+              Phone (Rwanda): <a href="tel:+250788603451" className="text-blue-600 hover:underline">+250 788 603 451</a>, <a href="tel:+250787420838" className="text-blue-600 hover:underline">+250 787 420 838</a>
+              <br />
+              Phone (Burundi): <a href="tel:+25766314249" className="text-blue-600 hover:underline">+257 663 142 49</a>, <a href="tel:+25769909533" className="text-blue-600 hover:underline">+257 699 095 33</a>
+              <br />
+              Rwanda Office: 1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City
+              <br />
+              Burundi Branch: Bujumbura, Rohero II, White stone building/Bureau numéro 11
             </p>
           </div>
         </div>
