@@ -315,10 +315,129 @@ const IsraelTourApplicationPage = () => {
                     </p>
                   </div>
 
+                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-green-300">
+                    <h5 className="font-bold text-green-900 mb-4 text-lg">Option 2: Bank Transfer (Burundi – Eco Bank)</h5>
+                    <p className="text-sm text-gray-600 mb-4">
+                      For applicants paying from Burundi, you may transfer to either account below:
+                    </p>
+
+                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
+                      <p className="font-bold text-green-900 mb-2">BIF Account</p>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Name:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
+                          <button
+                            onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Number:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-gray-800 font-bold text-lg">38125038402</span>
+                          <button
+                            onClick={() => copyToClipboard('38125038402')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Currency:</span>
+                        <span className="text-gray-800 font-semibold">BIF (Burundian Franc)</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Bank Name:</span>
+                        <span className="text-gray-800 font-semibold">Eco Bank</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-bold text-gray-700">Swift Code:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-gray-800 font-semibold">ECOCBIBI</span>
+                          <button
+                            onClick={() => copyToClipboard('ECOCBIBI')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
+                      <p className="font-bold text-green-900 mb-2">USD Account</p>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Name:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
+                          <button
+                            onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Account Number:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-gray-800 font-bold text-lg">38125038403</span>
+                          <button
+                            onClick={() => copyToClipboard('38125038403')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Currency:</span>
+                        <span className="text-gray-800 font-semibold">USD (US Dollars)</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                        <span className="font-bold text-gray-700">Bank Name:</span>
+                        <span className="text-gray-800 font-semibold">Eco Bank</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-bold text-gray-700">Swift Code:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-gray-800 font-semibold">ECOCBIBI</span>
+                          <button
+                            onClick={() => copyToClipboard('ECOCBIBI')}
+                            className="text-blue-600 hover:text-blue-700"
+                            title="Copy to clipboard"
+                          >
+                            <Copy size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-600 mb-3 bg-yellow-50 p-3 rounded border border-yellow-200">
+                      <span className="font-semibold">Payment Reference:</span> Your Full Name – Israel Pilgrimage
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      After payment, please email your proof of payment to<br />
+                      <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                        📧 info@cardxacademia.com
+                      </a>
+                    </p>
+                  </div>
+
                   <div className="bg-white rounded-lg p-5 border border-green-200">
-                    <h5 className="font-bold text-green-900 mb-2">Option 2: Office Payment</h5>
+                    <h5 className="font-bold text-green-900 mb-2">Option 3: Office Payment</h5>
                     <p className="text-sm">
-                      You may also bring your payment directly to our office.<br />
+                      You may also bring your payment directly to our office in Rwanda or our new branch in Burundi.<br />
                       Please come with your booking confirmation details.
                     </p>
                   </div>
