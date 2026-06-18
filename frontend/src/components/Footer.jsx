@@ -1,9 +1,7 @@
 import React from 'react';
-import { footerLinks, contactInfo } from '../data/mockData';
+import { footerLinks } from '../data/mockData';
 
 const Footer = () => {
-  const { rwanda, burundi } = contactInfo.offices;
-
   return (
     <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 py-16">
@@ -17,42 +15,6 @@ const Footer = () => {
                 alt="CardX Academia Logo" 
                 className="h-10 w-auto sm:h-12 md:h-16 lg:h-20 xl:h-24 max-w-[120px] sm:max-w-[140px] md:max-w-[180px] lg:max-w-[200px] xl:max-w-[240px] object-contain"
               />
-            </div>
-
-            <div className="mb-6">
-              <h4 className="text-white font-semibold mb-2">{rwanda.label}</h4>
-              <p className="text-gray-400 mb-3 leading-relaxed">
-                {rwanda.addressLines.map((line, i) => (
-                  <React.Fragment key={i}>{line}<br /></React.Fragment>
-                ))}
-              </p>
-              {rwanda.phones.map((phone) => (
-                <a
-                  key={phone.tel}
-                  href={`tel:${phone.tel}`}
-                  className="block text-gray-400 hover:text-teal-400 transition-colors mb-1"
-                >
-                  {phone.display}
-                </a>
-              ))}
-            </div>
-
-            <div className="mb-4">
-              <h4 className="text-white font-semibold mb-2">{burundi.label}</h4>
-              <p className="text-gray-400 mb-3 leading-relaxed">
-                {burundi.addressLines.map((line, i) => (
-                  <React.Fragment key={i}>{line}<br /></React.Fragment>
-                ))}
-              </p>
-              {burundi.phones.map((phone) => (
-                <a
-                  key={phone.tel}
-                  href={`tel:${phone.tel}`}
-                  className="block text-gray-400 hover:text-teal-400 transition-colors mb-1"
-                >
-                  {phone.display}
-                </a>
-              ))}
             </div>
 
             <p className="text-gray-400 leading-relaxed">
@@ -134,7 +96,7 @@ const Footer = () => {
       <div className="border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
-            Copyright ©2026 Education Consultant | Developed by ZeroX, Inc.
+            Copyright ©2026 Education Consultant
           </p>
           <div className="flex gap-6 text-sm">
             <a href="/privacy" className="text-gray-400 hover:text-teal-400 transition-colors">Privacy</a>
