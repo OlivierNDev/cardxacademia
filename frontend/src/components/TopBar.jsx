@@ -21,9 +21,6 @@ const TopBar = () => {
               <span>{phone.display}</span>
             </a>
           ))}
-          <div className="hidden lg:block text-gray-600">
-            <span>Kigali, Rwanda & Bujumbura, Burundi</span>
-          </div>
         </div>
         <div className="flex items-center gap-3">
           <a 
