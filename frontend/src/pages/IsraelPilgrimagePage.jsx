@@ -12,35 +12,29 @@ import {
   MapPin
 } from 'lucide-react';
 import { contactInfo } from '../data/mockData';
+import {
+  getPilgrimageCountdown,
+  PILGRIMAGE_REGISTRATION_DEADLINE_FULL,
+  PILGRIMAGE_REGISTRATION_DEADLINE_LABEL,
+} from '../constants/pilgrimageDeadline';
 
 const IsraelPilgrimagePage = () => {
   const { rwanda, burundi } = contactInfo.offices;
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [registrationClosed, setRegistrationClosed] = useState(false);
 
-  // Countdown to 1 July 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
+  // Countdown to 4 July 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
   useEffect(() => {
     const updateCountdown = () => {
-      // 1 July 2026 23:59:59 Kigali time (UTC+2)
-      const deadlineUTC = new Date('2026-07-01T21:59:59Z'); // 23:59:59 Kigali = 21:59:59 UTC
-      
-      // Get current time in UTC
-      const nowUTC = new Date();
-      
-      // Calculate difference
-      const difference = deadlineUTC - nowUTC;
+      const { days, hours, minutes, seconds, closed } = getPilgrimageCountdown();
 
-      if (difference <= 0) {
+      if (closed) {
         setRegistrationClosed(true);
         setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         return;
       }
 
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
+      setRegistrationClosed(false);
       setCountdown({ days, hours, minutes, seconds });
     };
 
@@ -147,7 +141,7 @@ const IsraelPilgrimagePage = () => {
                     <p className="text-sm text-gray-600">Seconds</p>
                   </div>
                 </div>
-                <p className="text-center text-gray-600 mt-4">Deadline: 1 July 2026 at 23:59 (Kigali time)</p>
+                <p className="text-center text-gray-600 mt-4">Deadline: {PILGRIMAGE_REGISTRATION_DEADLINE_FULL}</p>
               </div>
             )}
           </div>
@@ -225,7 +219,7 @@ const IsraelPilgrimagePage = () => {
           <div className="bg-white rounded-lg p-8 space-y-6">
             <div>
               <h3 className="font-bold text-gray-800 mb-1">Registration Status</h3>
-              <p className="text-gray-600">Registration is OPEN</p>
+              <p className="text-gray-600">{registrationClosed ? 'Registration is CLOSED' : 'Registration is OPEN'}</p>
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">How to Register</h3>
@@ -233,7 +227,7 @@ const IsraelPilgrimagePage = () => {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 mb-1">Registration Deadline</h3>
-              <p className="text-gray-600">1 July 2026</p>
+              <p className="text-gray-600">{PILGRIMAGE_REGISTRATION_DEADLINE_LABEL}</p>
             </div>
           </div>
         </div>

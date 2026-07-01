@@ -31,6 +31,11 @@ import {
 } from 'lucide-react';
 import { pilgrimageAPI } from '@/services/api';
 import { contactInfo } from '../data/mockData';
+import {
+  isPilgrimageRegistrationClosed,
+  PILGRIMAGE_REGISTRATION_DEADLINE_FULL,
+  PILGRIMAGE_REGISTRATION_DEADLINE_LABEL,
+} from '../constants/pilgrimageDeadline';
 
 const IsraelTourApplicationPage = () => {
   const { rwanda, burundi } = contactInfo.offices;
@@ -89,6 +94,17 @@ const IsraelTourApplicationPage = () => {
   const [error, setError] = useState(null);
   const [bookingId, setBookingId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [registrationClosed, setRegistrationClosed] = useState(isPilgrimageRegistrationClosed());
+
+  useEffect(() => {
+    const checkDeadline = () => {
+      setRegistrationClosed(isPilgrimageRegistrationClosed());
+    };
+
+    checkDeadline();
+    const interval = setInterval(checkDeadline, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -155,6 +171,11 @@ const IsraelTourApplicationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (registrationClosed) {
+      setError(`Registration is closed. The deadline was ${PILGRIMAGE_REGISTRATION_DEADLINE_FULL}.`);
+      return;
+    }
     
     if (!validateForm()) {
       return;
@@ -244,7 +265,7 @@ const IsraelTourApplicationPage = () => {
             July 18, 2026 – July 25, 2026
           </p>
           <p className="text-gray-500 text-sm mt-2">
-            Registration Deadline: 1 July 2026
+            Registration Deadline: {PILGRIMAGE_REGISTRATION_DEADLINE_LABEL}
           </p>
         </div>
       </section>
@@ -544,13 +565,35 @@ const IsraelTourApplicationPage = () => {
         </section>
       )}
 
+      {/* Registration Closed */}
+      {registrationClosed && !submitted && (
+        <section className="py-12">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-8 text-center">
+              <XCircle className="mx-auto text-red-500 mb-4" size={48} />
+              <h2 className="text-2xl font-bold text-red-700 mb-2">Registration Closed</h2>
+              <p className="text-red-600 mb-6">
+                The registration deadline ({PILGRIMAGE_REGISTRATION_DEADLINE_FULL}) has passed.
+                We are no longer accepting new applications for this pilgrimage.
+              </p>
+              <Button
+                onClick={() => navigate('/israel-pilgrimage-2026')}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Back to Pilgrimage Info
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Application Form */}
-      {!submitted && (
+      {!submitted && !registrationClosed && (
         <section className="py-12">
           <div className="max-w-4xl mx-auto px-4">
             <div className="bg-white rounded-lg shadow-sm p-8 mb-6">
               <p className="text-gray-600 mb-6">
-                Please fill out all required fields. Registration deadline: <strong>1 July 2026</strong>
+                Please fill out all required fields. Registration deadline: <strong>{PILGRIMAGE_REGISTRATION_DEADLINE_LABEL}</strong>
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-8">

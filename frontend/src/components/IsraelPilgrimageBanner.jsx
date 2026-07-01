@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { isPilgrimageRegistrationClosed } from '../constants/pilgrimageDeadline';
 
 const IsraelPilgrimageBanner = () => {
+  const [registrationClosed, setRegistrationClosed] = useState(isPilgrimageRegistrationClosed());
+
+  useEffect(() => {
+    const checkDeadline = () => setRegistrationClosed(isPilgrimageRegistrationClosed());
+    checkDeadline();
+    const interval = setInterval(checkDeadline, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="py-12 bg-gradient-to-r from-blue-50 to-orange-50">
       <div className="max-w-7xl mx-auto px-4">
@@ -36,13 +46,15 @@ const IsraelPilgrimageBanner = () => {
               >
                 Learn More
               </Link>
-              <Link 
-                to="/apply-israel-tour"
-                className="bg-blue-500 text-white hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
-              >
-                Apply Now
-                <ArrowRight size={18} />
-              </Link>
+              {!registrationClosed && (
+                <Link 
+                  to="/apply-israel-tour"
+                  className="bg-blue-500 text-white hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                >
+                  Apply Now
+                  <ArrowRight size={18} />
+                </Link>
+              )}
             </div>
           </div>
         </div>

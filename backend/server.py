@@ -18,6 +18,14 @@ from services.email_service import EmailService
 # Kigali timezone
 KIGALI_TZ = pytz.timezone('Africa/Kigali')
 
+# Registration closes 4 July 2026 at 23:59 Kigali time
+PILGRIMAGE_REGISTRATION_DEADLINE = KIGALI_TZ.localize(datetime(2026, 7, 4, 23, 59, 59))
+PILGRIMAGE_REGISTRATION_DEADLINE_LABEL = "4 July 2026"
+
+
+def is_pilgrimage_registration_closed() -> bool:
+    return datetime.now(KIGALI_TZ) > PILGRIMAGE_REGISTRATION_DEADLINE
+
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -701,6 +709,12 @@ async def cancel_appointment(appointment_id: str):
 async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
     """Create a new Israel Pilgrimage booking and send confirmation emails"""
     try:
+        if is_pilgrimage_registration_closed():
+            raise HTTPException(
+                status_code=403,
+                detail=f"Registration is closed. The deadline was {PILGRIMAGE_REGISTRATION_DEADLINE_LABEL} at 23:59 (Kigali time).",
+            )
+
         db_available = (db is not None) and (not EMAIL_ONLY_MODE)
         if not db_available and not EMAIL_ONLY_MODE:
             raise HTTPException(
