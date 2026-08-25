@@ -13,6 +13,9 @@ import AboutPage from "./pages/AboutPage";
 import IsraelPilgrimagePage from "./pages/IsraelPilgrimagePage";
 import IsraelTourApplicationPage from "./pages/IsraelTourApplicationPage";
 import ApplicationSubmittedPage from "./pages/ApplicationSubmittedPage";
+import RegistrationPage from "./pages/RegistrationPage";
+import RegistrationSubmittedPage from "./pages/RegistrationSubmittedPage";
+import AdminRegistrationsPage from "./pages/AdminRegistrationsPage";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
@@ -35,6 +38,9 @@ function App() {
           <Route path="/israel-pilgrimage-2026" element={<IsraelPilgrimagePage />} />
           <Route path="/israel-pilgrimage-2025" element={<Navigate to="/israel-pilgrimage-2026" replace />} />
           <Route path="/apply-israel-tour" element={<IsraelTourApplicationPage />} />
+          <Route path="/tour-registration" element={<RegistrationPage />} />
+          <Route path="/registration-submitted" element={<RegistrationSubmittedPage />} />
+          <Route path="/admin/registrations" element={<AdminRegistrationsPage />} />
           <Route path="/application-submitted" element={<ApplicationSubmittedPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />

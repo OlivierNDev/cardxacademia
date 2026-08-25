@@ -227,7 +227,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                       <div className="text-sm text-gray-500 line-clamp-2">
                         {result.description}
                       </div>
-                      <div className="text-xs text-blue-500 mt-1">
+                      <div className="text-xs text-brand-blue-500 mt-1">
                         {result.type === 'service' && 'Service'}
                         {result.type === 'page' && 'Page'}
                         {result.type === 'testimonial' && 'Testimonial'}

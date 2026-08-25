@@ -48,7 +48,7 @@ def main():
             "phone": "+250788123456"
         },
         "booking": {
-            "tourDates": "July 18, 2026 – July 25, 2026",
+            "tourDates": "October 6, 2026 – October 14, 2026",
             "tourCost": "USD $2,900"
         }
     }
@@ -57,7 +57,33 @@ def main():
     # 5. GET /api/pilgrimage-bookings (should 405 - no GET on collection)
     test("pilgrimage-bookings GET (expect 405)", "GET", "/api/pilgrimage-bookings")
     
-    print("\n=== If all return 200/201 (or 405 for GET pilgrimage), routes and backend are OK. ===")
+    # 6. Registration POST (minimal valid body)
+    reg_body = {
+        "first_name": "Test",
+        "last_name": "User",
+        "fathers_name": "Father",
+        "date_of_birth": "1990-01-01",
+        "gender": "Male",
+        "passport_no": "AB123456",
+        "date_of_issue": "2020-01-01",
+        "valid_through": "2030-01-01",
+        "mothers_name": "Mother",
+        "grandfathers_name": "Grandfather",
+        "marital_status": "Single",
+        "occupation": "Engineer",
+        "religion": "Christian",
+        "tourist_birth_country": "Rwanda",
+        "country_of_present_residence": "Rwanda",
+        "telephone_number": "+250788123456",
+        "email": "test@example.com",
+        "visited_before_israel": "no",
+        "visited_other_countries": "no",
+        "related_to_group_members": "no",
+    }
+    test("registrations POST", "POST", "/api/registrations", json=reg_body)
+
+    print("\n=== If all return 200/201, routes and backend are OK. ===")
+    print("Registration POST should succeed even without MongoDB (emails still fire).")
     print("If CONNECTION REFUSED: start backend with:")
     print("  cd backend")
     print("  uvicorn server:app --reload --port 8000")

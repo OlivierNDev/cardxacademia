@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -9,21 +8,19 @@ import {
   ArrowRight,
   CheckCircle2,
   XCircle,
-  MapPin
 } from 'lucide-react';
-import { contactInfo } from '../data/mockData';
 import {
   getPilgrimageCountdown,
+  PILGRIMAGE_DEPARTURE_LABEL,
+  PILGRIMAGE_RETURN_LABEL,
   PILGRIMAGE_REGISTRATION_DEADLINE_FULL,
   PILGRIMAGE_REGISTRATION_DEADLINE_LABEL,
 } from '../constants/pilgrimageDeadline';
 
 const IsraelPilgrimagePage = () => {
-  const { rwanda, burundi } = contactInfo.offices;
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [registrationClosed, setRegistrationClosed] = useState(false);
+  const [registrationClosed, setRegistrationClosed] = useState(true);
 
-  // Countdown to 4 July 2026 23:59 Kigali time (CAT - Central Africa Time, UTC+2)
   useEffect(() => {
     const updateCountdown = () => {
       const { days, hours, minutes, seconds, closed } = getPilgrimageCountdown();
@@ -68,11 +65,10 @@ const IsraelPilgrimagePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <TopBar />
       <Navbar />
       
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-orange-50">
+      <section className="py-20 bg-gradient-to-br from-brand-sky-50 to-brand-gold-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-8">
             <p className="text-gray-600 mb-4 font-medium">CardX Academia & Travel Tours Ltd</p>
@@ -89,9 +85,9 @@ const IsraelPilgrimagePage = () => {
             <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4">Travel Dates</h3>
               <div className="space-y-2 text-gray-700">
-                <p><span className="font-semibold">Departure:</span> July 18, 2026</p>
-                <p><span className="font-semibold">Return:</span> July 25, 2026</p>
-                <p><span className="font-semibold">Duration:</span> 8 Days / 7 Nights</p>
+                <p><span className="font-semibold">Departure:</span> {PILGRIMAGE_DEPARTURE_LABEL}</p>
+                <p><span className="font-semibold">Return:</span> {PILGRIMAGE_RETURN_LABEL}</p>
+                <p><span className="font-semibold">Duration:</span> 9 Days / 8 Nights</p>
               </div>
             </div>
 
@@ -105,38 +101,38 @@ const IsraelPilgrimagePage = () => {
           {/* Countdown Timer */}
           <div className="max-w-4xl mx-auto mb-8">
             {registrationClosed ? (
-              <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 text-center">
-                <XCircle className="mx-auto text-red-500 mb-3" size={48} />
-                <h3 className="text-2xl font-bold text-red-700 mb-2">Registration Closed</h3>
-                <p className="text-red-600">The registration deadline has passed.</p>
+              <div className="bg-brand-sky-50 border-2 border-brand-blue-200 rounded-lg p-6 text-center">
+                <XCircle className="mx-auto text-brand-gold-600 mb-3" size={48} />
+                <h3 className="text-2xl font-bold text-brand-gold-800 mb-2">Registration Closed</h3>
+                <p className="text-brand-gold-700">Applications are not being accepted for this tour.</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg p-8 shadow-sm border-2 border-blue-200">
+              <div className="bg-white rounded-lg p-8 shadow-sm border-2 border-brand-blue-200">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
                   Registration closes in:
                 </h3>
                 <div className="grid grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="bg-blue-50 rounded-lg p-4 mb-2">
-                      <div className="text-3xl font-bold text-blue-600">{countdown.days}</div>
+                    <div className="bg-brand-blue-50 rounded-lg p-4 mb-2">
+                      <div className="text-3xl font-bold text-brand-blue-600">{countdown.days}</div>
                     </div>
                     <p className="text-sm text-gray-600">Days</p>
                   </div>
                   <div className="text-center">
-                    <div className="bg-blue-50 rounded-lg p-4 mb-2">
-                      <div className="text-3xl font-bold text-blue-600">{countdown.hours}</div>
+                    <div className="bg-brand-blue-50 rounded-lg p-4 mb-2">
+                      <div className="text-3xl font-bold text-brand-blue-600">{countdown.hours}</div>
                     </div>
                     <p className="text-sm text-gray-600">Hours</p>
                   </div>
                   <div className="text-center">
-                    <div className="bg-blue-50 rounded-lg p-4 mb-2">
-                      <div className="text-3xl font-bold text-blue-600">{countdown.minutes}</div>
+                    <div className="bg-brand-blue-50 rounded-lg p-4 mb-2">
+                      <div className="text-3xl font-bold text-brand-blue-600">{countdown.minutes}</div>
                     </div>
                     <p className="text-sm text-gray-600">Minutes</p>
                   </div>
                   <div className="text-center">
-                    <div className="bg-blue-50 rounded-lg p-4 mb-2">
-                      <div className="text-3xl font-bold text-blue-600">{countdown.seconds}</div>
+                    <div className="bg-brand-blue-50 rounded-lg p-4 mb-2">
+                      <div className="text-3xl font-bold text-brand-blue-600">{countdown.seconds}</div>
                     </div>
                     <p className="text-sm text-gray-600">Seconds</p>
                   </div>
@@ -152,7 +148,7 @@ const IsraelPilgrimagePage = () => {
               <Link to="/apply-israel-tour">
                 <Button 
                   size="lg" 
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-12 py-6 text-lg"
+                  className="bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-semibold px-12 py-6 text-lg"
                 >
                   Apply Now
                   <ArrowRight size={20} className="ml-2" />
@@ -211,7 +207,7 @@ const IsraelPilgrimagePage = () => {
       </section>
 
       {/* Registration Information */}
-      <section className="py-16 bg-blue-50">
+      <section className="py-16 bg-brand-blue-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
             Registration Information
@@ -221,77 +217,38 @@ const IsraelPilgrimagePage = () => {
               <h3 className="font-bold text-gray-800 mb-1">Registration Status</h3>
               <p className="text-gray-600">{registrationClosed ? 'Registration is CLOSED' : 'Registration is OPEN'}</p>
             </div>
+            {!registrationClosed && (
+              <div>
+                <h3 className="font-bold text-gray-800 mb-1">How to Register</h3>
+                <p className="text-gray-600">Registration is done at the CardX Academia & Travel Tours office in Kigali or our Bujumbura branch</p>
+              </div>
+            )}
             <div>
-              <h3 className="font-bold text-gray-800 mb-1">How to Register</h3>
-              <p className="text-gray-600">Registration is done at the CardX Academia & Travel Tours office in Kigali or our Bujumbura branch</p>
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-800 mb-1">Registration Deadline</h3>
+              <h3 className="font-bold text-gray-800 mb-1">Applications</h3>
               <p className="text-gray-600">{PILGRIMAGE_REGISTRATION_DEADLINE_LABEL}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Information */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            Contact Information
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-8">
-            <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
-              <p className="text-gray-600 mb-2 text-sm font-semibold">Phone – {rwanda.label}</p>
-              {rwanda.phones.map((phone) => (
-                <a key={phone.tel} href={`tel:${phone.tel}`} className="block font-semibold text-gray-800 hover:text-blue-600">
-                  {phone.display}
-                </a>
-              ))}
-            </div>
-            <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
-              <p className="text-gray-600 mb-2 text-sm font-semibold">Phone – {burundi.label}</p>
-              {burundi.phones.map((phone) => (
-                <a key={phone.tel} href={`tel:${phone.tel}`} className="block font-semibold text-gray-800 hover:text-blue-600">
-                  {phone.display}
-                </a>
-              ))}
-            </div>
-            <a href="mailto:tours@cardxacademia.com" className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-md transition-shadow border border-gray-200">
-              <p className="text-gray-600 mb-2 text-sm font-semibold">Email</p>
-              <p className="font-semibold text-gray-800 text-sm">tours@cardxacademia.com</p>
-              <p className="font-semibold text-gray-800 text-sm mt-1">cardxtraveltours@gmail.com</p>
-            </a>
-            <a href="https://www.cardxacademia.com" target="_blank" rel="noopener noreferrer" className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-md transition-shadow border border-gray-200">
-              <p className="text-gray-600 mb-2 text-sm font-semibold">Website</p>
-              <p className="font-semibold text-gray-800">www.cardxacademia.com</p>
-            </a>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
-              <div className="flex items-start gap-3">
-                <MapPin className="text-blue-500 flex-shrink-0 mt-1" size={20} />
-                <div>
-                  <p className="font-semibold text-gray-800 mb-1">{rwanda.label}</p>
-                  <p className="text-gray-600 text-sm">{rwanda.address}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-orange-50 rounded-lg p-6 border border-orange-100">
-              <div className="flex items-start gap-3">
-                <MapPin className="text-orange-500 flex-shrink-0 mt-1" size={20} />
-                <div>
-                  <p className="font-semibold text-gray-800 mb-1">{burundi.label}</p>
-                  <p className="text-gray-600 text-sm">{burundi.address}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Contact */}
+      <section className="py-14 bg-white border-t border-gray-100">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">Questions about this tour?</h2>
+          <p className="text-gray-600 mb-6">
+            Find our email, phones, and office details on the Contact page.
+          </p>
+          <Link to="/contact">
+            <Button className="bg-brand-blue-500 hover:bg-brand-blue-600 text-white">
+              Go to Contact
+            </Button>
+          </Link>
         </div>
       </section>
 
       {/* Final CTA */}
       {!registrationClosed && (
-        <section className="py-16 bg-orange-50">
+        <section className="py-16 bg-brand-gold-50">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
               Begin Your Spiritual Journey
@@ -302,7 +259,7 @@ const IsraelPilgrimagePage = () => {
             <Link to="/apply-israel-tour">
               <Button 
                 size="lg" 
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-12 py-6 text-lg"
+                className="bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-semibold px-12 py-6 text-lg"
               >
                 Apply Now
                 <ArrowRight size={20} className="ml-2" />

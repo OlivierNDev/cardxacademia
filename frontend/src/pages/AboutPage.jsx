@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -13,17 +12,16 @@ import {
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
+      <section className="bg-gradient-to-r from-brand-sky-50 to-brand-gold-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            About Cardx Academia
+            About CardX Academia
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your trusted partner in global education and travel
+            Travel & Tours first — education and visa support when you need it
           </p>
         </div>
       </section>
@@ -33,16 +31,16 @@ const AboutPage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-              Empowering Global Education Dreams
+              Travel, tours, and pathways abroad
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Cardx Academia and Travel Tours is a leading educational consulting firm dedicated to helping students and professionals achieve their dreams of studying and working abroad. Based in Kigali, Rwanda, with a branch in Bujumbura, Burundi, we have established ourselves as a trusted partner for thousands of students seeking international education opportunities.
+              CardX Academia & Travel Tours helps people move with confidence — from multi-country tours and flight arrangements to study-abroad and visa support. Based in Kigali, Rwanda, with a branch in Bujumbura, Burundi, we serve clients planning leisure travel, pilgrimages, and academic journeys.
             </p>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Our mission is to provide comprehensive, personalized support throughout every step of your journey—from university selection and admission to visa applications and travel arrangements. We believe that education knows no boundaries, and we're committed to making global opportunities accessible to everyone.
+              Our focus is practical: clear itineraries, reliable bookings, and guided next steps. When education or immigration support is needed, the same team helps with admissions, scholarships, and visa preparation.
             </p>
             <p className="text-gray-600 text-lg leading-relaxed">
-              With a proven track record of success and partnerships with hundreds of universities worldwide, we combine expertise, dedication, and personalized service to ensure your success.
+              Whether you are booking a tour or preparing for study abroad, we aim for straightforward service from first consultation to departure.
             </p>
           </div>
         </div>
@@ -57,7 +55,7 @@ const AboutPage = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
-                <div className="text-4xl font-bold text-blue-500 mb-2">
+                <div className="text-4xl font-bold text-brand-blue-500 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-600 text-lg">
@@ -76,13 +74,13 @@ const AboutPage = () => {
             <div className="bg-white rounded-lg p-8 border border-gray-200">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
               <p className="text-gray-700 leading-relaxed">
-                To empower students and professionals by providing expert guidance, comprehensive support, and seamless services for international education and travel. We strive to make global opportunities accessible and achievable for everyone, regardless of their background.
+                To make international travel and education pathways clearer — from tours and bookings to visas and admissions — with practical guidance at every step.
               </p>
             </div>
             <div className="bg-white rounded-lg p-8 border border-gray-200">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
               <p className="text-gray-700 leading-relaxed">
-                To become the leading educational consulting firm in East Africa, recognized for excellence in student placement, visa services, and travel support. We envision a world where every student has access to quality international education opportunities.
+                To be East Africa's trusted partner for Travel & Tours and study-abroad support, known for clarity, reliability, and end-to-end care from planning to arrival.
               </p>
             </div>
           </div>
@@ -122,30 +120,30 @@ const AboutPage = () => {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">University Selection & Admission</h4>
-                <p className="text-gray-600 text-sm">Expert guidance in choosing the right university and navigating the admission process.</p>
+                <h4 className="font-bold text-gray-800 mb-1">International Travel & Tours</h4>
+                <p className="text-gray-600 text-sm">Curated multi-country tours and trip planning for memorable journeys.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Visa Application Support</h4>
-                <p className="text-gray-600 text-sm">Comprehensive assistance for all types of visa applications worldwide.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Flights, Stays & Transfers</h4>
+                <p className="text-gray-600 text-sm">Air ticketing, hotel booking, airport pickup, and car rental assistance.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Air Ticket Booking</h4>
-                <p className="text-gray-600 text-sm">Affordable flight bookings and travel arrangements for your journey.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Custom Trip Planning</h4>
+                <p className="text-gray-600 text-sm">Personalized itineraries covering sightseeing and day-to-day travel needs.</p>
               </div>
             </div>
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Personalized Consultations</h4>
-                <p className="text-gray-600 text-sm">One-on-one consultations tailored to your specific needs and goals.</p>
+                <h4 className="font-bold text-gray-800 mb-1">University Selection & Admission</h4>
+                <p className="text-gray-600 text-sm">Guidance choosing schools and navigating applications abroad.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Scholarship Assistance</h4>
-                <p className="text-gray-600 text-sm">Help finding and applying for partial and full scholarships.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Visa & Immigration Support</h4>
+                <p className="text-gray-600 text-sm">Student, visitor, work, and related visa application assistance.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Global Reach</h4>
-                <p className="text-gray-600 text-sm">Partnerships with universities across 40+ countries worldwide.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Scholarships & Consultations</h4>
+                <p className="text-gray-600 text-sm">Help finding funding and one-on-one planning for education pathways.</p>
               </div>
             </div>
           </div>
@@ -175,19 +173,19 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-blue-500">
+      <section className="py-16 bg-brand-blue-600">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Start Your Journey?
+            Ready to plan your next trip?
           </h2>
-          <p className="text-white/90 mb-8 text-lg">
-            Let us help you achieve your dreams of studying or working abroad. Get in touch with our expert team today.
+          <p className="text-brand-blue-50 mb-8 text-lg">
+            Start with a consultation for tours, travel arrangements, or education pathways.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/appointment">
               <Button 
                 size="lg" 
-                className="bg-white text-blue-500 hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
+                className="bg-white text-brand-blue-700 hover:bg-brand-blue-50 font-semibold px-8 py-6 text-lg"
               >
                 Book an Appointment
               </Button>

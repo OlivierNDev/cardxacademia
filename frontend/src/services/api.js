@@ -117,4 +117,87 @@ export const pilgrimageAPI = {
   },
 };
 
+const adminHeaders = (token) => ({
+  'X-Admin-Token': token,
+});
+
+export const registrationAPI = {
+  createRegistration: async (data) => {
+    try {
+      const response = await api.post('/api/registrations', data);
+      return response.data;
+    } catch (error) {
+      const errData = error.response?.data;
+      if (errData) throw errData;
+      throw { detail: error.message || 'Network error. Please try again.' };
+    }
+  },
+
+  listRegistrations: async (token, params = {}) => {
+    try {
+      const response = await api.get('/api/registrations', {
+        headers: adminHeaders(token),
+        params,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: error.message };
+    }
+  },
+
+  getRegistrationCount: async (token) => {
+    try {
+      const response = await api.get('/api/registrations/count', {
+        headers: adminHeaders(token),
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: error.message };
+    }
+  },
+
+  getRegistration: async (token, registrationId) => {
+    try {
+      const response = await api.get(`/api/registrations/${registrationId}`, {
+        headers: adminHeaders(token),
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: error.message };
+    }
+  },
+
+  downloadAllXlsx: async (token) => {
+    const response = await api.get('/api/registrations/export/xlsx', {
+      headers: adminHeaders(token),
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  downloadAllPdf: async (token) => {
+    const response = await api.get('/api/registrations/export/pdf', {
+      headers: adminHeaders(token),
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  downloadRegistrationXlsx: async (token, registrationId) => {
+    const response = await api.get(`/api/registrations/${registrationId}/export/xlsx`, {
+      headers: adminHeaders(token),
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  downloadRegistrationPdf: async (token, registrationId) => {
+    const response = await api.get(`/api/registrations/${registrationId}/export/pdf`, {
+      headers: adminHeaders(token),
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+};
+
 export default api;

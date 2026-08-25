@@ -1,61 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { services } from '../data/mockData';
 import { ArrowRight } from 'lucide-react';
+
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1920&q=80';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[600px] lg:min-h-[700px]">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1920&q=80')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-      </div>
+    <section className="relative min-h-[78vh] lg:min-h-[88vh] flex items-end lg:items-center overflow-hidden">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 animate-[heroZoom_18s_ease-out_forwards]"
+        style={{ backgroundImage: `url('${HERO_IMAGE}')` }}
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/55 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-white">
-            <h1 className="text-4xl lg:text-6xl font-serif italic leading-tight mb-6">
-              Empowered Learning Pathways
-            </h1>
-            <p className="text-lg lg:text-xl mb-8 text-gray-200 leading-relaxed">
-              Unlock your potential with personalized learning solutions tailored just for you. Let's transform your educational journey together!
-            </p>
-            <Link 
-              to="/about"
-              className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg flex items-center gap-2"
-            >
-              Learn More
-              <ArrowRight size={20} />
-            </Link>
-          </div>
-
-          {/* Service Cards - Show first 3 featured services */}
-          <div className="space-y-4">
-            {services.slice(0, 3).map((service) => (
-              <div 
-                key={service.id}
-                className="bg-white/95 backdrop-blur-sm rounded-lg p-5 flex justify-between items-center group hover:shadow-xl transition-all hover:-translate-y-1"
-              >
-                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-500 transition-colors">
-                  {service.title}
-                </h3>
-                <Link 
-                  to={service.href}
-                  className="flex items-center gap-2 text-blue-500 font-medium group-hover:gap-3 transition-all"
-                >
-                  Learn More
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
-            ))}
-          </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-28 w-full">
+        <p className="text-sm uppercase tracking-[0.24em] text-white/85 mb-5 animate-[fadeUp_0.7s_ease-out]">
+          CardX Academia & Travel Tours
+        </p>
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] max-w-3xl mb-6 animate-[fadeUp_0.85s_ease-out]">
+          Travel & Tours, made clear
+        </h1>
+        <p className="text-lg text-white/85 max-w-lg mb-10 leading-relaxed animate-[fadeUp_1s_ease-out]">
+          Curated tours, flights, car rentals, and transfers — with education
+          support available when you need it.
+        </p>
+        <div className="flex flex-wrap gap-3 animate-[fadeUp_1.15s_ease-out]">
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 bg-brand-blue-500 hover:bg-brand-blue-600 text-white px-7 py-3.5 rounded-md font-semibold transition-colors"
+          >
+            Explore services
+            <ArrowRight size={18} />
+          </Link>
+          <Link
+            to="/appointment"
+            className="inline-flex items-center gap-2 border border-white/45 text-white hover:bg-white/10 px-7 py-3.5 rounded-md font-semibold transition-colors"
+          >
+            Book appointment
+          </Link>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -38,15 +37,14 @@ const ApplicationSubmittedPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <TopBar />
       <Navbar />
       
       {/* Success Message */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="mb-8">
-            <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="text-blue-500" size={48} />
+            <div className="w-24 h-24 bg-brand-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="text-brand-blue-500" size={48} />
             </div>
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               Application Submitted Successfully!
@@ -57,7 +55,7 @@ const ApplicationSubmittedPage = () => {
           </div>
 
           {applicationData.fullName && (
-            <div className="bg-blue-50 rounded-lg p-6 mb-8 text-left">
+            <div className="bg-brand-blue-50 rounded-lg p-6 mb-8 text-left">
               <h2 className="font-bold text-gray-800 mb-4">Application Details</h2>
               <p className="text-gray-700 mb-2"><strong>Name:</strong> {applicationData.fullName}</p>
               <p className="text-gray-700 mb-2"><strong>Email:</strong> {applicationData.email}</p>
@@ -66,7 +64,7 @@ const ApplicationSubmittedPage = () => {
           )}
 
           {/* Final UX Message */}
-          <div className="bg-orange-50 rounded-lg p-8 mb-8 border-2 border-orange-200">
+          <div className="bg-brand-gold-50 rounded-lg p-8 mb-8 border-2 border-brand-gold-200">
             <p className="text-lg text-gray-700 leading-relaxed">
               Thank you for applying for the CardX Academia Holy Land Pilgrimage. Please complete your payment using the bank details below. Our team will contact you within 2–3 working days to confirm your seat and visa process.
             </p>
@@ -79,14 +77,14 @@ const ApplicationSubmittedPage = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white rounded-lg shadow-sm p-8">
             <div className="flex items-center gap-3 mb-6">
-              <CreditCard className="text-blue-500" size={32} />
+              <CreditCard className="text-brand-blue-500" size={32} />
               <h2 className="text-2xl font-bold text-gray-800">Payment Information</h2>
             </div>
 
             <div className="space-y-6">
               <div>
                 <h3 className="font-bold text-gray-800 mb-4">Tour Cost</h3>
-                <div className="bg-orange-50 rounded-lg p-4 mb-4">
+                <div className="bg-brand-gold-50 rounded-lg p-4 mb-4">
                   <p className="text-3xl font-bold text-gray-800">USD $2,900</p>
                   <p className="text-gray-600">per person</p>
                 </div>
@@ -101,7 +99,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                       <button
                         onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -114,7 +112,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800 font-mono">4002212860747</span>
                       <button
                         onClick={() => copyToClipboard('4002212860747')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -140,7 +138,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                       <button
                         onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -153,7 +151,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800 font-mono">38125038402</span>
                       <button
                         onClick={() => copyToClipboard('38125038402')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -174,7 +172,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800 font-mono">ECOCBIBI</span>
                       <button
                         onClick={() => copyToClipboard('ECOCBIBI')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -191,7 +189,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                       <button
                         onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -204,7 +202,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800 font-mono">38125038403</span>
                       <button
                         onClick={() => copyToClipboard('38125038403')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -225,7 +223,7 @@ const ApplicationSubmittedPage = () => {
                       <span className="font-semibold text-gray-800 font-mono">ECOCBIBI</span>
                       <button
                         onClick={() => copyToClipboard('ECOCBIBI')}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-brand-blue-500 hover:text-brand-blue-600"
                         title="Copy to clipboard"
                       >
                         <Copy size={16} />
@@ -234,18 +232,18 @@ const ApplicationSubmittedPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-green-50 rounded-lg p-6 border border-green-200">
+                <div className="bg-brand-gold-50 rounded-lg p-6 border border-brand-gold-200">
                   <h3 className="font-bold text-gray-800 mb-2">Office Payment</h3>
                   <p className="text-gray-700 text-sm mb-4">
                     You may also bring your payment directly to one of our offices. Please come with your booking confirmation details.
                   </p>
                   <div className="space-y-3 text-sm">
-                    <div className="bg-white rounded-lg p-4 border border-green-100">
+                    <div className="bg-white rounded-lg p-4 border border-brand-gold-100">
                       <p className="font-semibold text-gray-800 mb-1">{rwanda.label}</p>
                       <p className="text-gray-600">{rwanda.address}</p>
                       <p className="text-gray-500 mt-1">{rwanda.phones.map((p) => p.display).join(' · ')}</p>
                     </div>
-                    <div className="bg-white rounded-lg p-4 border border-green-100">
+                    <div className="bg-white rounded-lg p-4 border border-brand-gold-100">
                       <p className="font-semibold text-gray-800 mb-1">{burundi.label}</p>
                       <p className="text-gray-600">{burundi.address}</p>
                       <p className="text-gray-500 mt-1">{burundi.phones.map((p) => p.display).join(' · ')}</p>
@@ -254,23 +252,23 @@ const ApplicationSubmittedPage = () => {
                 </div>
               </div>
 
-              <div className="bg-blue-50 rounded-lg p-6">
+              <div className="bg-brand-blue-50 rounded-lg p-6">
                 <h3 className="font-bold text-gray-800 mb-3">Payment Instructions</h3>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="text-blue-500 flex-shrink-0 mt-1" size={20} />
+                    <CheckCircle2 className="text-brand-blue-500 flex-shrink-0 mt-1" size={20} />
                     <span>Full payment: $2,900 USD</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="text-blue-500 flex-shrink-0 mt-1" size={20} />
+                    <CheckCircle2 className="text-brand-blue-500 flex-shrink-0 mt-1" size={20} />
                     <span>Installments allowed (as approved)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="text-blue-500 flex-shrink-0 mt-1" size={20} />
+                    <CheckCircle2 className="text-brand-blue-500 flex-shrink-0 mt-1" size={20} />
                     <span>Proof of payment must be submitted by email or WhatsApp</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="text-blue-500 flex-shrink-0 mt-1" size={20} />
+                    <CheckCircle2 className="text-brand-blue-500 flex-shrink-0 mt-1" size={20} />
                     <span>Visa processing starts after deposit confirmation</span>
                   </li>
                 </ul>
@@ -287,23 +285,23 @@ const ApplicationSubmittedPage = () => {
             Need Help? Contact Us
           </h2>
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <a href="mailto:tours@cardxacademia.com" className="bg-blue-50 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <Mail className="text-blue-500 mb-3" size={32} />
+            <a href="mailto:tours@cardxacademia.com" className="bg-brand-blue-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <Mail className="text-brand-blue-500 mb-3" size={32} />
               <h3 className="font-bold text-gray-800 mb-2">Email</h3>
               <p className="text-gray-600 text-sm mb-1">tours@cardxacademia.com</p>
               <p className="text-gray-600 text-sm">cardxtraveltours@gmail.com</p>
             </a>
-            <div className="bg-orange-50 rounded-lg p-6">
-              <Phone className="text-orange-500 mb-3" size={32} />
+            <div className="bg-brand-gold-50 rounded-lg p-6">
+              <Phone className="text-brand-gold-500 mb-3" size={32} />
               <h3 className="font-bold text-gray-800 mb-2">Phone – {rwanda.label}</h3>
               {rwanda.phones.map((phone) => (
-                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-orange-600">
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-brand-gold-600">
                   {phone.display}
                 </a>
               ))}
               <h3 className="font-bold text-gray-800 mb-2 mt-4">Phone – {burundi.label}</h3>
               {burundi.phones.map((phone) => (
-                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-orange-600">
+                <a key={phone.tel} href={`tel:${phone.tel}`} className="block text-gray-600 hover:text-brand-gold-600">
                   {phone.display}
                 </a>
               ))}
@@ -311,12 +309,12 @@ const ApplicationSubmittedPage = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <MapPin className="text-blue-500 mb-3" size={28} />
+              <MapPin className="text-brand-blue-500 mb-3" size={28} />
               <h3 className="font-bold text-gray-800 mb-2">{rwanda.label}</h3>
               <p className="text-gray-600 text-sm">{rwanda.address}</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <MapPin className="text-orange-500 mb-3" size={28} />
+              <MapPin className="text-brand-gold-500 mb-3" size={28} />
               <h3 className="font-bold text-gray-800 mb-2">{burundi.label}</h3>
               <p className="text-gray-600 text-sm">{burundi.address}</p>
             </div>
@@ -325,7 +323,7 @@ const ApplicationSubmittedPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-blue-50">
+      <section className="py-16 bg-brand-blue-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Thank You for Your Application
@@ -337,7 +335,7 @@ const ApplicationSubmittedPage = () => {
             <Link to="/israel-pilgrimage-2026">
               <Button 
                 size="lg" 
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-6 text-lg"
+                className="bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-semibold px-8 py-6 text-lg"
               >
                 View Tour Details
               </Button>
@@ -346,7 +344,7 @@ const ApplicationSubmittedPage = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 border-blue-500 text-blue-500 hover:bg-blue-50 font-semibold px-8 py-6 text-lg"
+                className="border-2 border-brand-blue-500 text-brand-blue-500 hover:bg-brand-blue-50 font-semibold px-8 py-6 text-lg"
               >
                 Return to Home
                 <ArrowRight size={20} className="ml-2" />

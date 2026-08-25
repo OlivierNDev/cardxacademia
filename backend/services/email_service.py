@@ -10,6 +10,9 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+# Admin CC recipients used across appointment, pilgrimage, and registration notifications
+ADMIN_CC_RECIPIENTS = ["debonnairem@gmail.com", "nmerveille50@gmail.com"]
+
 
 class EmailService:
     def __init__(self):
@@ -409,7 +412,7 @@ class EmailService:
         subject = f"New Appointment Booking - {customer_name} - {formatted_date}"
         
         # CC recipients for admin notifications
-        cc_recipients = ['debonnairem@gmail.com', 'nmerveille50@gmail.com']
+        cc_recipients = ADMIN_CC_RECIPIENTS
         
         return self._send_email(
             to=self.admin_email,
@@ -422,7 +425,7 @@ class EmailService:
         """Send confirmation email to customer after pilgrimage booking"""
         customer_name = booking_data.get('customer', {}).get('fullName', 'Valued Pilgrim')
         customer_email = booking_data.get('customer', {}).get('email')
-        tour_dates = booking_data.get('booking', {}).get('tourDates', 'July 18, 2026 – July 25, 2026')
+        tour_dates = booking_data.get('booking', {}).get('tourDates', 'October 6, 2026 – October 14, 2026')
         tour_cost = booking_data.get('booking', {}).get('tourCost', 'USD $2,900')
         booking_id = booking_data.get('id', 'Unknown')
         
@@ -556,7 +559,7 @@ class EmailService:
         <p style="margin: 8px 0;">1. Our team will review your application and contact you within 2-3 business days.</p>
         <p style="margin: 8px 0;">2. You will receive further instructions regarding payment and required documents.</p>
         <p style="margin: 8px 0;">3. Please ensure your passport is valid for at least 6 months from the travel date.</p>
-        <p style="margin: 8px 0;">4. Registration deadline: <strong>4 July 2026</strong></p>
+        <p style="margin: 8px 0;">4. Registration status: <strong>Closed</strong></p>
       </div>
       
       <div class="contact-info">
@@ -605,7 +608,7 @@ class EmailService:
         passport_expiry = booking_data.get('customer', {}).get('passportExpiryDate', 'Not provided')
         
         booking = booking_data.get('booking', {})
-        tour_dates = booking.get('tourDates', 'July 18, 2026 – July 25, 2026')
+        tour_dates = booking.get('tourDates', 'October 6, 2026 – October 14, 2026')
         tour_cost = booking.get('tourCost', 'USD $2,900')
         church_name = booking.get('churchName', 'Not provided')
         emergency_contact = booking.get('emergencyContactName', 'Not provided')
@@ -718,11 +721,190 @@ class EmailService:
         subject = f"New Israel Pilgrimage Booking - {customer_name} - {tour_dates}"
         
         # CC recipients for admin notifications
-        cc_recipients = ['debonnairem@gmail.com', 'nmerveille50@gmail.com']
+        cc_recipients = ADMIN_CC_RECIPIENTS
         
         return self._send_email(
             to=self.admin_email,
             subject=subject,
             html_content=html_content,
             cc=cc_recipients
+        )
+
+    def _format_registration_date(self, registration_data: Dict) -> str:
+        try:
+            created_at = registration_data.get("created_at")
+            if isinstance(created_at, str):
+                date_obj = datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+            else:
+                date_obj = created_at
+            return date_obj.strftime("%B %d, %Y at %I:%M %p")
+        except Exception:
+            return datetime.now().strftime("%B %d, %Y at %I:%M %p")
+
+    def send_registration_confirmation(self, registration_data: Dict) -> bool:
+        """Send confirmation email to customer after tour registration."""
+        customer_email = registration_data.get("email")
+        if not customer_email:
+            logger.warning("No email on registration — skipping customer confirmation.")
+            return False
+
+        first_name = registration_data.get("first_name", "")
+        last_name = registration_data.get("last_name", "")
+        full_name = f"{first_name} {last_name}".strip() or "Valued Customer"
+        registration_id = registration_data.get("id", "")
+        ref_code = registration_id[:8].upper() if registration_id else "N/A"
+        formatted_date = self._format_registration_date(registration_data)
+
+        html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;
+      padding: 20px; background-color: #f4f4f4;
+    }}
+    .container {{ background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+    .header {{
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      color: white; padding: 32px 24px; text-align: center;
+    }}
+    .header h1 {{ margin: 0; font-size: 24px; font-weight: 600; }}
+    .header p {{ margin: 8px 0 0; opacity: 0.9; font-size: 14px; }}
+    .content {{ padding: 28px 24px; }}
+    .greeting {{ font-size: 16px; margin-bottom: 16px; }}
+    .details {{
+      background: #f8fafc; border-left: 4px solid #3B82F6;
+      padding: 20px; margin: 20px 0; border-radius: 4px;
+    }}
+    .details h3 {{ margin: 0 0 12px; color: #2563EB; font-size: 16px; }}
+    .row {{ margin: 8px 0; }}
+    .label {{ font-weight: 600; color: #64748b; }}
+    .note {{
+      background: #fff7ed; border: 1px solid #fed7aa;
+      border-radius: 6px; padding: 16px; margin-top: 20px; font-size: 14px;
+    }}
+    .footer {{
+      background: #f8fafc; padding: 20px; text-align: center;
+      color: #64748b; font-size: 12px;
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Registration Received</h1>
+      <p>CardX Academia & Travel Tours</p>
+    </div>
+    <div class="content">
+      <p class="greeting">Dear {full_name},</p>
+      <p>Thank you for submitting your tour registration with CardX Academia & Travel Tours. We have received your application and our team will review it shortly.</p>
+      <div class="details">
+        <h3>Your Submission</h3>
+        <div class="row"><span class="label">Reference:</span> {ref_code}</div>
+        <div class="row"><span class="label">Passport No:</span> {registration_data.get('passport_no', 'N/A')}</div>
+        <div class="row"><span class="label">Telephone:</span> {registration_data.get('telephone_number', 'N/A')}</div>
+        <div class="row"><span class="label">Submitted:</span> {formatted_date}</div>
+      </div>
+      <div class="note">
+        <strong>What happens next?</strong><br>
+        A member of our team will contact you within 2–3 working days regarding next steps for your tour registration. Please keep your reference number handy.
+      </div>
+      <p style="margin-top: 20px; font-size: 14px; color: #64748b;">
+        Questions? Reply to this email or contact us at {self.reply_to_email}
+      </p>
+    </div>
+    <div class="footer">
+      <p>CardX Academia & Travel Tours · Travel & Tours · Visa & Education Support</p>
+    </div>
+  </div>
+</body>
+</html>
+        """
+
+        subject = f"Tour Registration Confirmed — Ref {ref_code}"
+        return self._send_email(
+            to=customer_email,
+            subject=subject,
+            html_content=html_content,
+            reply_to=self.reply_to_email,
+        )
+
+    def send_registration_admin_notification(self, registration_data: Dict) -> bool:
+        """Send notification email to admin about a new tour registration."""
+        if not self.admin_email:
+            logger.warning("ADMIN_EMAIL not configured. Skipping registration admin notification.")
+            return False
+
+        first_name = registration_data.get("first_name", "")
+        last_name = registration_data.get("last_name", "")
+        full_name = f"{first_name} {last_name}".strip() or "Unknown"
+        passport_no = registration_data.get("passport_no", "Not provided")
+        telephone = registration_data.get("telephone_number", "Not provided")
+        email = registration_data.get("email", "Not provided")
+        birth_country = registration_data.get("tourist_birth_country", "Not provided")
+        residence = registration_data.get("country_of_present_residence", "Not provided")
+        visited_israel = registration_data.get("visited_before_israel", "Not provided")
+        registration_id = registration_data.get("id", "Unknown")
+        formatted_date = self._format_registration_date(registration_data)
+
+        html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;
+      padding: 20px; background-color: #f4f4f4;
+    }}
+    .container {{ background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+    .header {{
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+      color: white; padding: 24px; text-align: center;
+    }}
+    .header h2 {{ margin: 0; font-size: 22px; }}
+    .content {{ padding: 24px; }}
+    .info-row {{ margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }}
+    .label {{ font-weight: 600; color: #64748b; display: inline-block; min-width: 160px; }}
+    .value {{ color: #1e293b; }}
+    .footer {{ background: #f8fafc; padding: 16px; text-align: center; color: #64748b; font-size: 12px; }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>New Tour Registration</h2>
+    </div>
+    <div class="content">
+      <div class="info-row"><span class="label">Name:</span> <span class="value">{full_name}</span></div>
+      <div class="info-row"><span class="label">Email:</span> <span class="value">{email}</span></div>
+      <div class="info-row"><span class="label">Passport No:</span> <span class="value">{passport_no}</span></div>
+      <div class="info-row"><span class="label">Telephone:</span> <span class="value">{telephone}</span></div>
+      <div class="info-row"><span class="label">Birth Country:</span> <span class="value">{birth_country}</span></div>
+      <div class="info-row"><span class="label">Present Residence:</span> <span class="value">{residence}</span></div>
+      <div class="info-row"><span class="label">Visited Israel Before:</span> <span class="value">{visited_israel}</span></div>
+      <div class="info-row"><span class="label">Registration ID:</span> <span class="value">{registration_id}</span></div>
+      <div class="info-row"><span class="label">Submitted:</span> <span class="value">{formatted_date}</span></div>
+      <p style="margin-top: 20px; font-size: 14px; color: #64748b;">View and export all registrations from the admin portal.</p>
+    </div>
+    <div class="footer">
+      <p>Automated notification · CardX Academia & Travel Tours</p>
+    </div>
+  </div>
+</body>
+</html>
+        """
+
+        subject = f"New Tour Registration - {full_name}"
+        return self._send_email(
+            to=self.admin_email,
+            subject=subject,
+            html_content=html_content,
+            cc=ADMIN_CC_RECIPIENTS,
         )

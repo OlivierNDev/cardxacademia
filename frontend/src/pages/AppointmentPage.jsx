@@ -14,7 +14,6 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CheckCircle2, XCircle, Loader2, Calendar as CalendarIcon, Clock, MapPin, Video, User } from 'lucide-react';
 import { appointmentAPI } from '@/services/api';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { format } from 'date-fns';
@@ -220,7 +219,6 @@ const AppointmentPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 py-12">
@@ -230,19 +228,19 @@ const AppointmentPage = () => {
         </div>
 
         {submitted && (
-          <div className="mb-6 p-6 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mb-6 p-6 bg-brand-gold-50 border border-brand-gold-200 rounded-lg">
             <div className="flex items-center gap-3 mb-2">
-              <CheckCircle2 className="text-green-600" size={24} />
-              <h3 className="text-lg font-semibold text-green-800">Appointment Booked Successfully! 🎉</h3>
+              <CheckCircle2 className="text-brand-gold-600" size={24} />
+              <h3 className="text-lg font-semibold text-brand-gold-800">Appointment Booked Successfully! 🎉</h3>
             </div>
-            <p className="text-green-700 mb-2">
+            <p className="text-brand-gold-700 mb-2">
               Your appointment has been confirmed. A confirmation email has been sent to your email address.
             </p>
-            <p className="text-green-700 mb-2">
+            <p className="text-brand-gold-700 mb-2">
               Our team has been notified and will confirm your appointment shortly.
             </p>
             {appointmentId && (
-              <p className="text-sm text-green-600 mb-4">Appointment ID: <strong>{appointmentId}</strong></p>
+              <p className="text-sm text-brand-gold-600 mb-4">Appointment ID: <strong>{appointmentId}</strong></p>
             )}
             <Button
               onClick={() => {
@@ -259,9 +257,9 @@ const AppointmentPage = () => {
         )}
 
         {error && !submitted && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-            <XCircle className="text-red-600" size={20} />
-            <p className="text-red-700">{error}</p>
+          <div className="mb-6 p-4 bg-brand-sky-50 border border-brand-blue-200 rounded-lg flex items-center gap-3">
+            <XCircle className="text-brand-gold-700" size={20} />
+            <p className="text-brand-gold-800">{error}</p>
           </div>
         )}
 
@@ -301,8 +299,8 @@ const AppointmentPage = () => {
                           onClick={() => setSelectedTime(slot)}
                           className={`p-2 text-sm rounded border transition-all ${
                             selectedTime === slot
-                              ? 'bg-yellow-400 text-white border-yellow-400'
-                              : 'bg-white border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+                              ? 'bg-brand-gold-400 text-white border-brand-gold-400'
+                              : 'bg-white border-gray-300 hover:border-brand-blue-300 hover:bg-brand-blue-50'
                           }`}
                         >
                           {slot}
@@ -507,7 +505,7 @@ const AppointmentPage = () => {
                   <Button
                     type="submit"
                     disabled={submitting || !selectedDate || !selectedTime}
-                    className="flex-1 bg-yellow-400 hover:bg-yellow-500"
+                    className="flex-1 bg-brand-gold-400 hover:bg-brand-gold-500"
                   >
                     {submitting ? (
                       <>

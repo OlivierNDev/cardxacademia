@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -202,7 +201,7 @@ const IsraelTourApplicationPage = () => {
           alternatePhone: formData.alternatePhone || null,
         },
         booking: {
-          tourDates: "July 18, 2026 – July 25, 2026",
+          tourDates: "October 6, 2026 – October 14, 2026",
           tourCost: "USD $2,900",
           churchName: formData.churchName || null,
           churchAddress: formData.churchAddress || null,
@@ -252,17 +251,16 @@ const IsraelTourApplicationPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
       
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-12">
+      <section className="bg-gradient-to-r from-brand-sky-50 to-brand-gold-50 py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
             Holy Land Pilgrimage Application
           </h1>
           <p className="text-gray-600 text-lg">
-            July 18, 2026 – July 25, 2026
+            October 6, 2026 – October 14, 2026
           </p>
           <p className="text-gray-500 text-sm mt-2">
             Registration Deadline: {PILGRIMAGE_REGISTRATION_DEADLINE_LABEL}
@@ -274,13 +272,13 @@ const IsraelTourApplicationPage = () => {
       {submitted && (
         <section className="py-8">
           <div className="max-w-4xl mx-auto px-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-8">
+            <div className="bg-brand-gold-50 border border-brand-gold-200 rounded-lg p-8">
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="text-green-600" size={28} />
-                <h3 className="text-2xl font-semibold text-green-800">✅ Booking Submitted Successfully</h3>
+                <CheckCircle2 className="text-brand-gold-600" size={28} />
+                <h3 className="text-2xl font-semibold text-brand-gold-800">✅ Booking Submitted Successfully</h3>
               </div>
               
-              <div className="space-y-4 text-green-800">
+              <div className="space-y-4 text-brand-gold-800">
                 <p className="text-lg">
                   Thank you for registering for the Israel Pilgrimage Travel Program.
                 </p>
@@ -289,33 +287,33 @@ const IsraelTourApplicationPage = () => {
                   Our team will verify your details and contact you shortly with the next steps.
                 </p>
 
-                <div className="mt-6 pt-6 border-t border-green-300">
-                  <h4 className="text-xl font-bold text-green-900 mb-4">💳 Payment Options</h4>
+                <div className="mt-6 pt-6 border-t border-brand-gold-300">
+                  <h4 className="text-xl font-bold text-brand-gold-900 mb-4">💳 Payment Options</h4>
                   <p className="mb-4">You may complete your payment using any of the options below:</p>
                   
-                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-green-300">
-                    <h5 className="font-bold text-green-900 mb-4 text-lg">Option 1: Bank Transfer (USD)</h5>
-                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-brand-gold-300">
+                    <h5 className="font-bold text-brand-gold-900 mb-4 text-lg">Option 1: Bank Transfer (USD)</h5>
+                    <div className="space-y-3 text-sm bg-brand-blue-50 rounded-lg p-5 mb-4 border border-brand-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Name:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                           <button
                             onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Number:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-gray-800 font-bold text-lg">4002212860747</span>
                           <button
                             onClick={() => copyToClipboard('4002212860747')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
@@ -327,56 +325,56 @@ const IsraelTourApplicationPage = () => {
                         <span className="text-gray-800 font-semibold">USD (US Dollars)</span>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-3 bg-yellow-50 p-3 rounded border border-yellow-200">
+                    <p className="text-sm text-gray-600 mb-3 bg-brand-gold-50 p-3 rounded border border-brand-gold-200">
                       <span className="font-semibold">Payment Reference:</span> Your Full Name – Israel Pilgrimage
                     </p>
                     <p className="mt-3 text-sm text-gray-700">
                       After payment, please email your proof of payment to<br />
-                      <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                      <a href="mailto:info@cardxacademia.com" className="text-brand-blue-600 hover:underline font-semibold">
                         📧 info@cardxacademia.com
                       </a>
                     </p>
                   </div>
 
-                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-green-300">
-                    <h5 className="font-bold text-green-900 mb-4 text-lg">Option 2: Bank Transfer (Burundi – Eco Bank)</h5>
+                  <div className="bg-white rounded-lg p-5 mb-4 border-2 border-brand-gold-300">
+                    <h5 className="font-bold text-brand-gold-900 mb-4 text-lg">Option 2: Bank Transfer (Burundi – Eco Bank)</h5>
                     <p className="text-sm text-gray-600 mb-4">
                       For applicants paying from Burundi, you may transfer to either account below:
                     </p>
 
-                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
-                      <p className="font-bold text-green-900 mb-2">BIF Account</p>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                    <div className="space-y-3 text-sm bg-brand-blue-50 rounded-lg p-5 mb-4 border border-brand-blue-200">
+                      <p className="font-bold text-brand-gold-900 mb-2">BIF Account</p>
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Name:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                           <button
                             onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Number:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-gray-800 font-bold text-lg">38125038402</span>
                           <button
                             onClick={() => copyToClipboard('38125038402')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Currency:</span>
                         <span className="text-gray-800 font-semibold">BIF (Burundian Franc)</span>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Bank Name:</span>
                         <span className="text-gray-800 font-semibold">Eco Bank</span>
                       </div>
@@ -386,7 +384,7 @@ const IsraelTourApplicationPage = () => {
                           <span className="font-mono text-gray-800 font-semibold">ECOCBIBI</span>
                           <button
                             onClick={() => copyToClipboard('ECOCBIBI')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
@@ -395,39 +393,39 @@ const IsraelTourApplicationPage = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-3 text-sm bg-blue-50 rounded-lg p-5 mb-4 border border-blue-200">
-                      <p className="font-bold text-green-900 mb-2">USD Account</p>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                    <div className="space-y-3 text-sm bg-brand-blue-50 rounded-lg p-5 mb-4 border border-brand-blue-200">
+                      <p className="font-bold text-brand-gold-900 mb-2">USD Account</p>
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Name:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-gray-800">Cardx Academia & Travel Tours Ltd</span>
                           <button
                             onClick={() => copyToClipboard('Cardx Academia & Travel Tours Ltd')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Account Number:</span>
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-gray-800 font-bold text-lg">38125038403</span>
                           <button
                             onClick={() => copyToClipboard('38125038403')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Currency:</span>
                         <span className="text-gray-800 font-semibold">USD (US Dollars)</span>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                      <div className="flex justify-between items-center py-2 border-b border-brand-blue-200">
                         <span className="font-bold text-gray-700">Bank Name:</span>
                         <span className="text-gray-800 font-semibold">Eco Bank</span>
                       </div>
@@ -437,7 +435,7 @@ const IsraelTourApplicationPage = () => {
                           <span className="font-mono text-gray-800 font-semibold">ECOCBIBI</span>
                           <button
                             onClick={() => copyToClipboard('ECOCBIBI')}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-brand-blue-600 hover:text-brand-blue-700"
                             title="Copy to clipboard"
                           >
                             <Copy size={16} />
@@ -446,30 +444,30 @@ const IsraelTourApplicationPage = () => {
                       </div>
                     </div>
 
-                    <p className="text-sm text-gray-600 mb-3 bg-yellow-50 p-3 rounded border border-yellow-200">
+                    <p className="text-sm text-gray-600 mb-3 bg-brand-gold-50 p-3 rounded border border-brand-gold-200">
                       <span className="font-semibold">Payment Reference:</span> Your Full Name – Israel Pilgrimage
                     </p>
                     <p className="text-sm text-gray-700">
                       After payment, please email your proof of payment to<br />
-                      <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                      <a href="mailto:info@cardxacademia.com" className="text-brand-blue-600 hover:underline font-semibold">
                         📧 info@cardxacademia.com
                       </a>
                     </p>
                   </div>
 
-                  <div className="bg-white rounded-lg p-5 border border-green-200">
-                    <h5 className="font-bold text-green-900 mb-2">Option 3: Office Payment</h5>
+                  <div className="bg-white rounded-lg p-5 border border-brand-gold-200">
+                    <h5 className="font-bold text-brand-gold-900 mb-2">Option 3: Office Payment</h5>
                     <p className="text-sm mb-4">
                       You may also bring your payment directly to one of our offices. Please come with your booking confirmation details.
                     </p>
                     <div className="space-y-3 text-sm">
-                      <div className="bg-green-50 rounded-lg p-4 border border-green-100">
-                        <p className="font-semibold text-green-900 mb-1">{rwanda.label}</p>
+                      <div className="bg-brand-gold-50 rounded-lg p-4 border border-brand-gold-100">
+                        <p className="font-semibold text-brand-gold-900 mb-1">{rwanda.label}</p>
                         <p className="text-gray-700">{rwanda.address}</p>
                         <p className="text-gray-600 mt-1">{rwanda.phones.map((p) => p.display).join(' · ')}</p>
                       </div>
-                      <div className="bg-green-50 rounded-lg p-4 border border-green-100">
-                        <p className="font-semibold text-green-900 mb-1">{burundi.label}</p>
+                      <div className="bg-brand-gold-50 rounded-lg p-4 border border-brand-gold-100">
+                        <p className="font-semibold text-brand-gold-900 mb-1">{burundi.label}</p>
                         <p className="text-gray-700">{burundi.address}</p>
                         <p className="text-gray-600 mt-1">{burundi.phones.map((p) => p.display).join(' · ')}</p>
                       </div>
@@ -477,12 +475,12 @@ const IsraelTourApplicationPage = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-green-300">
+                <div className="mt-6 pt-6 border-t border-brand-gold-300">
                   <p className="mb-2">
                     If you have any questions or need assistance, feel free to contact us at
                   </p>
                   <p>
-                    <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline font-semibold">
+                    <a href="mailto:info@cardxacademia.com" className="text-brand-blue-600 hover:underline font-semibold">
                       📧 info@cardxacademia.com
                     </a>
                   </p>
@@ -491,14 +489,14 @@ const IsraelTourApplicationPage = () => {
                 <p className="mt-6 text-lg font-medium">
                   We look forward to accompanying you on this meaningful journey.
                 </p>
-                <p className="text-right text-green-700 font-semibold">
+                <p className="text-right text-brand-gold-700 font-semibold">
                   — Cardx Academia Team
                 </p>
               </div>
 
               {bookingId && (
-                <div className="mt-6 pt-4 border-t border-green-300">
-                  <p className="text-sm text-green-600">Booking ID: <strong className="font-mono">{bookingId}</strong></p>
+                <div className="mt-6 pt-4 border-t border-brand-gold-300">
+                  <p className="text-sm text-brand-gold-600">Booking ID: <strong className="font-mono">{bookingId}</strong></p>
                 </div>
               )}
 
@@ -554,12 +552,12 @@ const IsraelTourApplicationPage = () => {
       {error && !submitted && (
         <section className="py-8">
           <div className="max-w-4xl mx-auto px-4">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+            <div className="bg-brand-sky-50 border border-brand-blue-200 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-2">
-                <XCircle className="text-red-600" size={24} />
-                <h3 className="text-lg font-semibold text-red-800">Error</h3>
+                <XCircle className="text-brand-gold-700" size={24} />
+                <h3 className="text-lg font-semibold text-brand-gold-900">Error</h3>
               </div>
-              <p className="text-red-700">{error}</p>
+              <p className="text-brand-gold-800">{error}</p>
             </div>
           </div>
         </section>
@@ -569,16 +567,16 @@ const IsraelTourApplicationPage = () => {
       {registrationClosed && !submitted && (
         <section className="py-12">
           <div className="max-w-4xl mx-auto px-4">
-            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-8 text-center">
-              <XCircle className="mx-auto text-red-500 mb-4" size={48} />
-              <h2 className="text-2xl font-bold text-red-700 mb-2">Registration Closed</h2>
-              <p className="text-red-600 mb-6">
+            <div className="bg-brand-sky-50 border-2 border-brand-blue-200 rounded-lg p-8 text-center">
+              <XCircle className="mx-auto text-brand-gold-600 mb-4" size={48} />
+              <h2 className="text-2xl font-bold text-brand-gold-800 mb-2">Registration Closed</h2>
+              <p className="text-brand-gold-700 mb-6">
                 The registration deadline ({PILGRIMAGE_REGISTRATION_DEADLINE_FULL}) has passed.
                 We are no longer accepting new applications for this pilgrimage.
               </p>
               <Button
                 onClick={() => navigate('/israel-pilgrimage-2026')}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-brand-blue-500 hover:bg-brand-blue-600 text-white"
               >
                 Back to Pilgrimage Info
               </Button>
@@ -615,7 +613,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="As it appears on passport"
                     />
-                    {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                    {errors.fullName && <p className="text-brand-gold-600 text-sm mt-1">{errors.fullName}</p>}
                   </div>
                   <div>
                     <Label htmlFor="dateOfBirth">Date of Birth *</Label>
@@ -628,7 +626,7 @@ const IsraelTourApplicationPage = () => {
                       required
                       className="mt-1"
                     />
-                    {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+                    {errors.dateOfBirth && <p className="text-brand-gold-600 text-sm mt-1">{errors.dateOfBirth}</p>}
                   </div>
                   <div>
                     <Label htmlFor="gender">Gender *</Label>
@@ -641,7 +639,7 @@ const IsraelTourApplicationPage = () => {
                         <SelectItem value="female">Female</SelectItem>
                       </SelectContent>
                     </Select>
-                    {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+                    {errors.gender && <p className="text-brand-gold-600 text-sm mt-1">{errors.gender}</p>}
                   </div>
                   <div>
                     <Label htmlFor="nationality">Nationality *</Label>
@@ -654,7 +652,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Your nationality"
                     />
-                    {errors.nationality && <p className="text-red-500 text-sm mt-1">{errors.nationality}</p>}
+                    {errors.nationality && <p className="text-brand-gold-600 text-sm mt-1">{errors.nationality}</p>}
                   </div>
                   <div>
                     <Label htmlFor="passportNumber">Passport Number *</Label>
@@ -667,7 +665,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Passport number"
                     />
-                    {errors.passportNumber && <p className="text-red-500 text-sm mt-1">{errors.passportNumber}</p>}
+                    {errors.passportNumber && <p className="text-brand-gold-600 text-sm mt-1">{errors.passportNumber}</p>}
                   </div>
                   <div>
                     <Label htmlFor="passportIssueDate">Passport Issue Date</Label>
@@ -691,7 +689,7 @@ const IsraelTourApplicationPage = () => {
                       required
                       className="mt-1"
                     />
-                    {errors.passportExpiryDate && <p className="text-red-500 text-sm mt-1">{errors.passportExpiryDate}</p>}
+                    {errors.passportExpiryDate && <p className="text-brand-gold-600 text-sm mt-1">{errors.passportExpiryDate}</p>}
                   </div>
                   <div>
                     <Label htmlFor="placeOfBirth">Place of Birth</Label>
@@ -726,7 +724,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="your.email@example.com"
                     />
-                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                    {errors.email && <p className="text-brand-gold-600 text-sm mt-1">{errors.email}</p>}
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
@@ -739,7 +737,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="+250 788 123 456"
                     />
-                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                    {errors.phone && <p className="text-brand-gold-600 text-sm mt-1">{errors.phone}</p>}
                   </div>
                   <div>
                     <Label htmlFor="alternatePhone">Alternate Phone</Label>
@@ -763,7 +761,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Your city"
                     />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                    {errors.city && <p className="text-brand-gold-600 text-sm mt-1">{errors.city}</p>}
                   </div>
                   <div className="md:col-span-2">
                     <Label htmlFor="address">Full Address *</Label>
@@ -776,7 +774,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Street address"
                     />
-                    {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+                    {errors.address && <p className="text-brand-gold-600 text-sm mt-1">{errors.address}</p>}
                   </div>
                   <div>
                     <Label htmlFor="country">Country *</Label>
@@ -789,7 +787,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Your country"
                     />
-                    {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+                    {errors.country && <p className="text-brand-gold-600 text-sm mt-1">{errors.country}</p>}
                   </div>
                 </div>
               </div>
@@ -953,7 +951,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Full name"
                     />
-                    {errors.emergencyContactName && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactName}</p>}
+                    {errors.emergencyContactName && <p className="text-brand-gold-600 text-sm mt-1">{errors.emergencyContactName}</p>}
                   </div>
                   <div>
                     <Label htmlFor="emergencyContactPhone">Emergency Contact Phone *</Label>
@@ -966,7 +964,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="+250 788 123 456"
                     />
-                    {errors.emergencyContactPhone && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactPhone}</p>}
+                    {errors.emergencyContactPhone && <p className="text-brand-gold-600 text-sm mt-1">{errors.emergencyContactPhone}</p>}
                   </div>
                   <div>
                     <Label htmlFor="emergencyContactRelationship">Relationship *</Label>
@@ -979,7 +977,7 @@ const IsraelTourApplicationPage = () => {
                       className="mt-1"
                       placeholder="Spouse, Parent, Sibling, etc."
                     />
-                    {errors.emergencyContactRelationship && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactRelationship}</p>}
+                    {errors.emergencyContactRelationship && <p className="text-brand-gold-600 text-sm mt-1">{errors.emergencyContactRelationship}</p>}
                   </div>
                 </div>
               </div>
@@ -989,7 +987,7 @@ const IsraelTourApplicationPage = () => {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-6 text-lg"
+                  className="w-full bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-semibold py-6 text-lg"
                 >
                   {submitting ? (
                     <>

@@ -119,7 +119,7 @@ const TestimonialsSection = () => {
             Our Clients' Journeys
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Watch and read how our personalized services have helped clients secure admissions, visas, and travel, making their journeys smooth and successful.
+            Travel and education journeys — visas, admissions, and trips supported by our team.
           </p>
         </div>
 
@@ -154,7 +154,7 @@ const TestimonialsSection = () => {
                                   className="w-full h-full object-cover"
                                 />
                                 <div className="absolute top-3 left-3 pointer-events-none">
-                                  <div className="bg-green-600 text-white px-2 py-1 rounded text-xs font-semibold">
+                                  <div className="bg-brand-gold-600 text-white px-2 py-1 rounded text-xs font-semibold">
                                     Photo
                                   </div>
                                 </div>
@@ -189,7 +189,7 @@ const TestimonialsSection = () => {
                                 </Link>
                                 {/* Video badge */}
                                 <div className="absolute top-3 left-3 pointer-events-none">
-                                  <div className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                                  <div className="bg-brand-blue-500 text-white px-2 py-1 rounded text-xs font-semibold">
                                     Video
                                   </div>
                                 </div>
@@ -201,7 +201,7 @@ const TestimonialsSection = () => {
                                   href={testimonial.videoUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 transition-all"
+                                  className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-blue-500 via-brand-sky-500 to-brand-gold-500 hover:from-brand-blue-600 hover:via-brand-sky-600 hover:to-brand-gold-600 transition-all"
                                 >
                                   <div className="text-center text-white p-4">
                                     <svg className="w-12 h-12 mx-auto mb-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
@@ -213,7 +213,7 @@ const TestimonialsSection = () => {
                                 </a>
                                 {/* Instagram-style badge */}
                                 <div className="absolute top-3 left-3 pointer-events-none">
-                                  <div className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold flex items-center gap-1">
+                                  <div className="bg-brand-blue-500 text-white px-2 py-1 rounded text-xs font-semibold flex items-center gap-1">
                                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                                     </svg>
@@ -236,7 +236,7 @@ const TestimonialsSection = () => {
                                 </div>
                                 {/* Video badge */}
                                 <div className="absolute top-3 left-3">
-                                  <div className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                                  <div className="bg-brand-blue-500 text-white px-2 py-1 rounded text-xs font-semibold">
                                     Video
                                   </div>
                                 </div>
@@ -257,17 +257,17 @@ const TestimonialsSection = () => {
                                   className="w-10 h-10 rounded-full object-cover"
                                 />
                               ) : (
-                                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                  <span className="text-blue-500 font-bold">
+                                <div className="w-10 h-10 rounded-full bg-brand-blue-100 flex items-center justify-center">
+                                  <span className="text-brand-blue-500 font-bold">
                                     {testimonial.name.charAt(0).toUpperCase()}
                                   </span>
                                 </div>
                               )}
                               <div>
                                 <p className="font-bold text-gray-800 text-sm">{testimonial.name}</p>
-                                <p className="text-xs text-blue-500">{testimonial.country}</p>
+                                <p className="text-xs text-brand-blue-500">{testimonial.country}</p>
                                 {testimonial.scholarship && (
-                                  <span className="text-xs bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded font-semibold">
+                                  <span className="text-xs bg-brand-gold-100 text-brand-gold-600 px-1.5 py-0.5 rounded font-semibold">
                                     Scholarship
                                   </span>
                                 )}
@@ -290,13 +290,13 @@ const TestimonialsSection = () => {
                 <>
                   <button 
                     onClick={prevVideoSlide}
-                    className="absolute left-0 top-[45%] sm:top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+                    className="absolute left-0 top-[45%] sm:top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-blue-500 hover:text-white transition-colors z-10"
                   >
                     <ChevronLeft size={22} />
                   </button>
                   <button 
                     onClick={nextVideoSlide}
-                    className="absolute right-0 top-[45%] sm:top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+                    className="absolute right-0 top-[45%] sm:top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-blue-500 hover:text-white transition-colors z-10"
                   >
                     <ChevronRight size={22} />
                   </button>
@@ -312,8 +312,8 @@ const TestimonialsSection = () => {
                       onClick={() => setVideoSliderIndex(index)}
                       className={`w-3 h-3 rounded-full transition-all ${
                         videoSliderIndex === index
-                          ? 'bg-blue-500 w-8' 
-                          : 'bg-gray-300 hover:bg-blue-300'
+                          ? 'bg-brand-blue-500 w-8' 
+                          : 'bg-gray-300 hover:bg-brand-blue-300'
                       }`}
                     />
                   ))}
@@ -339,7 +339,7 @@ const TestimonialsSection = () => {
                     }`}
                   >
                     <div className="text-center px-2 sm:px-0">
-                      <h3 className="text-xl sm:text-2xl font-bold text-blue-500 mb-3 sm:mb-6">
+                      <h3 className="text-xl sm:text-2xl font-bold text-brand-blue-500 mb-3 sm:mb-6">
                         {testimonial.country}
                       </h3>
                       <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-4 sm:mb-8 italic">
@@ -348,9 +348,9 @@ const TestimonialsSection = () => {
                       <div className="flex items-center justify-center">
                         <div className="text-center">
                           <p className="font-bold text-gray-800 text-sm sm:text-base">{testimonial.name}</p>
-                          <p className="text-blue-500 text-sm">{testimonial.country}</p>
+                          <p className="text-brand-blue-500 text-sm">{testimonial.country}</p>
                           {testimonial.scholarship && (
-                            <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-semibold">
+                            <span className="text-xs bg-brand-gold-100 text-brand-gold-600 px-2 py-0.5 rounded-full font-semibold">
                               Scholarship Awarded
                             </span>
                           )}
@@ -365,13 +365,13 @@ const TestimonialsSection = () => {
             {/* Navigation Arrows - responsive size */}
             <button 
               onClick={prevTextSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 md:-translate-x-4 lg:-translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-blue-500 hover:text-white transition-colors z-10"
             >
               <ChevronLeft size={22} />
             </button>
             <button 
               onClick={nextTextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors z-10"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 md:translate-x-4 lg:translate-x-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-blue-500 hover:text-white transition-colors z-10"
             >
               <ChevronRight size={22} />
             </button>
@@ -384,8 +384,8 @@ const TestimonialsSection = () => {
                   onClick={() => setTextTestimonialIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
                     index === textTestimonialIndex 
-                      ? 'bg-blue-500 w-8' 
-                      : 'bg-gray-300 hover:bg-blue-300'
+                      ? 'bg-brand-blue-500 w-8' 
+                      : 'bg-gray-300 hover:bg-brand-blue-300'
                   }`}
                 />
               ))}
@@ -397,7 +397,7 @@ const TestimonialsSection = () => {
         <div className="text-center mt-8 sm:mt-12">
           <Link 
             to="/testimonials"
-            className="inline-block border-2 border-blue-500 text-blue-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-500 hover:text-white transition-all"
+            className="inline-block border-2 border-brand-blue-500 text-brand-blue-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-brand-blue-500 hover:text-white transition-all"
           >
             View All Testimonials
           </Link>

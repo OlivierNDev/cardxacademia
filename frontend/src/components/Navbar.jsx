@@ -32,7 +32,7 @@ const Navbar = () => {
               onMouseLeave={() => setDropdownOpen(null)}
             >
               {link.href === '#' ? (
-                <span className="flex items-center gap-1 text-gray-700 hover:text-blue-500 transition-colors font-medium cursor-pointer">
+                <span className="flex items-center gap-1 text-gray-700 hover:text-brand-blue-500 transition-colors font-medium cursor-pointer">
                   {link.name}
                   {link.dropdown && <ChevronDown size={16} />}
                 </span>
@@ -41,8 +41,8 @@ const Navbar = () => {
                   to={link.href}
                   className={`flex items-center gap-1 transition-colors font-medium ${
                     location.pathname === link.href 
-                      ? 'text-blue-500' 
-                      : 'text-gray-700 hover:text-blue-500'
+                      ? 'text-brand-blue-500' 
+                      : 'text-gray-700 hover:text-brand-blue-500'
                   }`}
                 >
                   {link.name}
@@ -55,7 +55,7 @@ const Navbar = () => {
                     <Link 
                       key={idx}
                       to={item.href}
-                      className="block px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-blue-500 transition-colors"
+                      className="block px-4 py-2 text-gray-700 hover:bg-brand-gold-50 hover:text-brand-blue-500 transition-colors"
                     >
                       {item.name}
                     </Link>
@@ -107,8 +107,8 @@ const Navbar = () => {
                     to={link.href}
                     className={`block py-3 transition-colors border-b border-gray-100 ${
                       location.pathname === link.href 
-                        ? 'text-blue-500 font-semibold' 
-                        : 'text-gray-700 hover:text-blue-500'
+                        ? 'text-brand-blue-500 font-semibold' 
+                        : 'text-gray-700 hover:text-brand-blue-500'
                     }`}
                     onClick={() => setIsOpen(false)}
                   >
@@ -121,7 +121,7 @@ const Navbar = () => {
                       <Link 
                         key={idx}
                         to={item.href}
-                        className="block py-2 text-gray-600 hover:text-blue-500 transition-colors text-sm"
+                        className="block py-2 text-gray-600 hover:text-brand-blue-500 transition-colors text-sm"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}

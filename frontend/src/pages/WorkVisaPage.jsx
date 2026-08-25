@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -119,11 +118,10 @@ const WorkVisaPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-16">
+      <section className="bg-gradient-to-r from-brand-sky-50 to-brand-gold-50 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Work Visa / Work Permit Application
@@ -234,7 +232,7 @@ const WorkVisaPage = () => {
               { step: '8', title: 'Post-Arrival', desc: 'Support with work authorization and settlement' }
             ].map((item, index) => (
               <div key={index} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <div className="text-sm font-semibold text-blue-500 mb-2">Step {item.step}</div>
+                <div className="text-sm font-semibold text-brand-blue-500 mb-2">Step {item.step}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.desc}</p>
               </div>
@@ -244,7 +242,7 @@ const WorkVisaPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-blue-500">
+      <section className="py-16 bg-brand-blue-500">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Work Abroad?
@@ -256,7 +254,7 @@ const WorkVisaPage = () => {
             <Link to="/appointment">
               <Button 
                 size="lg" 
-                className="bg-white text-blue-500 hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
+                className="bg-white text-brand-blue-500 hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
               >
                 Book an Appointment
               </Button>

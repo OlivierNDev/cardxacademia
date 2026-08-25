@@ -18,13 +18,14 @@ from services.email_service import EmailService
 # Kigali timezone
 KIGALI_TZ = pytz.timezone('Africa/Kigali')
 
-# Registration closes 4 July 2026 at 23:59 Kigali time
+# Israel Holy Land tour: 6–14 October 2026. Registration remains closed.
 PILGRIMAGE_REGISTRATION_DEADLINE = KIGALI_TZ.localize(datetime(2026, 7, 4, 23, 59, 59))
-PILGRIMAGE_REGISTRATION_DEADLINE_LABEL = "4 July 2026"
+PILGRIMAGE_REGISTRATION_DEADLINE_LABEL = "Registration closed"
+PILGRIMAGE_TOUR_DATES = "October 6, 2026 – October 14, 2026"
 
 
 def is_pilgrimage_registration_closed() -> bool:
-    return datetime.now(KIGALI_TZ) > PILGRIMAGE_REGISTRATION_DEADLINE
+    return True
 
 
 ROOT_DIR = Path(__file__).parent
@@ -307,7 +308,7 @@ class PilgrimageCustomerInfo(BaseModel):
     alternatePhone: Optional[str] = None
 
 class PilgrimageBookingInfo(BaseModel):
-    tourDates: str = "July 18, 2026 – July 25, 2026"
+    tourDates: str = "October 6, 2026 – October 14, 2026"
     tourCost: str = "USD $2,900"
     churchName: Optional[str] = None
     churchAddress: Optional[str] = None
@@ -712,7 +713,7 @@ async def create_pilgrimage_booking(booking_data: PilgrimageBookingCreate):
         if is_pilgrimage_registration_closed():
             raise HTTPException(
                 status_code=403,
-                detail=f"Registration is closed. The deadline was {PILGRIMAGE_REGISTRATION_DEADLINE_LABEL} at 23:59 (Kigali time).",
+                detail="Registration is closed. Applications are not being accepted for this tour.",
             )
 
         db_available = (db is not None) and (not EMAIL_ONLY_MODE)
@@ -805,6 +806,11 @@ async def get_pilgrimage_booking(booking_id: str):
     
     return booking
 
+# Tour registration: MongoDB optional — submit + emails work without DB (email-only fallback)
+from registration.routes import router as registration_router
+
+api_router.include_router(registration_router)
+
 # Include the router in the main app
 app.include_router(api_router)
 
@@ -837,8 +843,7 @@ async def startup_db_client():
     """Initialize MongoDB connection on app startup"""
     try:
         if EMAIL_ONLY_MODE:
-            logger.info("📧 EMAIL_ONLY_MODE is enabled. Skipping MongoDB startup connection.")
-            return
+            logger.info("📧 EMAIL_ONLY_MODE is enabled; appointments/pilgrimage skip DB. Tour registration also works without MongoDB.")
         logger.info("🔄 Initializing MongoDB connection...")
         success = await connect_to_mongodb(max_retries=3, retry_delay=2)
         

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -52,10 +51,9 @@ const SitemapPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
 
-      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-14">
+      <section className="bg-gradient-to-r from-brand-sky-50 to-brand-gold-50 py-14">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">Site Map</h1>
           <p className="text-gray-600 max-w-3xl mx-auto">
@@ -77,14 +75,14 @@ const SitemapPage = () => {
                       {item.external ? (
                         <a
                           href={item.href}
-                          className="text-blue-600 hover:text-blue-700 hover:underline"
+                          className="text-brand-blue-600 hover:text-brand-blue-700 hover:underline"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {item.label}
                         </a>
                       ) : (
-                        <Link to={item.href} className="text-blue-600 hover:text-blue-700 hover:underline">
+                        <Link to={item.href} className="text-brand-blue-600 hover:text-brand-blue-700 hover:underline">
                           {item.label}
                         </Link>
                       )}

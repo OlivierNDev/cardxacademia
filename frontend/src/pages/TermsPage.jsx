@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -11,10 +10,9 @@ const TermsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopBar />
       <Navbar />
 
-      <section className="bg-gradient-to-r from-blue-50 to-orange-50 py-14">
+      <section className="bg-gradient-to-r from-brand-sky-50 to-brand-gold-50 py-14">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">Terms Of Policy</h1>
           <p className="text-gray-600">Terms and conditions for using CardX Academia services.</p>
@@ -23,7 +21,7 @@ const TermsPage = () => {
 
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 space-y-8 text-gray-700 leading-relaxed">
-          <div className="bg-orange-50 border border-orange-100 rounded-lg p-5">
+          <div className="bg-brand-gold-50 border border-brand-gold-100 rounded-lg p-5">
             <p>
               Effective Date: May 27, 2026. By using our website or submitting any form, you agree to these terms.
             </p>
@@ -96,11 +94,11 @@ const TermsPage = () => {
           <div>
             <h2 className="text-xl font-bold text-gray-800 mb-3">9. Contact</h2>
             <p>
-              Email: <a href="mailto:info@cardxacademia.com" className="text-blue-600 hover:underline">info@cardxacademia.com</a>
+              Email: <a href="mailto:info@cardxacademia.com" className="text-brand-blue-600 hover:underline">info@cardxacademia.com</a>
               <br />
-              Phone (Rwanda): <a href="tel:+250788603451" className="text-blue-600 hover:underline">+250 788 603 451</a>, <a href="tel:+250787420838" className="text-blue-600 hover:underline">+250 787 420 838</a>
+              Phone (Rwanda): <a href="tel:+250788603451" className="text-brand-blue-600 hover:underline">+250 788 603 451</a>, <a href="tel:+250787420838" className="text-brand-blue-600 hover:underline">+250 787 420 838</a>
               <br />
-              Phone (Burundi): <a href="tel:+25766314249" className="text-blue-600 hover:underline">+257 663 142 49</a>, <a href="tel:+25769909533" className="text-blue-600 hover:underline">+257 699 095 33</a>
+              Phone (Burundi): <a href="tel:+25766314249" className="text-brand-blue-600 hover:underline">+257 663 142 49</a>, <a href="tel:+25769909533" className="text-brand-blue-600 hover:underline">+257 699 095 33</a>
               <br />
               Rwanda Office: 1st Floor, Door F1B-013D, Town Center Building (TCB), Kigali City
               <br />

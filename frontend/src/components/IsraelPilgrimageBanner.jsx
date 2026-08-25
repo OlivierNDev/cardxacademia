@@ -1,62 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { isPilgrimageRegistrationClosed } from '../constants/pilgrimageDeadline';
+import {
+  PILGRIMAGE_TOUR_DATES_SHORT,
+  isPilgrimageRegistrationClosed,
+} from '../constants/pilgrimageDeadline';
 
 const IsraelPilgrimageBanner = () => {
-  const [registrationClosed, setRegistrationClosed] = useState(isPilgrimageRegistrationClosed());
-
-  useEffect(() => {
-    const checkDeadline = () => setRegistrationClosed(isPilgrimageRegistrationClosed());
-    checkDeadline();
-    const interval = setInterval(checkDeadline, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  const registrationClosed = isPilgrimageRegistrationClosed();
 
   return (
-    <section className="py-12 bg-gradient-to-r from-blue-50 to-orange-50">
+    <section className="py-8 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-blue-100">
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  Special Tour
-                </span>
-                <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  Limited Seats
-                </span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-                Holy Land Pilgrimage to Israel
-              </h2>
-              <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-3">
-                <span>July 18 - July 25, 2026</span>
-                <span className="hidden sm:inline">•</span>
-                <span className="text-lg font-semibold text-gray-800">$2,900 USD</span>
-              </div>
-              <p className="text-gray-600 text-sm md:text-base">
-                A spiritual journey through the land of the Bible. Walk where Jesus walked.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link 
-                to="/israel-pilgrimage-2026"
-                className="bg-white border-2 border-blue-500 text-blue-500 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all text-center"
-              >
-                Learn More
-              </Link>
-              {!registrationClosed && (
-                <Link 
-                  to="/apply-israel-tour"
-                  className="bg-blue-500 text-white hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  Apply Now
-                  <ArrowRight size={18} />
-                </Link>
-              )}
-            </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue-700 mb-1">
+              Featured tour
+              {registrationClosed ? ' · Registration closed' : ''}
+            </p>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Holy Land Israel · {PILGRIMAGE_TOUR_DATES_SHORT}
+            </h2>
           </div>
+          <Link
+            to="/israel-pilgrimage-2026"
+            className="inline-flex items-center justify-center border border-gray-300 text-gray-800 hover:border-brand-blue-600 hover:text-brand-blue-700 px-5 py-2.5 rounded-md text-sm font-semibold transition-colors"
+          >
+            Tour details
+          </Link>
         </div>
       </div>
     </section>

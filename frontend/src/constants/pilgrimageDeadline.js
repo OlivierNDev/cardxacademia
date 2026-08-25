@@ -1,29 +1,23 @@
-// Registration closes 4 July 2026 at 23:59 Kigali time (UTC+2)
+// Israel Holy Land tour: 6–14 October 2026
+// Registration remains closed (applications not accepted).
+export const PILGRIMAGE_TOUR_DATES_SHORT = 'October 6 – October 14, 2026';
+export const PILGRIMAGE_TOUR_DATES_LONG = 'October 6, 2026 – October 14, 2026';
+export const PILGRIMAGE_DEPARTURE_LABEL = 'October 6, 2026';
+export const PILGRIMAGE_RETURN_LABEL = 'October 14, 2026';
+
+// Kept for messaging; registration is forced closed regardless of date.
 export const PILGRIMAGE_REGISTRATION_DEADLINE_UTC = new Date('2026-07-04T21:59:59Z');
-export const PILGRIMAGE_REGISTRATION_DEADLINE_LABEL = '4 July 2026';
-export const PILGRIMAGE_REGISTRATION_DEADLINE_FULL =
-  '4 July 2026 at 23:59 (Kigali time)';
+export const PILGRIMAGE_REGISTRATION_DEADLINE_LABEL = 'Registration closed';
+export const PILGRIMAGE_REGISTRATION_DEADLINE_FULL = 'Registration is closed';
 
-export function isPilgrimageRegistrationClosed(now = new Date()) {
-  return now >= PILGRIMAGE_REGISTRATION_DEADLINE_UTC;
+export function isPilgrimageRegistrationClosed() {
+  return true;
 }
 
-export function getTimeUntilPilgrimageDeadline(now = new Date()) {
-  return PILGRIMAGE_REGISTRATION_DEADLINE_UTC - now;
+export function getTimeUntilPilgrimageDeadline() {
+  return 0;
 }
 
-export function getPilgrimageCountdown(now = new Date()) {
-  const difference = getTimeUntilPilgrimageDeadline(now);
-
-  if (difference <= 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0, closed: true };
-  }
-
-  return {
-    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-    seconds: Math.floor((difference % (1000 * 60)) / 1000),
-    closed: false,
-  };
+export function getPilgrimageCountdown() {
+  return { days: 0, hours: 0, minutes: 0, seconds: 0, closed: true };
 }

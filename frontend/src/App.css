@@ -21,7 +21,7 @@
 }
 
 .App-link {
-    color: #61dafb;
+    color: #0888F8;
 }
 
 @keyframes App-logo-spin {
@@ -43,12 +43,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #45B6B0;
+    background: #0888F8;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #3a9d98;
+    background: #0774D3;
 }
 
 /* Smooth scrolling */

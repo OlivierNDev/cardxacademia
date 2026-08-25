@@ -13,125 +13,166 @@ export const navLinks = [
     ]
   },
   { name: 'Israel Pilgrimage', href: '/israel-pilgrimage-2026' },
-  { name: 'Testimonials', href: '/testimonials' },
-  { name: 'Contact Us', href: '/contact' },
+  { name: 'Tour Registration', href: '/tour-registration' },
   { name: 'About', href: '/about' },
 ];
 
 export const services = [
+  // Travel & Tours (primary)
   {
     id: 1,
-    title: 'Student Visa Application',
-    description: 'Comprehensive assistance for student visa applications to study abroad',
-    href: '/visa/student',
-    icon: 'graduation-cap'
+    category: 'travel',
+    title: 'International Travel & Tours',
+    description: 'Curated multi-country tours and travel packages designed for smooth, memorable journeys.',
+    href: '/services',
+    icon: 'globe'
   },
   {
     id: 2,
-    title: 'Visitor Visa Application',
-    description: 'Expert guidance for tourist and visitor visa applications',
-    href: '/visa/visitor',
-    icon: 'passport'
+    category: 'travel',
+    title: 'Car Rental Assistance',
+    description: 'Help tourists find reliable car rentals and local transport options at their destination.',
+    href: '/services',
+    icon: 'car'
   },
   {
     id: 3,
-    title: 'Work Permit Application',
-    description: 'Professional support for work permit applications and documentation',
-    href: '/visa/work',
-    icon: 'briefcase'
+    category: 'travel',
+    title: 'Air Ticketing',
+    description: 'Affordable flight bookings and itinerary support for destinations worldwide.',
+    href: '/appointment',
+    icon: 'plane'
   },
   {
     id: 4,
-    title: 'Express Entry for Canada',
-    description: 'Complete Express Entry program guidance for Canadian immigration',
-    href: '/services/express-entry',
+    category: 'travel',
+    title: 'Airport Transfers',
+    description: 'Airport pickup and drop-off arrangements so arrivals and departures stay stress-free.',
+    href: '/appointment',
     icon: 'map-pin'
   },
   {
     id: 5,
-    title: 'University Admission Guidance',
-    description: 'Personalized assistance for university applications and admissions',
-    href: '/services/admission',
-    icon: 'book-open'
+    category: 'travel',
+    title: 'Hotel & Stay Booking',
+    description: 'Assistance finding comfortable hotels and stays that match your budget and trip style.',
+    href: '/appointment',
+    icon: 'building'
   },
   {
     id: 6,
-    title: 'Air Ticketing Services',
-    description: 'Affordable flight bookings and travel arrangements worldwide',
-    href: '/services/air-ticketing',
-    icon: 'plane'
+    category: 'travel',
+    title: 'Custom Trip Planning',
+    description: 'Personalized itineraries covering sightseeing, transfers, and day-to-day travel needs.',
+    href: '/appointment',
+    icon: 'compass'
   },
   {
     id: 7,
-    title: 'Document Preparation',
-    description: 'Professional help with visa and immigration document preparation',
-    href: '/services/document-preparation',
-    icon: 'file-text'
+    category: 'travel',
+    title: 'Holy Land Israel Tour',
+    description: 'Faith-based pilgrimage to Israel, October 6–14, 2026. Registration is currently closed.',
+    href: '/israel-pilgrimage-2026',
+    icon: 'landmark'
   },
+  // Education & Academia (secondary)
   {
     id: 8,
-    title: 'Immigration Consultation',
-    description: 'Expert immigration consultation and assessment services',
-    href: '/services/immigration-consultation',
-    icon: 'users'
+    category: 'education',
+    title: 'Student Visa Application',
+    description: 'Comprehensive assistance for student visa applications to study abroad.',
+    href: '/visa/student',
+    icon: 'graduation-cap'
   },
   {
     id: 9,
-    title: 'Language Test Preparation',
-    description: 'Guidance for IELTS, TOEFL, and other language proficiency tests',
-    href: '/services/language-tests',
-    icon: 'languages'
+    category: 'education',
+    title: 'Visitor Visa Application',
+    description: 'Expert guidance for tourist and visitor visa applications.',
+    href: '/visa/visitor',
+    icon: 'passport'
   },
   {
     id: 10,
+    category: 'education',
+    title: 'Work Permit Application',
+    description: 'Professional support for work permit applications and documentation.',
+    href: '/visa/work',
+    icon: 'briefcase'
+  },
+  {
+    id: 11,
+    category: 'education',
+    title: 'Express Entry for Canada',
+    description: 'Complete Express Entry program guidance for Canadian immigration.',
+    href: '/services',
+    icon: 'canada'
+  },
+  {
+    id: 12,
+    category: 'education',
+    title: 'University Admission Guidance',
+    description: 'Personalized assistance for university applications and admissions.',
+    href: '/services',
+    icon: 'book-open'
+  },
+  {
+    id: 13,
+    category: 'education',
+    title: 'Document Preparation',
+    description: 'Professional help with visa and immigration document preparation.',
+    href: '/services',
+    icon: 'file-text'
+  },
+  {
+    id: 14,
+    category: 'education',
+    title: 'Immigration Consultation',
+    description: 'Expert immigration consultation and assessment services.',
+    href: '/appointment',
+    icon: 'users'
+  },
+  {
+    id: 15,
+    category: 'education',
+    title: 'Language Test Preparation',
+    description: 'Guidance for IELTS, TOEFL, and other language proficiency tests.',
+    href: '/services',
+    icon: 'languages'
+  },
+  {
+    id: 16,
+    category: 'education',
     title: 'Scholarship Applications',
-    description: 'Assistance with finding and applying for international scholarships',
-    href: '/services/scholarships',
+    description: 'Assistance with finding and applying for international scholarships.',
+    href: '/services',
     icon: 'award'
   }
 ];
 
 export const stats = [
-  { number: '4,070+', label: 'Students assisted' },
-  { number: '283+', label: 'Universities partners around the world' },
-  { number: '40+', label: 'Countries' }
+  { number: '40+', label: 'Countries' },
+  { number: '4,070+', label: 'Clients assisted' },
+  { number: '283+', label: 'University partners' }
 ];
 
 export const whyChooseUs = [
   {
     id: 1,
-    title: 'Seamless VISA Support',
-    description: 'Our team provides comprehensive assistance to ensure a smooth and successful VISA application process.',
+    title: 'Travel planning first',
+    description: 'Tours, flights, stays, car rentals, and transfers with clear, practical next steps.',
     icon: 'visa'
   },
   {
     id: 2,
-    title: 'Convenient Air Ticket Booking',
-    description: 'We handle travel arrangements to make your journey stress-free and efficient.',
-    icon: 'ticket'
-  },
-  {
-    id: 3,
-    title: 'Consultation & Assessment',
-    description: 'We offer personalized consultations to assess each student\'s academic strengths and guide them toward the best opportunities.',
-    icon: 'consultation'
-  },
-  {
-    id: 4,
-    title: 'Global Reach',
-    description: 'All over Europe rulers and city governments began to create universities to satisfy a European.',
+    title: 'Destinations that matter',
+    description: 'Multi-country itineraries and trip support shaped around how you actually travel.',
     icon: 'global'
   },
   {
-    id: 5,
-    title: 'Proven Success',
-    description: 'With a track record of successful placements, we guarantee top-notch service every step of the way.',
-    icon: 'success'
-  },
-  {
-    id: 6,
-    title: 'Expert Admission Guidance',
-    description: 'We help students secure placements at top global institutions tailored to their goals.',
+    id: 3,
+    title: 'Education when needed',
+    description: 'Visa, admission, and scholarship guidance available alongside travel services.',
     icon: 'admission'
   }
 ];
@@ -570,6 +611,8 @@ export const footerLinks = [
   { name: 'Appointment', href: '/appointment' },
   { name: 'Services', href: '/services' },
   { name: 'Visa Applications', href: '/visa' },
+  { name: 'Tour Registration', href: '/tour-registration' },
+  { name: 'Testimonials', href: '/testimonials' },
   { name: 'Contact Us', href: '/contact' },
   { name: 'About', href: '/about' }
 ];
